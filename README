@@ -1,0 +1,11 @@
+PROJECT_ROOT_PATH=${PWD}
+
+cd ${PROJECT_ROOT_PATH}
+python3 -m venv venv
+. venv/bin/activate
+pip install --upgrade pip wheel
+pip install -r requirement.txt
+
+cd ${PROJECT_ROOT_PATH}/src
+export FLASK_APP=hello.py
+flask run
