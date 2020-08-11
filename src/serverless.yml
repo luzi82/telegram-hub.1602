@@ -1,0 +1,26 @@
+service: codelog-flask
+
+frameworkVersion: ">=1.78.1 <2.0.0"
+
+provider:
+  name: aws
+  runtime: python3.7
+  region: ${env:AWS_REGION}
+
+functions:
+  helloworld_get:
+    handler: wsgi_handler.handler
+    events:
+      - http: ANY /
+      - http: 'ANY {proxy+}'
+
+custom:
+  wsgi:
+    app: hello.app
+    pythonBin: python
+  pythonRequirements:
+    dockerizePip: false
+
+plugins:
+  - serverless-wsgi
+  - serverless-python-requirements
