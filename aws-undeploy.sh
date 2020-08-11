@@ -13,8 +13,8 @@ rm -rf package-lock.json
 rm -rf node_modules
 
 cd ${MY_PATH}
-npm install serverless serverless-python-requirements
-npm update serverless serverless-python-requirements
+npm install serverless serverless-python-requirements serverless-wsgi
+npm update serverless serverless-python-requirements serverless-wsgi
 SERVERLESS=${MY_PATH}/node_modules/.bin/serverless
 ${SERVERLESS} --version
 
