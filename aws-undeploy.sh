@@ -9,12 +9,10 @@ cd ${MY_PATH}
 
 cd ${MY_PATH}
 rm -rf venv-aws-deploy
-rm -rf package-lock.json
 rm -rf node_modules
 
 cd ${MY_PATH}
-npm install serverless serverless-python-requirements serverless-wsgi
-npm update serverless serverless-python-requirements serverless-wsgi
+npm install
 SERVERLESS=${MY_PATH}/node_modules/.bin/serverless
 ${SERVERLESS} --version
 
@@ -30,5 +28,4 @@ ${SERVERLESS} remove
 cd ${MY_PATH}
 deactivate
 rm -rf venv-aws-deploy
-rm -rf package-lock.json
 rm -rf node_modules
