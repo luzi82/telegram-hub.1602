@@ -1,6 +1,5 @@
 /.project
 __pycache__/
-_env.sh
 venv*/
 tmp
 .serverless

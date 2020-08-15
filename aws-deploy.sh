@@ -5,7 +5,6 @@ set -e
 MY_PATH=${PWD}
 
 cd ${MY_PATH}
-#. _env.sh
 
 cd ${MY_PATH}
 rm -rf venv-aws-deploy
