@@ -5,8 +5,6 @@ set -e
 MY_PATH=${PWD}
 
 cd ${MY_PATH}
-
-cd ${MY_PATH}
 rm -rf venv-aws-deploy
 rm -rf node_modules
 
