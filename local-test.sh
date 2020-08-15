@@ -11,9 +11,9 @@ cd ${PROJECT_ROOT_PATH}
 python3 -m venv venv-local-test
 . venv-local-test/bin/activate
 pip install --upgrade pip wheel
-pip install -r src/requirement.txt
+pip install -r src/requirements.txt
 
 # local run
 cd ${PROJECT_ROOT_PATH}/src
-export FLASK_APP=hello.py
+export FLASK_APP=endpoint.py
 flask run

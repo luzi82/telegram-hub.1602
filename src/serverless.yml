@@ -8,7 +8,7 @@ provider:
   region: ${env:AWS_REGION}
 
 functions:
-  helloworld_get:
+  endpoint:
     handler: wsgi_handler.handler
     events:
       - http: ANY /
@@ -16,7 +16,7 @@ functions:
 
 custom:
   wsgi:
-    app: hello.app
+    app: endpoint.app
     pythonBin: python
   pythonRequirements:
     dockerizePip: false
