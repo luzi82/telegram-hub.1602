@@ -20,6 +20,7 @@ pip install --upgrade pip wheel
 pip install awscli
 
 cd ${MY_PATH}/src
+${SERVERLESS} create_domain
 ${SERVERLESS} deploy
 
 cd ${MY_PATH}

@@ -1,6 +1,6 @@
 service: codelog-flask
 
-frameworkVersion: ">=1.78.1 <2.0.0"
+frameworkVersion: ">=2.0.0 <3.0.0"
 
 provider:
   name: aws
@@ -19,7 +19,13 @@ custom:
     pythonBin: python
   pythonRequirements:
     dockerizePip: false
+  customDomain:
+    domainName: ${file(../conf/conf.json):DOMAIN}
+    basePath: ''
+    stage: ${self:provider.stage}
+    createRoute53Record: true
 
 plugins:
   - serverless-wsgi
   - serverless-python-requirements
+  - serverless-domain-manager
