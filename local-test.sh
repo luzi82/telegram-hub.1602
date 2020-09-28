@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 PROJECT_ROOT_PATH=${PWD}
 
 # clean up
