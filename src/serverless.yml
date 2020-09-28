@@ -1,6 +1,6 @@
 service: codelog-webtemplate-20200928
 
-frameworkVersion: ">=2.0.0 <3.0.0"
+frameworkVersion: ">=2.3.0 <3.0.0"
 
 provider:
   name: aws
