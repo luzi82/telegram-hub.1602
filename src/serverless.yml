@@ -20,9 +20,9 @@ custom:
   pythonRequirements:
     dockerizePip: false
   customDomain:
-    domainName: ${file(../conf/conf.json):DOMAIN}
+    domainName: ${file(../stages/${opt:stage}/conf.json):COMPUTE_DOMAIN}
     basePath: ''
-    stage: ${self:provider.stage}
+    stage: ${opt:stage}
     createRoute53Record: true
 
 plugins:
