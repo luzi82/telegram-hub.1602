@@ -1,4 +1,4 @@
-service: codelog-flask
+service: codelog-webtemplate-20200928
 
 frameworkVersion: ">=2.0.0 <3.0.0"
 

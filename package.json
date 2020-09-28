@@ -1,5 +1,5 @@
 {
-    "homepage": "https://github.com/luzi82/codelog.flask",
+    "homepage": "https://github.com/luzi82/codelog.web-template.20200928",
     "dependencies": {
         "serverless": "^2.0.0",
         "serverless-python-requirements": "^5.1.0",
