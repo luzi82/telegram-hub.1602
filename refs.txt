@@ -1,0 +1,3 @@
+https://www.serverlessops.io/blog/static-websites-on-aws-s3-with-serverless-framework
+
+https://docs.aws.amazon.com/sdk-for-ruby/v1/api/AWS/Route53/HostedZone.html

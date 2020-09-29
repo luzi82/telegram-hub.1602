@@ -15,6 +15,47 @@ functions:
       - http: ANY /
       - http: 'ANY {proxy+}'
 
+resources:
+  Resources:
+    PublicStaticBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        AccessControl: PublicRead
+        BucketName: ${file(../stages/${opt:stage}/conf.json):STATIC_DOMAIN}
+        WebsiteConfiguration:
+          IndexDocument: index.html
+    PublicStaticBucketPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        Bucket:
+          Ref: PublicStaticBucket
+        PolicyDocument:
+          Statement:
+            - Sid: PublicReadGetObject
+              Effect: Allow
+              Principal: "*"
+              Action:
+              - s3:GetObject
+              Resource:
+                Fn::Join: [
+                  "", [
+                    "arn:aws:s3:::",
+                    {
+                      "Ref": "PublicStaticBucket"
+                    },
+                    "/*"
+                  ]
+                ]
+    PublicStaticDnsRecord:
+      Type: "AWS::Route53::RecordSet"
+      Properties:
+        AliasTarget:
+          DNSName: s3-website-us-east-1.amazonaws.com # TODO
+          HostedZoneId: Z3AQBSTGFYJSTF # TODO
+        HostedZoneName: ${file(../stages/${opt:stage}/conf.json):STATIC_DOMAIN_HOSTED_ZONE_NAME}.
+        Name: ${file(../stages/${opt:stage}/conf.json):STATIC_DOMAIN}.
+        Type: 'A'
+
 custom:
   wsgi:
     app: endpoint.app
@@ -26,8 +67,12 @@ custom:
     basePath: ''
     stage: ${opt:stage}
     createRoute53Record: true
+  s3Sync:
+    - bucketName: ${file(../stages/${opt:stage}/conf.json):STATIC_DOMAIN}
+      localDir: public
 
 plugins:
   - serverless-wsgi
   - serverless-python-requirements
   - serverless-domain-manager
+  - serverless-s3-sync

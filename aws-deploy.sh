@@ -32,7 +32,7 @@ pip install awscli
 
 cd ${MY_PATH}/src
 ${SERVERLESS} create_domain --stage ${ARG_STAGE}
-${SERVERLESS} deploy --stage ${ARG_STAGE}
+${SERVERLESS} deploy --stage ${ARG_STAGE} -v
 
 cd ${MY_PATH}
 deactivate

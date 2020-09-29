@@ -6,6 +6,7 @@
         "serverless-wsgi": "^1.7.5"
     },
     "devDependencies": {
-        "serverless-domain-manager": "^4.2.3"
+        "serverless-domain-manager": "^4.2.3",
+        "serverless-s3-sync": "^1.14.4"
     }
 }

@@ -20,7 +20,7 @@ pip install --upgrade pip wheel
 pip install awscli
 
 cd ${MY_PATH}/src
-${SERVERLESS} remove
+${SERVERLESS} remove -v
 ${SERVERLESS} delete_domain
 
 cd ${MY_PATH}
