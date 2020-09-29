@@ -1,6 +1,12 @@
-from flask import Flask
-app = Flask(__name__)
+import flask
+import os
+
+app = flask.Flask(__name__)
+
+STAGE = os.environ['STAGE']
 
 @app.route('/')
 def index():
-    return 'Hello, World!'
+    return flask.render_template('index.tmpl',
+        STAGE=STAGE,
+    )
