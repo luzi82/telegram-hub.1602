@@ -37,16 +37,12 @@ resources:
               Action:
               - s3:GetObject
               Resource:
-                Fn::Join: [
-                  "", [
-                    "arn:aws:s3:::",
-                    {
-                      "Ref": "PublicStaticBucket"
-                    },
-                    "/*"
-                  ]
-                ]
-    PublicStaticDnsRecord:
+                'Fn::Join':
+                  - ''
+                  - - 'arn:aws:s3:::'
+                    - Ref: PublicStaticBucket
+                    - /*
+    PublicStaticDnsRecordA:
       Type: "AWS::Route53::RecordSet"
       Properties:
         AliasTarget:
@@ -55,6 +51,15 @@ resources:
         HostedZoneName: ${file(../stages/${opt:stage}/conf.json):STATIC_DOMAIN_HOSTED_ZONE_NAME}.
         Name: ${file(../stages/${opt:stage}/conf.json):STATIC_DOMAIN}.
         Type: 'A'
+    PublicStaticDnsRecordAAAA:
+      Type: "AWS::Route53::RecordSet"
+      Properties:
+        AliasTarget:
+          DNSName: s3-website-us-east-1.amazonaws.com # TODO
+          HostedZoneId: Z3AQBSTGFYJSTF # TODO
+        HostedZoneName: ${file(../stages/${opt:stage}/conf.json):STATIC_DOMAIN_HOSTED_ZONE_NAME}.
+        Name: ${file(../stages/${opt:stage}/conf.json):STATIC_DOMAIN}.
+        Type: 'AAAA'
 
 custom:
   wsgi:
