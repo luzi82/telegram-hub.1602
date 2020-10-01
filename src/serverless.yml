@@ -20,10 +20,12 @@ resources:
     PublicStaticBucket:
       Type: AWS::S3::Bucket
       Properties:
-        AccessControl: PublicRead
         BucketName: ${file(../stages/${opt:stage}/conf.json):STATIC_DOMAIN}
-        WebsiteConfiguration:
-          IndexDocument: index.html
+    PublicStaticCloudfrontOAI:
+      Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
+      Properties:
+        CloudFrontOriginAccessIdentityConfig:
+          Comment: ${file(../stages/${opt:stage}/conf.json):STATIC_DOMAIN}
     PublicStaticBucketPolicy:
       Type: AWS::S3::BucketPolicy
       Properties:
@@ -33,7 +35,12 @@ resources:
           Statement:
             - Sid: PublicReadGetObject
               Effect: Allow
-              Principal: "*"
+              Principal:
+                AWS:
+                  Fn::Join:
+                  - ''
+                  - - 'arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity '
+                    - Ref: PublicStaticCloudfrontOAI
               Action:
               - s3:GetObject
               Resource:
@@ -42,11 +49,6 @@ resources:
                   - - 'arn:aws:s3:::'
                     - Ref: PublicStaticBucket
                     - /*
-    PublicStaticCloudfrontOAI:
-      Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
-      Properties:
-        CloudFrontOriginAccessIdentityConfig:
-          Comment: ${file(../stages/${opt:stage}/conf.json):STATIC_DOMAIN}
     PublicStaticCloudfront:
       Type: AWS::CloudFront::Distribution
       Properties:
