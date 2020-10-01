@@ -54,7 +54,10 @@ resources:
       Properties:
         DistributionConfig:
           Origins:
-          - DomainName: ${file(../stages/${opt:stage}/conf.json):STATIC_DOMAIN}.s3.amazonaws.com # TODO
+          - DomainName:
+              Fn::GetAtt:
+              - PublicStaticBucket
+              - DomainName
             Id: S3-${file(../stages/${opt:stage}/conf.json):STATIC_DOMAIN}
             S3OriginConfig:
               OriginAccessIdentity:
