@@ -7,9 +7,20 @@ provider:
   runtime: python3.7
   environment:
     STAGE: ${opt:stage}
+    CONF_PATH: s3://${self:resources.Resources.PrivateStaticBucket.Properties.BucketName}/conf
   deploymentBucket:
     name: ${self:service}-${self:custom.deployToken}-deploy
     serverSideEncryption: AES256
+  iamRoleStatements:
+  - Effect: 'Allow'
+    Action:
+    - s3:GetObject
+    Resource:
+      Fn::Join:
+      - ''
+      - - 'arn:aws:s3:::'
+        - Ref: PrivateStaticBucket
+        - /*
 
 functions:
   endpoint:
