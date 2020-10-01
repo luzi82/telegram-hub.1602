@@ -107,6 +107,14 @@ resources:
                   - PublicStaticCloudfront
                   - DomainName
               HostedZoneId: Z2FDTNDATAQYW2 # AWS hardcode
+    PrivateStaticBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:service}-private-static
+  Outputs:
+    PrivateStaticBucketName:
+      Value:
+        Ref: PrivateStaticBucket
 
 custom:
   wsgi:
@@ -122,6 +130,9 @@ custom:
   s3Sync:
     - bucketName: ${file(../stages/${opt:stage}/conf.json):STATIC_DOMAIN}
       localDir: public
+    - bucketNameKey: PrivateStaticBucketName
+      localDir: ../stages/${opt:stage}
+      bucketPrefix: conf/
 
 plugins:
   - serverless-wsgi
