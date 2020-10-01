@@ -9,7 +9,7 @@ provider:
     STAGE: ${opt:stage}
     CONF_PATH: s3://${self:resources.Resources.PrivateStaticBucket.Properties.BucketName}/conf
   deploymentBucket:
-    name: ${self:service}-${self:custom.deployToken}-deploy
+    name: ${self:service}-${opt:stage}-deploy
     serverSideEncryption: AES256
   iamRoleStatements:
   - Effect: 'Allow'
@@ -34,7 +34,7 @@ resources:
     PublicStaticBucket:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: ${self:service}-${self:custom.deployToken}-public-static
+        BucketName: ${self:service}-${opt:stage}-public-static
     PublicStaticCloudfrontOAI:
       Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
       Properties:
@@ -124,7 +124,7 @@ resources:
     PrivateStaticBucket:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: ${self:service}-${self:custom.deployToken}-private-static
+        BucketName: ${self:service}-${opt:stage}-private-static
   Outputs:
     PublicStaticBucketName:
       Value:
@@ -134,7 +134,6 @@ resources:
         Ref: PrivateStaticBucket
 
 custom:
-  deployToken: ${file(../stages/${opt:stage}/conf.json):DEPLOY_TOKEN}
   wsgi:
     app: endpoint.app
     pythonBin: python

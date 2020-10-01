@@ -14,7 +14,7 @@ def index():
         STAGE=STAGE,
     )
 
-@app.route('/deploy_token')
-def get_deploy_token():
+@app.route('/compute_domain')
+def get_compute_domain():
     conf_data = futsu.json.path_to_data(futsu.storage.join(CONF_PATH,'conf.json'))
-    return conf_data['DEPLOY_TOKEN']
+    return conf_data['COMPUTE_DOMAIN']
