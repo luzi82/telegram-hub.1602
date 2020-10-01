@@ -1,4 +1,5 @@
 {
+  "DEPLOY_TOKEN": "dev-1601527584",
   "COMPUTE_DOMAIN": "compute-dev-myrewkvu.aws-hknsidwoow.luzi82.com",
   "STATIC_DOMAIN":  "static-dev-myrewkvu.aws-hknsidwoow.luzi82.com",
   "STATIC_DOMAIN_HOSTED_ZONE_ID":  "Z0243526PZCG33NCD7NH",

@@ -7,6 +7,9 @@ provider:
   runtime: python3.7
   environment:
     STAGE: ${opt:stage}
+  deploymentBucket:
+    name: ${self:service}-${self:custom.deployToken}-deploy
+    serverSideEncryption: AES256
 
 functions:
   endpoint:
@@ -20,7 +23,7 @@ resources:
     PublicStaticBucket:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: ${file(../stages/${opt:stage}/conf.json):STATIC_DOMAIN}
+        BucketName: ${self:service}-${self:custom.deployToken}-public-static
     PublicStaticCloudfrontOAI:
       Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
       Properties:
@@ -110,13 +113,17 @@ resources:
     PrivateStaticBucket:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: ${self:service}-private-static
+        BucketName: ${self:service}-${self:custom.deployToken}-private-static
   Outputs:
+    PublicStaticBucketName:
+      Value:
+        Ref: PublicStaticBucket
     PrivateStaticBucketName:
       Value:
         Ref: PrivateStaticBucket
 
 custom:
+  deployToken: ${file(../stages/${opt:stage}/conf.json):DEPLOY_TOKEN}
   wsgi:
     app: endpoint.app
     pythonBin: python
@@ -128,7 +135,7 @@ custom:
     stage: ${opt:stage}
     createRoute53Record: true
   s3Sync:
-    - bucketName: ${file(../stages/${opt:stage}/conf.json):STATIC_DOMAIN}
+    - bucketNameKey: PublicStaticBucketName
       localDir: public
     - bucketNameKey: PrivateStaticBucketName
       localDir: ../stages/${opt:stage}
@@ -139,3 +146,4 @@ plugins:
   - serverless-python-requirements
   - serverless-domain-manager
   - serverless-s3-sync
+  - serverless-deployment-bucket
