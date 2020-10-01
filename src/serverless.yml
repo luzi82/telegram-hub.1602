@@ -80,7 +80,7 @@ resources:
           IPV6Enabled: true
           PriceClass: PriceClass_200 # PriceClass_100 / PriceClass_200 / PriceClass_All
           ViewerCertificate:
-            AcmCertificateArn: arn:aws:acm:us-east-1:694855297262:certificate/056b1f99-3dea-4b56-b24e-e733f0dd103f # TODO
+            AcmCertificateArn: ${file(../stages/${opt:stage}/conf.json):STATIC_DOMAIN_ACM_CERTIFICATE_ARN}
             MinimumProtocolVersion: TLSv1.2_2019
             SslSupportMethod: sni-only
     PublicStaticDns:
