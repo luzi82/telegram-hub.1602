@@ -8,6 +8,10 @@ provider:
   environment:
     STAGE: ${opt:stage}
     CONF_PATH: s3://${self:resources.Resources.StorageBucket.Properties.BucketName}/private-static/conf
+    PUBLIC_STATIC_PATH:   s3://${self:resources.Resources.StorageBucket.Properties.BucketName}/public-static
+    PUBLIC_MUTABLE_PATH:  s3://${self:resources.Resources.StorageBucket.Properties.BucketName}/public-mutable
+    PRIVATE_STATIC_PATH:  s3://${self:resources.Resources.StorageBucket.Properties.BucketName}/private-static
+    PRIVATE_MUTABLE_PATH: s3://${self:resources.Resources.StorageBucket.Properties.BucketName}/private-mutable
   deploymentBucket:
     name: ${self:service}-${opt:stage}-deploy
     serverSideEncryption: AES256
@@ -41,6 +45,14 @@ provider:
       - - 'arn:aws:s3:::'
         - Ref: StorageBucket
         - /private-mutable/*
+  - Effect: 'Allow'
+    Action:
+    - s3:ListBucket
+    Resource:
+    - Fn::Join:
+      - ''
+      - - 'arn:aws:s3:::'
+        - Ref: StorageBucket
 
 functions:
   endpoint:
