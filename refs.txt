@@ -1,3 +1,9 @@
 https://www.serverlessops.io/blog/static-websites-on-aws-s3-with-serverless-framework
 
 https://docs.aws.amazon.com/sdk-for-ruby/v1/api/AWS/Route53/HostedZone.html
+
+CloudFront - S3
+https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/quickref-cloudfront.html
+
+Route53 - CloudFront
+https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/quickref-route53.html
