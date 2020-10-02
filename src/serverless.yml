@@ -233,6 +233,32 @@ resources:
                 - PublicMutableCloudfront
                 - DomainName
               HostedZoneId: Z2FDTNDATAQYW2 # AWS hardcode
+    Db:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:service}-${opt:stage}-table
+        AttributeDefinitions:
+        - AttributeName: Key0
+          AttributeType: S
+        - AttributeName: HashKey
+          AttributeType: S
+        - AttributeName: SortKey
+          AttributeType: N
+        KeySchema:
+        - AttributeName: HashKey
+          KeyType: 'HASH'
+        - AttributeName: SortKey
+          KeyType: 'RANGE'
+        GlobalSecondaryIndexes:
+        - IndexName: Index0
+          KeySchema:
+          - AttributeName: Key0
+            KeyType: 'HASH'
+          Projection:
+            NonKeyAttributes:
+            - "HashKey"
+            ProjectionType: "INCLUDE"
+        BillingMode: PAY_PER_REQUEST
 
 custom:
   wsgi:
