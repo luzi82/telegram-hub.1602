@@ -12,6 +12,7 @@ provider:
     PUBLIC_MUTABLE_PATH:  s3://${self:resources.Resources.StorageBucket.Properties.BucketName}/public-mutable
     PRIVATE_STATIC_PATH:  s3://${self:resources.Resources.StorageBucket.Properties.BucketName}/private-static
     PRIVATE_MUTABLE_PATH: s3://${self:resources.Resources.StorageBucket.Properties.BucketName}/private-mutable
+    DB_TABLE_NAME: ${self:resources.Resources.Db.Properties.TableName}
   deploymentBucket:
     name: ${self:service}-${opt:stage}-deploy
     serverSideEncryption: AES256
@@ -53,6 +54,21 @@ provider:
       - ''
       - - 'arn:aws:s3:::'
         - Ref: StorageBucket
+  - Effect: 'Allow'
+    Action:
+    - dynamodb:BatchGetItem
+    - dynamodb:BatchWriteItem
+    - dynamodb:ConditionCheckItem
+    - dynamodb:DeleteItem
+    - dynamodb:GetItem
+    - dynamodb:PutItem
+    - dynamodb:Query
+    - dynamodb:Scan
+    - dynamodb:UpdateItem
+    Resource:
+      Fn::GetAtt:
+      - Db
+      - Arn
 
 functions:
   endpoint:

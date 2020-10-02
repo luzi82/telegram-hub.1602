@@ -1,8 +1,10 @@
+import boto3
 import datetime
 import flask
 import futsu.json
 import futsu.storage
 import os
+import random
 
 app = flask.Flask(__name__)
 
@@ -12,6 +14,8 @@ PUBLIC_STATIC_PATH   = os.environ['PUBLIC_STATIC_PATH']
 PUBLIC_MUTABLE_PATH  = os.environ['PUBLIC_MUTABLE_PATH']
 PRIVATE_STATIC_PATH  = os.environ['PRIVATE_STATIC_PATH']
 PRIVATE_MUTABLE_PATH = os.environ['PRIVATE_MUTABLE_PATH']
+DB_TABLE_NAME = os.environ['DB_TABLE_NAME']
+DYNAMODB_ENDPOINT_URL = None # TODO for local
 
 @app.route('/')
 def index():
@@ -22,10 +26,26 @@ def index():
     last_ts = futsu.storage.path_to_bytes(timestamp_path).decode('utf-8') if futsu.storage.is_blob_exist(timestamp_path) else -1
     futsu.storage.bytes_to_path(timestamp_path,f'{now_ts}'.encode('utf-8'))
 
+    dynamodb = boto3.resource('dynamodb', endpoint_url=DYNAMODB_ENDPOINT_URL)
+    table = dynamodb.Table(DB_TABLE_NAME)
+    query_ret = table.query(
+      KeyConditionExpression=boto3.dynamodb.conditions.Key('HashKey').eq('rand_txt'),
+      Limit=1,
+    )
+    now_rand = str(random.randrange(100))
+    last_rand = query_ret['Items'][0]['Valuee'] if len(query_ret['Items'])>0 else ''
+    table.update_item(
+      Key={'HashKey':'rand_txt','SortKey':0},
+      UpdateExpression='SET Valuee = :v',
+      ExpressionAttributeValues={':v':now_rand},
+    )
+
     return flask.render_template('index.tmpl',
         STAGE=STAGE,
         LAST_TS=last_ts,
         NOW_TS=now_ts,
+        LAST_RAND=last_rand,
+        NOW_RAND=now_rand,
     )
 
 @app.route('/compute_domain')
