@@ -21,6 +21,9 @@ DYNAMODB_ENDPOINT_URL = None # TODO for local
 def index():
     now_ts = int(datetime.datetime.now().timestamp())
 
+    private_dummy_path = futsu.storage.join(PRIVATE_STATIC_PATH,'private.txt')
+    private_txt = futsu.storage.path_to_bytes(private_dummy_path).decode('utf-8')
+
     timestamp_path = futsu.storage.join(PRIVATE_MUTABLE_PATH,'timestamp')
     last_ts = futsu.storage.path_to_bytes(timestamp_path).decode('utf-8') if futsu.storage.is_blob_exist(timestamp_path) else -1
     futsu.storage.bytes_to_path(timestamp_path,f'{now_ts}'.encode('utf-8'))
@@ -44,6 +47,7 @@ def index():
 
     return flask.render_template('index.tmpl',
         STAGE=STAGE,
+        PRIVATE_TXT=private_txt,
         LAST_TS=last_ts,
         NOW_TS=now_ts,
         JOB0_TS=job0_ts,

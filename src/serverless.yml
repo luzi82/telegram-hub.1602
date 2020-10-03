@@ -303,6 +303,9 @@ custom:
   - bucketName: ${self:resources.Resources.StorageBucket.Properties.BucketName}
     localDir: ../stages/${opt:stage}
     bucketPrefix: private-static/conf/
+  - bucketName: ${self:resources.Resources.StorageBucket.Properties.BucketName}
+    localDir: private
+    bucketPrefix: private-static/
 
 plugins:
 - serverless-wsgi
