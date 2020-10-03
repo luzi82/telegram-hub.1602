@@ -20,11 +20,13 @@ DYNAMODB_ENDPOINT_URL = None # TODO for local
 @app.route('/')
 def index():
     now_ts = int(datetime.datetime.now().timestamp())
-    timestamp_path = futsu.storage.join(PRIVATE_MUTABLE_PATH,'timestamp')
-    print(timestamp_path)
 
+    timestamp_path = futsu.storage.join(PRIVATE_MUTABLE_PATH,'timestamp')
     last_ts = futsu.storage.path_to_bytes(timestamp_path).decode('utf-8') if futsu.storage.is_blob_exist(timestamp_path) else -1
     futsu.storage.bytes_to_path(timestamp_path,f'{now_ts}'.encode('utf-8'))
+
+    job0_timestamp_path = futsu.storage.join(PRIVATE_MUTABLE_PATH,'job0_timestamp')
+    job0_ts = futsu.storage.path_to_bytes(job0_timestamp_path).decode('utf-8') if futsu.storage.is_blob_exist(job0_timestamp_path) else -1
 
     dynamodb = boto3.resource('dynamodb', endpoint_url=DYNAMODB_ENDPOINT_URL)
     table = dynamodb.Table(DB_TABLE_NAME)
@@ -44,6 +46,7 @@ def index():
         STAGE=STAGE,
         LAST_TS=last_ts,
         NOW_TS=now_ts,
+        JOB0_TS=job0_ts,
         LAST_RAND=last_rand,
         NOW_RAND=now_rand,
     )

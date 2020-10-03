@@ -76,6 +76,11 @@ functions:
     events:
     - http: ANY /
     - http: 'ANY {proxy+}'
+  job0:
+    handler: jobs.job0
+    events:
+    - schedule: rate(1 minute) # minute | minutes | hour | hours | day | days
+    # - schedule: cron(0 4 * * ? *)
 
 resources:
   Resources:
