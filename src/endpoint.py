@@ -15,7 +15,7 @@ PUBLIC_MUTABLE_PATH  = os.environ['PUBLIC_MUTABLE_PATH']
 PRIVATE_STATIC_PATH  = os.environ['PRIVATE_STATIC_PATH']
 PRIVATE_MUTABLE_PATH = os.environ['PRIVATE_MUTABLE_PATH']
 DB_TABLE_NAME = os.environ['DB_TABLE_NAME']
-DYNAMODB_ENDPOINT_URL = None # TODO for local
+DYNAMODB_ENDPOINT_URL = os.environ['DYNAMODB_ENDPOINT_URL'] if ('DYNAMODB_ENDPOINT_URL' in os.environ) else None
 
 @app.route('/')
 def index():
