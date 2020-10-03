@@ -15,7 +15,8 @@ PUBLIC_MUTABLE_PATH  = os.environ['PUBLIC_MUTABLE_PATH']
 PRIVATE_STATIC_PATH  = os.environ['PRIVATE_STATIC_PATH']
 PRIVATE_MUTABLE_PATH = os.environ['PRIVATE_MUTABLE_PATH']
 DB_TABLE_NAME = os.environ['DB_TABLE_NAME']
-DYNAMODB_ENDPOINT_URL = os.environ['DYNAMODB_ENDPOINT_URL'] if ('DYNAMODB_ENDPOINT_URL' in os.environ) else None
+DYNAMODB_ENDPOINT_URL = os.environ.get('DYNAMODB_ENDPOINT_URL',None)
+DYNAMODB_REGION       = os.environ.get('DYNAMODB_REGION',None)
 
 @app.route('/')
 def index():
@@ -31,7 +32,7 @@ def index():
     job0_timestamp_path = futsu.storage.join(PRIVATE_MUTABLE_PATH,'job0_timestamp')
     job0_ts = futsu.storage.path_to_bytes(job0_timestamp_path).decode('utf-8') if futsu.storage.is_blob_exist(job0_timestamp_path) else -1
 
-    dynamodb = boto3.resource('dynamodb', endpoint_url=DYNAMODB_ENDPOINT_URL)
+    dynamodb = boto3.resource('dynamodb', endpoint_url=DYNAMODB_ENDPOINT_URL, region_name=DYNAMODB_REGION)
     table = dynamodb.Table(DB_TABLE_NAME)
     query_ret = table.query(
       KeyConditionExpression=boto3.dynamodb.conditions.Key('HashKey').eq('rand_txt'),
