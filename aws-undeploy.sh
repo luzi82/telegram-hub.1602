@@ -2,6 +2,17 @@
 
 set -e
 
+bad_exit(){
+    echo "${0} stage"
+    exit 1
+}
+
+# args
+ARG_STAGE=${1}
+if [ ! -f "stages/${ARG_STAGE}/conf.json" ]; then
+    bad_exit
+fi
+
 MY_PATH=${PWD}
 
 cd ${MY_PATH}
@@ -20,8 +31,8 @@ pip install --upgrade pip wheel
 pip install awscli
 
 cd ${MY_PATH}/src
-${SERVERLESS} remove -v
-${SERVERLESS} delete_domain
+${SERVERLESS} remove --stage ${ARG_STAGE} -v
+${SERVERLESS} delete_domain --stage ${ARG_STAGE}
 
 cd ${MY_PATH}
 deactivate
