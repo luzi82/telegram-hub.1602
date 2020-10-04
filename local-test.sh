@@ -23,7 +23,8 @@ cd ${PROJECT_ROOT_PATH}
 mkdir -p local-test-tmp
 python3 -m venv local-test-tmp/venv-local-test
 . local-test-tmp/venv-local-test/bin/activate
-pip install --upgrade pip wheel yq
+pip install --upgrade pip wheel
+pip install yq
 pip install -r src/requirements.txt
 
 # download dynamodb local
@@ -78,7 +79,7 @@ aws dynamodb wait table-exists \
 cd ${PROJECT_ROOT_PATH}
 mkdir local-test-tmp/public-mutable
 mkdir local-test-tmp/private-mutable
-python -m http.server 8100 --directory ${PROJECT_ROOT_PATH}/src/public &
+python -m http.server 8100 --directory ${PROJECT_ROOT_PATH}/public-static &
 echo $! > local-test-tmp/public-static.pid
 python -m http.server 8101 --directory ${PROJECT_ROOT_PATH}/local-test-tmp/public-mutable &
 echo $! > local-test-tmp/private-static.pid
@@ -86,9 +87,9 @@ echo $! > local-test-tmp/private-static.pid
 # environ
 export STAGE=local
 export CONF_PATH=${PROJECT_ROOT_PATH}/stages/local/conf.json
-export PUBLIC_STATIC_PATH=${PROJECT_ROOT_PATH}/src/public
+export PUBLIC_STATIC_PATH=${PROJECT_ROOT_PATH}/public-static
 export PUBLIC_MUTABLE_PATH=${PROJECT_ROOT_PATH}/local-test-tmp/public-mutable
-export PRIVATE_STATIC_PATH=${PROJECT_ROOT_PATH}/src/private
+export PRIVATE_STATIC_PATH=${PROJECT_ROOT_PATH}/private-static
 export PRIVATE_MUTABLE_PATH=${PROJECT_ROOT_PATH}/local-test-tmp/private-mutable
 export DB_TABLE_NAME=tmp_table
 export DYNAMODB_ENDPOINT_URL=http://localhost:8000
