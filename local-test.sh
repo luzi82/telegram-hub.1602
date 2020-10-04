@@ -52,7 +52,8 @@ echo $! > dynamodb.pid
 # load dynamodb setting
 cd ${PROJECT_ROOT_PATH}
 #yq -r .provider.region                                          src/serverless.yml | tr -d '\n' > local-test-tmp/region
-echo -n us-east-1 > local-test-tmp/region
+#echo -n us-east-1 > local-test-tmp/region'
+jq -r  .AWS_REGION stages/local/conf.json | tr -d '\n' > local-test-tmp/region
 yq -cM .resources.Resources.Db.Properties.AttributeDefinitions   src/serverless.yml | tr -d '\n' > local-test-tmp/db.AttributeDefinitions
 yq -cM .resources.Resources.Db.Properties.KeySchema              src/serverless.yml | tr -d '\n' > local-test-tmp/db.KeySchema
 yq -cM .resources.Resources.Db.Properties.GlobalSecondaryIndexes src/serverless.yml | tr -d '\n' > local-test-tmp/db.GlobalSecondaryIndexes

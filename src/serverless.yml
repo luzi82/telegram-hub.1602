@@ -5,6 +5,7 @@ frameworkVersion: ">=2.4.0 <3.0.0"
 provider:
   name: aws
   runtime: python3.7
+  region: ${file(../stages/${opt:stage}/conf.json):AWS_REGION}
   environment:
     STAGE: ${opt:stage}
     CONF_PATH: s3://${self:resources.Resources.StorageBucket.Properties.BucketName}/private-static/conf
