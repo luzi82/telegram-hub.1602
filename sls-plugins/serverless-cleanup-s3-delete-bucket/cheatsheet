@@ -1,0 +1,3 @@
+npm install
+SLS=node_modules/.bin/serverless
+${SLS} --version

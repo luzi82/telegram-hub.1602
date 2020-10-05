@@ -1,0 +1,7 @@
+{
+  "name": "serverless-cleanup-s3-delete-bucket",
+  "version": "1601.0.0",
+  "dependencies": {
+    "serverless": "^2.4.0"
+  }
+}
