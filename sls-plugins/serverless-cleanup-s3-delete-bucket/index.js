@@ -48,6 +48,17 @@ class ServerlessCleanupS3DeleteBucket {
   s3DeleteBucket() {
     const self = this;
 
+    const getAwsStackExist = () => {
+      const stackName = this.provider.naming.getStackName();
+      return self.provider.request('CloudFormation', 'describeStacks', { StackName: stackName })
+        .then((result)=>{return Promise.resolve(true);})
+        .catch(e=>{
+          if (e.message.indexOf('does not exist') > -1) {
+            return Promise.resolve(false);
+          }
+          throw e;
+        });
+    };
     const getAwsBucketList = () => {
       return self.provider.request('S3', 'listBuckets').then((result)=>{
         return new Promise((resolve) => {
@@ -129,29 +140,32 @@ class ServerlessCleanupS3DeleteBucket {
         if (!this.isTrue(config.enable)) { return Promise.all([]).then(resolve); }
         const enableBucketList = config.bucketList.filter(i=>((!('enable' in i))||(this.isTrue(i['enable']))));
         if (enableBucketList.length<=0) { return Promise.all([]).then(resolve); }
-        return getAwsBucketList().then(awsBucketList=>{
-          // self.log(awsBucketList);
-          const awsBucketSet = new Set(awsBucketList);
-          const processBucketList = enableBucketList.filter(i=>awsBucketSet.has(i.bucketName));
-          const processBucketNameList = processBucketList.map(i=>i.bucketName);
-          self.log(`processBucketNameList: ${processBucketNameList}`);
-          let promisses = [];
-          for (const bucketData of processBucketList) {
-            const bucketName = bucketData.bucketName;
-            promisses.push(getAllKeys(bucketName).then(executeRemove).then(() => {
-              return executeDeleteBucket(bucketName);
-            }).then(() => {
-              const message = `Success: ${bucketName} is deleted.`;
-              self.log(message);
-              self.serverless.cli.consoleLog(`${messagePrefix}${chalk.yellow(message)}`);
-            }).catch((err) => {
-              const message = `Fail: ${bucketName} may not be deleted.`;
-              self.log(message);
-              self.log(err);
-              self.serverless.cli.consoleLog(`${messagePrefix}${chalk.yellow(message)}`);
-            }));
-          }
-          return Promise.all(promisses).then(resolve);
+        return getAwsStackExist().then(awsStackExist=>{
+          if(awsStackExist){ return Promise.all([]).then(resolve); }
+          return getAwsBucketList().then(awsBucketList=>{
+            // self.log(awsBucketList);
+            const awsBucketSet = new Set(awsBucketList);
+            const processBucketList = enableBucketList.filter(i=>awsBucketSet.has(i.bucketName));
+            const processBucketNameList = processBucketList.map(i=>i.bucketName);
+            self.log(`processBucketNameList: ${processBucketNameList}`);
+            let promisses = [];
+            for (const bucketData of processBucketList) {
+              const bucketName = bucketData.bucketName;
+              promisses.push(getAllKeys(bucketName).then(executeRemove).then(() => {
+                return executeDeleteBucket(bucketName);
+              }).then(() => {
+                const message = `Success: ${bucketName} is deleted.`;
+                self.log(message);
+                self.serverless.cli.consoleLog(`${messagePrefix}${chalk.yellow(message)}`);
+              }).catch((err) => {
+                const message = `Fail: ${bucketName} may not be deleted.`;
+                self.log(message);
+                self.log(err);
+                self.serverless.cli.consoleLog(`${messagePrefix}${chalk.yellow(message)}`);
+              }));
+            }
+            return Promise.all(promisses).then(resolve);
+          });
         });
       });
     });
