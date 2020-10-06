@@ -50,6 +50,7 @@ class ServerlessCleanupS3DeleteBucket {
 
     const getAwsStackExist = () => {
       const stackName = this.provider.naming.getStackName();
+      self.log(`${messagePrefix}Check stack exist ${stackName}`)
       return self.provider.request('CloudFormation', 'describeStacks', { StackName: stackName })
         .then((result)=>{return Promise.resolve(true);})
         .catch(e=>{
@@ -60,6 +61,7 @@ class ServerlessCleanupS3DeleteBucket {
         });
     };
     const getAwsBucketList = () => {
+      self.log(`${messagePrefix}Get bucket list`)
       return self.provider.request('S3', 'listBuckets').then((result)=>{
         return new Promise((resolve) => {
           resolve(result.Buckets.map((item)=>{
@@ -69,6 +71,7 @@ class ServerlessCleanupS3DeleteBucket {
       });
     };
     const getAllKeys = (bucket) => {
+      self.log(`${messagePrefix}Get bucket object list ${bucket}`)
       const get = (src = {}) => {
         const data = src.data;
         const keys = src.keys || [];
@@ -115,12 +118,13 @@ class ServerlessCleanupS3DeleteBucket {
       return list();
     };
     const executeRemove = (params) => {
+      self.log(`${messagePrefix}Remove all bucket object`)
       return Promise.all(params.map(param => {
         return self.provider.request('S3', 'deleteObjects', param);
       }));
     };
     const executeDeleteBucket = (bucket) => {
-      self.log(`executeDeleteBucket ${bucket}`);
+      self.log(`${messagePrefix}Delete bucket ${bucket}`);
       return self.provider.request('S3', 'deleteBucket', {Bucket: bucket});
     };
 
@@ -141,7 +145,11 @@ class ServerlessCleanupS3DeleteBucket {
         const enableBucketList = config.bucketList.filter(i=>((!('enable' in i))||(this.isTrue(i['enable']))));
         if (enableBucketList.length<=0) { return Promise.all([]).then(resolve); }
         return getAwsStackExist().then(awsStackExist=>{
-          if(awsStackExist){ return Promise.all([]).then(resolve); }
+          if(awsStackExist){
+            self.log(`${messagePrefix}Stack exist`)
+            return Promise.all([]).then(resolve);
+          }
+          self.log(`${messagePrefix}Stack not exist`)
           return getAwsBucketList().then(awsBucketList=>{
             // self.log(awsBucketList);
             const awsBucketSet = new Set(awsBucketList);
