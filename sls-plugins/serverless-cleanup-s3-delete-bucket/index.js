@@ -33,6 +33,17 @@ class ServerlessCleanupS3DeleteBucket {
       this.serverless.cli.log(message);
     }
   }
+  
+  isTrue(value) {
+    if(!value)return false;
+    if(value=='false')return false;
+    if(value==false)return false;
+    if(value=='0')return false;
+    if(value==0)return false;
+    if(value=='null')return false;
+    if(value==null)return false;
+    return true;
+  }
 
   s3DeleteBucket() {
     const self = this;
@@ -115,8 +126,8 @@ class ServerlessCleanupS3DeleteBucket {
 
     return new Promise((resolve) => {
       return populateConfig().then(config => {
-        if (!config.enable) { return Promise.all([]).then(resolve); }
-        const enableBucketList = config.bucketList.filter(i=>((!('enable' in i))||(i['enable'])));
+        if (!this.isTrue(config.enable)) { return Promise.all([]).then(resolve); }
+        const enableBucketList = config.bucketList.filter(i=>((!('enable' in i))||(this.isTrue(i['enable']))));
         if (enableBucketList.length<=0) { return Promise.all([]).then(resolve); }
         return getAwsBucketList().then(awsBucketList=>{
           // self.log(awsBucketList);
