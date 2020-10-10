@@ -1,3 +1,4 @@
-boto3
 Flask
+boto3
 futsu
+python-telegram-bot

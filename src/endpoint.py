@@ -1,15 +1,17 @@
 import boto3
 import datetime
 import flask
+import fk
 import futsu.json
 import futsu.storage
+import logging
 import os
 import random
-
-app = flask.Flask(__name__)
+import th
 
 STAGE = os.environ['STAGE']
 CONF_PATH = os.environ['CONF_PATH']
+
 PUBLIC_STATIC_PATH   = os.environ['PUBLIC_STATIC_PATH']
 PUBLIC_MUTABLE_PATH  = os.environ['PUBLIC_MUTABLE_PATH']
 PRIVATE_STATIC_PATH  = os.environ['PRIVATE_STATIC_PATH']
@@ -17,6 +19,13 @@ PRIVATE_MUTABLE_PATH = os.environ['PRIVATE_MUTABLE_PATH']
 DB_TABLE_NAME = os.environ['DB_TABLE_NAME']
 DYNAMODB_ENDPOINT_URL = os.environ.get('DYNAMODB_ENDPOINT_URL',None)
 DYNAMODB_REGION       = os.environ.get('DYNAMODB_REGION',None)
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+
+configure_telegram = th.configure_telegram
+
+app = flask.Flask(__name__)
 
 @app.route('/')
 def index():
@@ -60,3 +69,68 @@ def index():
 def get_compute_domain():
     conf_data = futsu.json.path_to_data(futsu.storage.join(CONF_PATH,'conf.json'))
     return conf_data['COMPUTE_DOMAIN']
+
+
+@app.route('/telegram/webhook', methods=['POST'])
+def post_webhook():
+    event = flask.request.form
+    now = int(datetime.datetime.now().timestamp())
+
+    bot = configure_telegram()
+    logger.info(f'Event: {event}')
+
+    logger.info('JGSQVFPC')
+    if event.get('body') is None:
+        # return ERROR_RESPONSE
+        return fk.e400('NXDQNYUR require body')
+
+    logger.info('RMYYLVSD')
+    body_data = json.loads(event['body'])
+    if 'message' not in body_data:
+        return fk.e400('FEHPCSGD require body.message')
+    if 'date' not in body_data['message']:
+        return fk.e400('WGQWMYUR require body.date')
+
+    logger.info('LFLCITSK')
+    ts_int = int(body_data['message']['date'])
+    ts_diff = abs(ts_int-now)
+    logger.info('MOSUOFFJ now={now}, ts_int={ts_int}, ts_diff={ts_diff}'.format(
+        now=now,
+        ts_int=ts_int,
+        ts_diff=ts_diff,
+    ))
+    if abs(ts_int-now) > 30:
+        return fk.r200('TIMEOUT') # avoid telegram webhook loop
+
+    update = telegram.Update.de_json(body_data, bot)
+    chat_id = update.message.chat.id
+    text = update.message.text
+
+    word_list = text.split(' ')
+    word_list = filter(lambda i:len(i)>0, word_list)
+    word_list = list(word_list)
+
+    ret_text = None
+    if word_list[0] == '/start':
+        ret_text = "Hello from telegram-hub.1602"
+
+    if ret_text is not None:
+        bot.sendMessage(chat_id=chat_id, text=ret_text)
+        logger.info('Message sent')
+
+    return fk.r200()
+
+
+# TODO: remove me
+@app.route('/set_webhook')
+def get_setwebhook():
+    host = flask.request.host
+    bot = configure_telegram()
+    url = f'https://{host}/telegram/webhook'
+    logger.info(f'FZKSPASM URL: {url}')
+    set_webhook_result = bot.set_webhook(url, timeout=30)
+
+    if set_webhook_result:
+        return fk.r200({'set_webhook_result':set_webhook_result})
+
+    return fk.e500({'set_webhook_result':set_webhook_result})
