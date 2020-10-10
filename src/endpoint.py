@@ -7,6 +7,7 @@ import futsu.storage
 import logging
 import os
 import random
+import telegram
 import th
 
 STAGE = os.environ['STAGE']
@@ -73,19 +74,20 @@ def get_compute_domain():
 
 @app.route('/telegram/webhook', methods=['POST'])
 def post_webhook():
-    event = flask.request.form
     now = int(datetime.datetime.now().timestamp())
 
-    bot = configure_telegram()
-    logger.info(f'Event: {event}')
+    # event = flask.request.get_json()
+    # logger.info(f'Event: {event}')
 
-    logger.info('JGSQVFPC')
-    if event.get('body') is None:
-        # return ERROR_RESPONSE
-        return fk.e400('NXDQNYUR require body')
+    bot = configure_telegram()
+
+    # logger.info('JGSQVFPC')
+    # if event.get('body') is None:
+    #     return fk.e400('NXDQNYUR require body')
 
     logger.info('RMYYLVSD')
-    body_data = json.loads(event['body'])
+    body_data = flask.request.get_json()
+    logger.info(f'body_data: {body_data}')
     if 'message' not in body_data:
         return fk.e400('FEHPCSGD require body.message')
     if 'date' not in body_data['message']:
@@ -100,6 +102,7 @@ def post_webhook():
         ts_diff=ts_diff,
     ))
     if abs(ts_int-now) > 30:
+        logger.info('AUKKICOG ignore timeout')
         return fk.r200('TIMEOUT') # avoid telegram webhook loop
 
     update = telegram.Update.de_json(body_data, bot)
