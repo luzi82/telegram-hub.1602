@@ -23,8 +23,11 @@ def endpoint_setup():
   if setup_done(): return redirect_index()
 
   if flask.request.method == 'POST':
-    if flask.request.form['step'] == 'new_bot': return s00_new_bot_submit()
-    if flask.request.form['step'] == 'new_bot_clean': return s00_new_bot_clean()
+    step = flask.request.form['step']
+    if step == 'new_bot': return s00_new_bot_submit()
+    if step == 'new_bot_clean': return s00_new_bot_clean()
+    if step == 'bot_set_domain': return s01_bot_set_domain_submit()
+    if step == 'bot_set_domain_clean': return s01_bot_set_domain_clean()
     return fk.e400('UHBYLYQC step unknown')
 
   if not futsu.storage.is_blob_exist(env.SETUP_TG_AUTH_BOT_DATA_PATH):
@@ -46,8 +49,6 @@ def s00_new_bot(err_msg=None):
   )
 
 def s00_new_bot_submit():
-  if setup_done(): return redirect_index()
-
   # if data bot data already exist, ignore and go back setup
   if futsu.storage.is_blob_exist(env.SETUP_TG_AUTH_BOT_DATA_PATH):
     return fk.redirect('/setup')
@@ -65,7 +66,7 @@ def s00_new_bot_submit():
     }
     
     # write bot data
-    futsu.json.data_to_path(env.SETUP_TG_AUTH_BOT_DATA_PATH, setup_tg_auth_bot_data)
+    futsu.json.bytes_to_path(env.SETUP_TG_AUTH_BOT_DATA_PATH, setup_tg_auth_bot_data)
     
     # redirect setup
     return fk.redirect('/setup')
@@ -77,6 +78,7 @@ def s00_new_bot_clean():
   futsu.storage.rm(env.SETUP_TG_AUTH_BOT_DATA_PATH)
   return fk.redirect('/setup')
 
+
 def s01_bot_set_domain():
   setup_tg_auth_bot_data = futsu.json.path_to_data(env.SETUP_TG_AUTH_BOT_DATA_PATH)
   return flask.render_template('setup/s01_bot_set_domain.tmpl',
@@ -84,6 +86,23 @@ def s01_bot_set_domain():
     TG_AUTH_BOT_USER_USERNAME = setup_tg_auth_bot_data['USER_USERNAME'],
     HOST = flask.request.host,
   )
+
+def s01_bot_set_domain_submit():
+  futsu.storage.bytes_to_path(env.SETUP_SET_DOMAIN_DONE_PATH, b'')
+  return fk.redirect('/setup')
+
+def s01_bot_set_domain_clean():
+  futsu.storage.rm(env.SETUP_SET_DOMAIN_DONE_PATH)
+  return fk.redirect('/setup')
+
+
+def s02_th_owner_login():
+  return flask.render_template('setup/s02_th_owner_login.tmpl',
+    PUBLIC_STATIC_HTTP_PATH = env.PUBLIC_STATIC_HTTP_PATH,
+    TG_AUTH_BOT_USER_USERNAME = setup_tg_auth_bot_data['USER_USERNAME'],
+    HOST = flask.request.host,
+  )
+
 
 def setup_done():
   return futsu.storage.is_blob_exist(env.SETUP_DONE_PATH)
