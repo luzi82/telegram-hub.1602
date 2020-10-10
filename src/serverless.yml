@@ -8,7 +8,7 @@ provider:
   region: ${file(../stages/${opt:stage}/conf.json):AWS_REGION}
   environment:
     STAGE: ${opt:stage}
-    CONF_PATH: s3://${self:resources.Resources.StorageBucket.Properties.BucketName}/private-static/conf
+    CONF_PATH: s3://${self:resources.Resources.StorageBucket.Properties.BucketName}/private-conf
     PUBLIC_STATIC_PATH:   s3://${self:resources.Resources.StorageBucket.Properties.BucketName}/public-static
     PUBLIC_MUTABLE_PATH:  s3://${self:resources.Resources.StorageBucket.Properties.BucketName}/public-mutable
     PRIVATE_STATIC_PATH:  s3://${self:resources.Resources.StorageBucket.Properties.BucketName}/private-static
@@ -32,6 +32,11 @@ provider:
       - - 'arn:aws:s3:::'
         - Ref: StorageBucket
         - /private-static/*
+    - Fn::Join:
+      - ''
+      - - 'arn:aws:s3:::'
+        - Ref: StorageBucket
+        - /private-conf/*
   - Effect: 'Allow'
     Action:
     - s3:GetObject
@@ -303,7 +308,7 @@ custom:
     bucketPrefix: public-static/
   - bucketName: ${self:resources.Resources.StorageBucket.Properties.BucketName}
     localDir: ../stages/${opt:stage}
-    bucketPrefix: private-static/conf/
+    bucketPrefix: private-conf/
   - bucketName: ${self:resources.Resources.StorageBucket.Properties.BucketName}
     localDir: ../private-static
     bucketPrefix: private-static/

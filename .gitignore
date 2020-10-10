@@ -5,3 +5,4 @@ tmp
 .serverless
 node_modules
 secret.json
+/cache
