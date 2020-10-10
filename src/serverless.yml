@@ -79,13 +79,13 @@ functions:
     events:
     - http: ANY /
     - http: 'ANY {proxy+}'
-  job0:
-    handler: jobs.job0
-    memorySize: 128
-    timeout: 10 # in mem=128, timeout need to be longer in first run
-    events:
-    - schedule: rate(1 minute) # minute | minutes | hour | hours | day | days
-    # - schedule: cron(0 4 * * ? *)
+#  job0:
+#    handler: jobs.job0
+#    memorySize: 128
+#    timeout: 10 # in mem=128, timeout need to be longer in first run
+#    events:
+#    - schedule: rate(1 minute) # minute | minutes | hour | hours | day | days
+#    # - schedule: cron(0 4 * * ? *)
 
 resources:
   Resources:
