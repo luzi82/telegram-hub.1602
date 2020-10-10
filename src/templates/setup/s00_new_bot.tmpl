@@ -2,6 +2,7 @@
 <head>
 <title>Step 1/3: Create new bot | Telegram Hub</title>
 <script type="text/javascript" src="{{PUBLIC_STATIC_HTTP_PATH}}/jquery-3.5.1.min.js"></script> 
+<script type="text/javascript" src="{{PUBLIC_STATIC_HTTP_PATH}}/common.js"></script> 
 </head>
 <body>
 <h1>Step 1/3: Create new bot</h1>
@@ -29,17 +30,18 @@
 <p>The new Telegame bot will be used for Telegram user login auth check only.  It will NOT be used for message forwarding.</p>
 <hr/>
 <div style="display:none">
- <form id="form_form" method="POST">
-  <input name="step" type="hidden" value="new_bot" />
-  <input name="token" id="form_token_input" />
- </form>
  <script>
   $(function(){
     $('#submit_btn').click(function(){
       const input_token = $('#token_input').val();
-      console.log(input_token);
-      $('#form_token_input').val(input_token);
-      $('#form_form').submit();
+      // console.log(input_token);
+      post(
+        window.location.href,
+        {
+          'step':'new_bot',
+          'token':input_token,
+        }
+      );
     });
   });
  </script>
