@@ -4,3 +4,4 @@ venv*/
 tmp
 .serverless
 node_modules
+/cache
