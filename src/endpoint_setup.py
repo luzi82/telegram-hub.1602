@@ -26,7 +26,7 @@ def endpoint_setup():
     if flask.request.form['step'] == 'new_bot': return s00_new_bot_submit()
     return fk.e400('UHBYLYQC step unknown')
 
-  if not futsu.storage.is_blob_exist(env.SETUP_AUTH_BOT_TG_DATA_PATH):
+  if not futsu.storage.is_blob_exist(env.SETUP_TG_AUTH_BOT_DATA_PATH):
     return s00_new_bot()
 
   if not futsu.storage.is_blob_exist(env.SETUP_SET_DOMAIN_DONE_PATH):
@@ -38,16 +38,17 @@ def endpoint_setup():
   futsu.storage.bytes_to_path(env.SETUP_DONE_PATH,b'')
   return s99_done()
 
-def s00_new_bot():
+def s00_new_bot(err_msg=None):
   return flask.render_template('setup/s00_new_bot.tmpl',
     PUBLIC_STATIC_HTTP_PATH = env.PUBLIC_STATIC_HTTP_PATH,
+    ERR_MSG = err_msg,
   )
 
 def s00_new_bot_submit():
   if setup_done(): return redirect_index()
 
   # if data bot data already exist, ignore and go back setup
-  if futsu.storage.is_blob_exist(env.SETUP_AUTH_BOT_TG_DATA_PATH):
+  if futsu.storage.is_blob_exist(env.SETUP_TG_AUTH_BOT_DATA_PATH):
     return fk.redirect('/setup')
 
   token = flask.request.form['token']
@@ -63,13 +64,13 @@ def s00_new_bot_submit():
     }
     
     # write bot data
-    futsu.json.data_to_path(env.SETUP_AUTH_BOT_TG_DATA_PATH, setup_auth_bot_tg_data)
+    futsu.json.data_to_path(env.SETUP_TG_AUTH_BOT_DATA_PATH, setup_auth_bot_tg_data)
     
     # redirect setup
     return fk.redirect('/setup')
-  except:
+  except Exception as e:
     traceback.print_exc()
-    return s00_new_bot()
+    return s00_new_bot(err_msg=str(e))
 
 def setup_done():
   return futsu.storage.is_blob_exist(env.SETUP_DONE_PATH)
