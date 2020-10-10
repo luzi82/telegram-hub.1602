@@ -89,16 +89,20 @@ export STAGE=local
 export CONF_PATH=${PROJECT_ROOT_PATH}/stages/local/conf.json
 export PUBLIC_STATIC_PATH=${PROJECT_ROOT_PATH}/public-static
 export PUBLIC_MUTABLE_PATH=${PROJECT_ROOT_PATH}/local-test-tmp/public-mutable
+export PUBLIC_STATIC_HTTP_PATH=http://localhost:8100
+export PUBLIC_MUTABLE_HTTP_PATH=http://localhost:8101
 export PRIVATE_STATIC_PATH=${PROJECT_ROOT_PATH}/private-static
 export PRIVATE_MUTABLE_PATH=${PROJECT_ROOT_PATH}/local-test-tmp/private-mutable
 export DB_TABLE_NAME=tmp_table
 export DYNAMODB_ENDPOINT_URL=http://localhost:8000
 export DYNAMODB_REGION=`cat ${PROJECT_ROOT_PATH}/local-test-tmp/region`
 
+export FLASK_ENV=development
+
 # local run
 cd ${PROJECT_ROOT_PATH}/src
 export FLASK_APP=endpoint.py
-flask run
+flask run --no-reload
 
 cd ${PROJECT_ROOT_PATH}
 deactivate

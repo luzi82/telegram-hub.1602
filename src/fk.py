@@ -20,3 +20,16 @@ def e400(err_msg):
     status = 400,
     mimetype='application/json',
   )
+
+def e500(err_msg):
+  return flask.Response(
+    response = json.dumps({
+      'STATUS':'BAD REQUEST',
+      'ERR_MSG':err_msg,
+    }),
+    status = 400,
+    mimetype='application/json',
+  )
+
+def redirect(location):
+  return flask.redirect(location)

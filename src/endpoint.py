@@ -1,5 +1,6 @@
 import boto3
 import datetime
+import endpoint_setup
 import flask
 import fk
 import futsu.json
@@ -27,6 +28,8 @@ logger.setLevel(logging.INFO)
 configure_telegram = th.configure_telegram
 
 app = flask.Flask(__name__)
+
+endpoint_setup.add_url_rule(app)
 
 @app.route('/')
 def index():

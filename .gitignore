@@ -6,3 +6,4 @@ tmp
 node_modules
 secret.json
 /cache
+/local-test-tmp/

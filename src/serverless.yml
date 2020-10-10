@@ -11,6 +11,8 @@ provider:
     CONF_PATH: s3://${self:resources.Resources.StorageBucket.Properties.BucketName}/private-conf
     PUBLIC_STATIC_PATH:   s3://${self:resources.Resources.StorageBucket.Properties.BucketName}/public-static
     PUBLIC_MUTABLE_PATH:  s3://${self:resources.Resources.StorageBucket.Properties.BucketName}/public-mutable
+    PUBLIC_STATIC_HTTP_PATH:  https://${file(../stages/${opt:stage}/conf.json):STATIC_DOMAIN}
+    PUBLIC_MUTABLE_HTTP_PATH: https://${file(../stages/${opt:stage}/conf.json):MUTABLE_DOMAIN}
     PRIVATE_STATIC_PATH:  s3://${self:resources.Resources.StorageBucket.Properties.BucketName}/private-static
     PRIVATE_MUTABLE_PATH: s3://${self:resources.Resources.StorageBucket.Properties.BucketName}/private-mutable
     DB_TABLE_NAME: ${self:resources.Resources.Db.Properties.TableName}
