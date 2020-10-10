@@ -1,5 +1,5 @@
 {
-    "homepage": "https://github.com/luzi82/codelog.web-template.20200928",
+    "homepage": "https://github.com/luzi82/telegrame-hub.1602",
     "dependencies": {
         "serverless": "^2.6.0",
         "serverless-python-requirements": "^5.1.0",
