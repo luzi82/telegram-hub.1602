@@ -1,20 +1,37 @@
 <html>
 <head>
 <title>Step 2/3: Bot /setdomain | Telegram Hub</title>
+<script type="text/javascript" src="{{PUBLIC_STATIC_HTTP_PATH}}/jquery-3.5.1.min.js"></script> 
 </head>
 <body>
 <h1>Step 2/3: Bot /setdomain</h1>
 <ol>
-<li>Telegram, talk to <a href="https://t.me/botfather">@BotFather</a>.</li>
-<li>
-<p>You:<br/><code style="color:green">/setdomain</code></p>
-<p>BotFather:<br/><span style="color:gray">Choose a bot to set or change its linked domain...</span></p>
-<p>You:<br/><code style="color:green">@{{AUTH_TELEGRAM_BOT_ID}}</code></p>
-<p>BotFather:<br/><span style="color:gray">Link your website with your bot to use the Telegram Login Widget...</span></p>
-<p>You:<br/><code style="color:green">{{COMPUTE_DOMAIN}}</code></p>
-<p>BotFather:<br/><span style="color:gray">Success! Domain updated...</span></p>
-</li>
-<li><button>Next step</button></li>
+ <li>Telegram, talk to <a href="https://t.me/botfather">@BotFather</a>.</li>
+ <li>
+  <p>You:<br/><code style="color:green">/setdomain</code></p>
+  <p>BotFather:<br/><span style="color:gray">Choose a bot to set or change its linked domain...</span></p>
+  <p>You:<br/><code style="color:green">@{{TG_AUTH_BOT_USER_USERNAME}}</code></p>
+  <p>BotFather:<br/><span style="color:gray">Link your website with your bot to use the Telegram Login Widget...</span></p>
+  <p>You:<br/><code style="color:green">{{HOST}}</code></p>
+  <p>BotFather:<br/><span style="color:gray">Success! Domain updated...</span></p>
+ </li>
+ <li><button>Next step</button></li>
 </ol>
+<hr/>
+<ul>
+ <li><a id="new_bot_clean_btn" href="#">Step 1/3: Create new bot</a></li>
+</ul>
+<div style="display:none">
+ <form id="new_bot_clean_form" method="POST">
+  <input name="step" type="hidden" value="new_bot_clean" />
+ </form>
+ <script>
+  $(function(){
+    $('#new_bot_clean_btn').click(function(){
+      $('#new_bot_clean_form').submit();
+    });
+  });
+ </script>
+</div>
 </body>
 </html>

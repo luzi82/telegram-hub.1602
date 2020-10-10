@@ -24,6 +24,7 @@ def endpoint_setup():
 
   if flask.request.method == 'POST':
     if flask.request.form['step'] == 'new_bot': return s00_new_bot_submit()
+    if flask.request.form['step'] == 'new_bot_clean': return s00_new_bot_clean()
     return fk.e400('UHBYLYQC step unknown')
 
   if not futsu.storage.is_blob_exist(env.SETUP_TG_AUTH_BOT_DATA_PATH):
@@ -57,20 +58,32 @@ def s00_new_bot_submit():
     # get bot data
     bot = telegram.Bot(token)
     bot_user = bot.get_me()
-    setup_auth_bot_tg_data = {
-      'token': token,
-      'user_id': bot_user.id,
-      'username': bot_user.username,
+    setup_tg_auth_bot_data = {
+      'USER_TOKEN': token,
+      'USER_ID': bot_user.id,
+      'USER_USERNAME': bot_user.username,
     }
     
     # write bot data
-    futsu.json.data_to_path(env.SETUP_TG_AUTH_BOT_DATA_PATH, setup_auth_bot_tg_data)
+    futsu.json.data_to_path(env.SETUP_TG_AUTH_BOT_DATA_PATH, setup_tg_auth_bot_data)
     
     # redirect setup
     return fk.redirect('/setup')
   except Exception as e:
     traceback.print_exc()
     return s00_new_bot(err_msg=str(e))
+
+def s00_new_bot_clean():
+  futsu.storage.rm(env.SETUP_TG_AUTH_BOT_DATA_PATH)
+  return fk.redirect('/setup')
+
+def s01_bot_set_domain():
+  setup_tg_auth_bot_data = futsu.json.path_to_data(env.SETUP_TG_AUTH_BOT_DATA_PATH)
+  return flask.render_template('setup/s01_bot_set_domain.tmpl',
+    PUBLIC_STATIC_HTTP_PATH = env.PUBLIC_STATIC_HTTP_PATH,
+    TG_AUTH_BOT_USER_USERNAME = setup_tg_auth_bot_data['USER_USERNAME'],
+    HOST = flask.request.host,
+  )
 
 def setup_done():
   return futsu.storage.is_blob_exist(env.SETUP_DONE_PATH)
