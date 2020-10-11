@@ -97,6 +97,7 @@ def s01_bot_set_domain_clean():
 
 
 def s02_th_owner_login():
+  setup_tg_auth_bot_data = futsu.json.path_to_data(env.SETUP_TG_AUTH_BOT_DATA_PATH)
   return flask.render_template('setup/s02_th_owner_login.tmpl',
     PUBLIC_STATIC_HTTP_PATH = env.PUBLIC_STATIC_HTTP_PATH,
     TG_AUTH_BOT_USER_USERNAME = setup_tg_auth_bot_data['USER_USERNAME'],

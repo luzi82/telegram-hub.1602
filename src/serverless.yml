@@ -271,7 +271,7 @@ resources:
       Properties:
         TableName: ${self:service}-${opt:stage}-table
         AttributeDefinitions:
-        - AttributeName: Key0
+        - AttributeName: UserRole
           AttributeType: S
         - AttributeName: HashKey
           AttributeType: S
@@ -283,14 +283,12 @@ resources:
         - AttributeName: SortKey
           KeyType: 'RANGE'
         GlobalSecondaryIndexes:
-        - IndexName: Index0
+        - IndexName: IndexUserRole
           KeySchema:
-          - AttributeName: Key0
+          - AttributeName: UserRole
             KeyType: 'HASH'
           Projection:
-            NonKeyAttributes:
-            - "HashKey"
-            ProjectionType: "INCLUDE"
+            ProjectionType: "KEYS_ONLY"
         BillingMode: PAY_PER_REQUEST
 
 custom:
