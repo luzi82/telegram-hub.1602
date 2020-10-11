@@ -20,7 +20,7 @@ def add_url_rule(app):
 
 def endpoint_setup():
   logger.info(f'KHSFBKKL endpoint_setup')
-  if setup_done(): return redirect_index()
+  if is_setup_done(): return redirect_index()
 
   if flask.request.method == 'POST':
     step = flask.request.form['step']
@@ -113,7 +113,7 @@ def s02_th_owner_login_telegram_auth_bypass():
   db.set_user_role(conf_data['TELEGRAM_AUTH_BYPASS_USER_ID'], 'OWNER')
   return fk.redirect('/setup')
 
-def setup_done():
+def is_setup_done():
   return futsu.storage.is_blob_exist(env.SETUP_DONE_PATH)
 
 def redirect_index():
