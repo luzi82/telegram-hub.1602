@@ -1,11 +1,9 @@
-<html>
-<head>
-</head>
-<body>
-<h1>Bad role</h1>
+{% extends "zzz_base.tmpl" %}
+
+{% block title %}Bad role{% endblock %}
+
+{% block body %}
 <p>This page require role:</p>
 <p>You are {{USER_ROLE}}.
 <p>You shall not pass.</p>
-{% include 'footer.tmpl' %}
-</body>
-</html>
+{% endblock %}

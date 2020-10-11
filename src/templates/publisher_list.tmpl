@@ -1,11 +1,12 @@
-<html>
-<head>
-<title>Publisher list | Telegram Hub</title>
-<script type="text/javascript" src="{{PUBLIC_STATIC_HTTP_PATH}}/jquery-3.5.1.min.js"></script> 
-<script type="text/javascript" src="{{PUBLIC_STATIC_HTTP_PATH}}/common.js"></script> 
-</head>
-<body>
-<h1>Publisher list</h1>
-{% include 'footer.tmpl' %}
-</body>
-</html>
+{% extends "zzz_base.tmpl" %}
+
+{% block title %}Publisher list{% endblock %}
+
+{% block body %}
+  <ul>
+    <li><a href="/publishers.new">Create new publisher</a></li>
+    {% for PUBLISHER in PUBLISHER_LIST %}
+      <li><a href="/hubs/{{PUBLISHER.id}}">{{PUBLISHER.id}}</a></li>
+    {% endfor %}
+  </ul>
+{% endblock %}

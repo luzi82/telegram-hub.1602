@@ -1,17 +1,12 @@
-<html>
-<head>
-<title>Hub list | Telegram Hub</title>
-<script type="text/javascript" src="{{PUBLIC_STATIC_HTTP_PATH}}/jquery-3.5.1.min.js"></script> 
-<script type="text/javascript" src="{{PUBLIC_STATIC_HTTP_PATH}}/common.js"></script> 
-</head>
-<body>
-<h1>Hub list</h1>
-<ul>
- <li><a href="/hub_new">Create new hub</a></li>
- {% for HUB in HUB_LIST %}
-  <li><a href="/hubs/{{HUB.id}}">{{HUB.id}}</a></li>
- {% endfor %}
-</ul>
-{% include 'zzz_footer.tmpl' %}
-</body>
-</html>
+{% extends "zzz_base.tmpl" %}
+
+{% block title %}Hub list{% endblock %}
+
+{% block body %}
+  <ul>
+    <li><a href="/hubs.new">Create new hub</a></li>
+    {% for HUB in HUB_LIST %}
+      <li><a href="/hubs/{{HUB.id}}">{{HUB.id}}</a></li>
+    {% endfor %}
+  </ul>
+{% endblock %}
