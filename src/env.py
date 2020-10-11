@@ -36,7 +36,7 @@ def get_conf_data():
 
 @functools.lru_cache(maxsize=1)
 def get_setup_tg_auth_bot_data():
-  return futsu.json.path_to_data(env.SETUP_TG_AUTH_BOT_DATA_PATH)
+  return futsu.json.path_to_data(SETUP_TG_AUTH_BOT_DATA_PATH)
 
 def get_telegram_bot():
   import telegram

@@ -6,17 +6,15 @@ import futsu.json
 import futsu.storage
 import logging
 import telegram
+import tg
 import traceback
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 def add_url_rule(app):
-  #def i(a,b):
-  #  app.add_url_rule(a, b, locals()[b])
-  #i('/setup', 'endpoint_setup')
-  #i('/setup/new_bot_done', 'endpoint_s00_new_bot_done')
   app.add_url_rule('/setup', 'endpoint_setup', endpoint_setup,  methods=['GET','POST'])
+  app.add_url_rule('/setup/telegram-auth-callback', 'endpoint_setup_telegram_auth_callback', endpoint_setup_telegram_auth_callback,  methods=['GET','POST'])
 
 def endpoint_setup():
   logger.info(f'KHSFBKKL endpoint_setup')
@@ -42,6 +40,11 @@ def endpoint_setup():
 
   futsu.storage.bytes_to_path(env.SETUP_DONE_PATH,b'')
   return s99_done()
+
+def endpoint_setup_telegram_auth_callback():
+  logger.info(f'YBWLYHDB endpoint_setup_telegram_auth_callback')
+  if is_setup_done(): return redirect_index()
+  return s02_th_owner_login_telegram_auth_callback()
 
 def s00_new_bot(err_msg=None):
   return flask.render_template('setup/s00_new_bot.tmpl',
@@ -97,7 +100,7 @@ def s01_bot_set_domain_clean():
   return fk.redirect('/setup')
 
 
-def s02_th_owner_login():
+def s02_th_owner_login(err_msg=None):
   conf_data = env.get_conf_data()
   setup_tg_auth_bot_data = futsu.json.path_to_data(env.SETUP_TG_AUTH_BOT_DATA_PATH)
   return flask.render_template('setup/s02_th_owner_login.tmpl',
@@ -105,12 +108,20 @@ def s02_th_owner_login():
     TG_AUTH_BOT_USER_USERNAME = setup_tg_auth_bot_data['USER_USERNAME'],
     HOST = flask.request.host,
     TELEGRAM_AUTH_BYPASS_USER_ID = conf_data['TELEGRAM_AUTH_BYPASS_USER_ID'],
+    ERR_MSG = err_msg,
   )
 
 def s02_th_owner_login_telegram_auth_bypass():
   conf_data = env.get_conf_data()
   if not conf_data['TELEGRAM_AUTH_BYPASS_USER_ID']: fk.e400('CAYIGVGS bad TELEGRAM_AUTH_BYPASS_USER_ID')
   db.set_user_role(conf_data['TELEGRAM_AUTH_BYPASS_USER_ID'], 'OWNER')
+  return fk.redirect('/setup')
+
+def s02_th_owner_login_telegram_auth_callback():
+  check_ret = tg.check_telegram_auth_callback()
+  if check_ret != 'OK': return s02_th_owner_login(check_ret)
+  tguser_id = flask.request.args.get('id')
+  db.set_user_role(tguser_id, 'OWNER')
   return fk.redirect('/setup')
 
 

@@ -1,5 +1,3 @@
 {
-  "AWS_REGION": "us-east-1",
-  
-  "TELEGRAM_AUTH_BYPASS_ENABLE": true
+  "AWS_REGION": "us-east-1"
 }

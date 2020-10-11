@@ -43,6 +43,7 @@ provider:
     Action:
     - s3:GetObject
     - s3:PutObject
+    - s3:DeleteObject
     Resource:
     - Fn::Join:
       - ''
@@ -74,9 +75,15 @@ provider:
     - dynamodb:Scan
     - dynamodb:UpdateItem
     Resource:
-      Fn::GetAtt:
+    - Fn::GetAtt:
       - Db
       - Arn
+    - Fn::Join:
+      - ''
+      - - Fn::GetAtt:
+          - Db
+          - Arn
+        - '/index/*'
 
 functions:
   endpoint:

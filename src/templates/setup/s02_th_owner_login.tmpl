@@ -6,6 +6,9 @@
 </head>
 <body>
 <h1>Step 3/3: Telegram hub owner login</h1>
+{% if ERR_MSG %}
+ <p style="color:red">Error: {{ERR_MSG}}</p>
+{% endif %}
 <p>Login with your Telegram Account.</p>
 <p>The Telegram account will become owner.</p>
 {% if TELEGRAM_AUTH_BYPASS_USER_ID %}
@@ -15,7 +18,7 @@
 src="https://telegram.org/js/telegram-widget.js?11"
 data-telegram-login="{{TG_AUTH_BOT_USER_USERNAME}}"
 data-size="large"
-data-auth-url="https://{{HOST}}/install/telegram-auth-callback/"
+data-auth-url="https://{{HOST}}/setup/telegram-auth-callback"
 data-request-access="write"></script>
 <p>More Telegram Account can be added as owner after setup.</p>
 <hr/>
