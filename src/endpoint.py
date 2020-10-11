@@ -140,4 +140,5 @@ def get_setwebhook():
 def context_processor():
     return {
       'current_user': flask_login.current_user,
+      'env': env,
     }
