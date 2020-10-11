@@ -113,6 +113,11 @@ def s02_th_owner_login_telegram_auth_bypass():
   db.set_user_role(conf_data['TELEGRAM_AUTH_BYPASS_USER_ID'], 'OWNER')
   return fk.redirect('/setup')
 
+
+def s99_done():
+  return flask.render_template('setup/s99_done.tmpl')
+
+
 def is_setup_done():
   return futsu.storage.is_blob_exist(env.SETUP_DONE_PATH)
 
