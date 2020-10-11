@@ -40,7 +40,7 @@ def get_hub_list_from_user(user_tuid):
   table = get_table()
   query_ret = table.query(
     IndexName='IndexSearch0',
-    KeyConditionExpression=boto3.dynamodb.conditions.Key('Search0').eq(user_tuid),
+    KeyConditionExpression=boto3.dynamodb.conditions.Key('Search0').eq(f'HUB:{user_tuid}'),
   )
   return query_ret['Items']
 
