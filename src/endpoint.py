@@ -134,3 +134,10 @@ def get_setwebhook():
         return fk.r200({'set_webhook_result':set_webhook_result})
 
     return fk.e500({'set_webhook_result':set_webhook_result})
+
+
+@app.context_processor
+def context_processor():
+    return {
+      'current_user': flask_login.current_user,
+    }
