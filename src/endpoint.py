@@ -1,6 +1,7 @@
 import boto3
 import datetime
 import endpoint_auth
+import endpoint_hub
 import endpoint_setup
 import env
 import flask
@@ -39,6 +40,8 @@ login_manager.init_app(app)
 endpoint_auth.init_login_manager(login_manager)
 endpoint_auth.add_url_rule(app)
 
+endpoint_hub.add_url_rule(app)
+
 endpoint_setup.add_url_rule(app)
 
 @app.route('/')
@@ -56,12 +59,8 @@ def index():
     job0_timestamp_path = futsu.storage.join(PRIVATE_MUTABLE_PATH,'job0_timestamp')
     job0_ts = futsu.storage.path_to_bytes(job0_timestamp_path).decode('utf-8') if futsu.storage.is_blob_exist(job0_timestamp_path) else -1
 
-    return flask.render_template('index.tmpl',
-        STAGE=STAGE,
-        PRIVATE_TXT=private_txt,
-        LAST_TS=last_ts,
-        NOW_TS=now_ts,
-        JOB0_TS=job0_ts,
+    return flask.render_template('home.tmpl',
+        PUBLIC_STATIC_HTTP_PATH = env.PUBLIC_STATIC_HTTP_PATH,
     )
 
 @app.route('/compute_domain')

@@ -22,6 +22,14 @@ def set_user_role(telegram_user_id, role):
     ExpressionAttributeValues={':user_role':role,':telegram_user_id':telegram_user_id},
   )
 
+def get_hub_list(telegram_user_id):
+  table = get_table()
+  query_ret = table.query(
+    IndexName='IndexHubOwnerTelegramUserId',
+    KeyConditionExpression=boto3.dynamodb.conditions.Key('HubOwnerTelegramUserId').eq(telegram_user_id),
+  )
+  return query_ret['Items']
+
 ####################
 
 def get_table():

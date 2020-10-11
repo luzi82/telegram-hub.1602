@@ -280,6 +280,8 @@ resources:
         AttributeDefinitions:
         - AttributeName: UserRole
           AttributeType: S
+        - AttributeName: HubOwnerTelegramUserId
+          AttributeType: S
         - AttributeName: HashKey
           AttributeType: S
         - AttributeName: SortKey
@@ -293,6 +295,12 @@ resources:
         - IndexName: IndexUserRole
           KeySchema:
           - AttributeName: UserRole
+            KeyType: 'HASH'
+          Projection:
+            ProjectionType: "KEYS_ONLY"
+        - IndexName: IndexHubOwnerTelegramUserId
+          KeySchema:
+          - AttributeName: HubOwnerTelegramUserId
             KeyType: 'HASH'
           Projection:
             ProjectionType: "KEYS_ONLY"

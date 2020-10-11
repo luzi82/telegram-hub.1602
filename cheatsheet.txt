@@ -1,0 +1,28 @@
+flask run --no-reload
+
+###########
+
+cd ${PROJECT_ROOT_PATH}
+rm -rf ${PROJECT_ROOT_PATH}/local-test-tmp/private-mutable/v1602327422/SETUP/DONE
+
+cd ${PROJECT_ROOT_PATH}
+jq -r  .AWS_REGION stages/local/conf.json | tr -d '\n' > local-test-tmp/region
+yq -cM .resources.Resources.Db.Properties.AttributeDefinitions   src/serverless.yml | tr -d '\n' > local-test-tmp/db.AttributeDefinitions
+yq -cM .resources.Resources.Db.Properties.KeySchema              src/serverless.yml | tr -d '\n' > local-test-tmp/db.KeySchema
+yq -cM .resources.Resources.Db.Properties.GlobalSecondaryIndexes src/serverless.yml | tr -d '\n' > local-test-tmp/db.GlobalSecondaryIndexes
+yq -r  .resources.Resources.Db.Properties.BillingMode            src/serverless.yml | tr -d '\n' > local-test-tmp/db.BillingMode
+
+# update table
+cd ${PROJECT_ROOT_PATH}
+aws dynamodb delete-table \
+    --table-name tmp_table \
+    --endpoint-url http://localhost:8000 \
+    --region `cat local-test-tmp/region` || true
+aws dynamodb create-table \
+    --table-name tmp_table \
+    --attribute-definitions file://local-test-tmp/db.AttributeDefinitions \
+    --key-schema file://local-test-tmp/db.KeySchema \
+    --global-secondary-indexes file://local-test-tmp/db.GlobalSecondaryIndexes \
+    --billing-mode file://local-test-tmp/db.BillingMode \
+    --endpoint-url http://localhost:8000 \
+    --region `cat local-test-tmp/region`
