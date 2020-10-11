@@ -278,9 +278,21 @@ resources:
       Properties:
         TableName: ${self:service}-${opt:stage}-table
         AttributeDefinitions:
-        - AttributeName: UserRole
+        - AttributeName: Search0
           AttributeType: S
-        - AttributeName: HubOwnerTelegramUserId
+        - AttributeName: Search1
+          AttributeType: S
+        - AttributeName: Search2
+          AttributeType: S
+        - AttributeName: Search3
+          AttributeType: S
+        - AttributeName: Search4
+          AttributeType: S
+        - AttributeName: Search5
+          AttributeType: S
+        - AttributeName: Search6
+          AttributeType: S
+        - AttributeName: Search7
           AttributeType: S
         - AttributeName: HashKey
           AttributeType: S
@@ -292,15 +304,51 @@ resources:
         - AttributeName: SortKey
           KeyType: 'RANGE'
         GlobalSecondaryIndexes:
-        - IndexName: IndexUserRole
+        - IndexName: IndexSearch0
           KeySchema:
-          - AttributeName: UserRole
+          - AttributeName: Search0
             KeyType: 'HASH'
           Projection:
             ProjectionType: "KEYS_ONLY"
-        - IndexName: IndexHubOwnerTelegramUserId
+        - IndexName: IndexSearch1
           KeySchema:
-          - AttributeName: HubOwnerTelegramUserId
+          - AttributeName: Search1
+            KeyType: 'HASH'
+          Projection:
+            ProjectionType: "KEYS_ONLY"
+        - IndexName: IndexSearch2
+          KeySchema:
+          - AttributeName: Search2
+            KeyType: 'HASH'
+          Projection:
+            ProjectionType: "KEYS_ONLY"
+        - IndexName: IndexSearch3
+          KeySchema:
+          - AttributeName: Search3
+            KeyType: 'HASH'
+          Projection:
+            ProjectionType: "KEYS_ONLY"
+        - IndexName: IndexSearch4
+          KeySchema:
+          - AttributeName: Search4
+            KeyType: 'HASH'
+          Projection:
+            ProjectionType: "KEYS_ONLY"
+        - IndexName: IndexSearch5
+          KeySchema:
+          - AttributeName: Search5
+            KeyType: 'HASH'
+          Projection:
+            ProjectionType: "KEYS_ONLY"
+        - IndexName: IndexSearch6
+          KeySchema:
+          - AttributeName: Search6
+            KeyType: 'HASH'
+          Projection:
+            ProjectionType: "KEYS_ONLY"
+        - IndexName: IndexSearch7
+          KeySchema:
+          - AttributeName: Search7
             KeyType: 'HASH'
           Projection:
             ProjectionType: "KEYS_ONLY"
