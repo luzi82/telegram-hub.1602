@@ -45,28 +45,12 @@ def index():
     job0_timestamp_path = futsu.storage.join(PRIVATE_MUTABLE_PATH,'job0_timestamp')
     job0_ts = futsu.storage.path_to_bytes(job0_timestamp_path).decode('utf-8') if futsu.storage.is_blob_exist(job0_timestamp_path) else -1
 
-    dynamodb = boto3.resource('dynamodb', endpoint_url=DYNAMODB_ENDPOINT_URL, region_name=DYNAMODB_REGION)
-    table = dynamodb.Table(DB_TABLE_NAME)
-    query_ret = table.query(
-      KeyConditionExpression=boto3.dynamodb.conditions.Key('HashKey').eq('rand_txt'),
-      Limit=1,
-    )
-    now_rand = str(random.randrange(100))
-    last_rand = query_ret['Items'][0]['Valuee'] if len(query_ret['Items'])>0 else ''
-    table.update_item(
-      Key={'HashKey':'rand_txt','SortKey':0},
-      UpdateExpression='SET Valuee = :v',
-      ExpressionAttributeValues={':v':now_rand},
-    )
-
     return flask.render_template('index.tmpl',
         STAGE=STAGE,
         PRIVATE_TXT=private_txt,
         LAST_TS=last_ts,
         NOW_TS=now_ts,
         JOB0_TS=job0_ts,
-        LAST_RAND=last_rand,
-        NOW_RAND=now_rand,
     )
 
 @app.route('/compute_domain')
