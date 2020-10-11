@@ -276,7 +276,7 @@ resources:
         - AttributeName: HashKey
           AttributeType: S
         - AttributeName: SortKey
-          AttributeType: N
+          AttributeType: S
         KeySchema:
         - AttributeName: HashKey
           KeyType: 'HASH'

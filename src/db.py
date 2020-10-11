@@ -11,6 +11,18 @@ def owner_exist():
   count = query_ret['Count']
   return count > 0
 
+def set_user_role(telegram_user_id, role):
+  table = get_table()
+  table.update_item(
+    Key={
+      'HashKey':f'USER {telegram_user_id}',
+      'SortKey':'-',
+    },
+    UpdateExpression='SET UserRole=:user_role,TelegramUserId=:telegram_user_id',
+    ExpressionAttributeValues={':user_role':role,':telegram_user_id':telegram_user_id},
+  )
+
+####################
 
 def get_table():
   dynamodb = boto3.resource(

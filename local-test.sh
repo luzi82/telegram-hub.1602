@@ -90,7 +90,7 @@ echo $! > local-test-tmp/private-static.pid
 
 # environ
 export STAGE=local
-export CONF_PATH=${PROJECT_ROOT_PATH}/stages/local/conf.json
+export CONF_PATH=${PROJECT_ROOT_PATH}/stages/local/
 export PUBLIC_STATIC_PATH=${PROJECT_ROOT_PATH}/public-static
 export PUBLIC_MUTABLE_PATH=${PROJECT_ROOT_PATH}/local-test-tmp/public-mutable
 export PUBLIC_STATIC_HTTP_PATH=http://localhost:8100

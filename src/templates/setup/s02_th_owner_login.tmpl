@@ -8,6 +8,9 @@
 <h1>Step 3/3: Telegram hub owner login</h1>
 <p>Login with your Telegram Account.</p>
 <p>The Telegram account will become owner.</p>
+{% if TELEGRAM_AUTH_BYPASS_USER_ID %}
+<p><button id="telegram_auth_bypass">TELEGRAM_AUTH_BYPASS</button></p>
+{% endif %}
 <script async
 src="https://telegram.org/js/telegram-widget.js?11"
 data-telegram-login="{{TG_AUTH_BOT_USER_USERNAME}}"
@@ -37,6 +40,13 @@ data-request-access="write"></script>
     });
   });
  </script>
+{% if TELEGRAM_AUTH_BYPASS_USER_ID %}
+ <script>$(function(){
+  $('#telegram_auth_bypass').click(function(){
+    post(window.location.href,{'step':'th_owner_login_telegram_auth_bypass'});
+  });
+ });</script>
+{% endif %}
 </div>
 </body>
 </html>

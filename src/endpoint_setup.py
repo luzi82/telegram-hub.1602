@@ -28,6 +28,7 @@ def endpoint_setup():
     if step == 'new_bot_clean': return s00_new_bot_clean()
     if step == 'bot_set_domain': return s01_bot_set_domain_submit()
     if step == 'bot_set_domain_clean': return s01_bot_set_domain_clean()
+    if step == 'th_owner_login_telegram_auth_bypass': return s02_th_owner_login_telegram_auth_bypass()
     return fk.e400('UHBYLYQC step unknown')
 
   if not futsu.storage.is_blob_exist(env.SETUP_TG_AUTH_BOT_DATA_PATH):
@@ -66,7 +67,7 @@ def s00_new_bot_submit():
     }
     
     # write bot data
-    futsu.json.bytes_to_path(env.SETUP_TG_AUTH_BOT_DATA_PATH, setup_tg_auth_bot_data)
+    futsu.json.data_to_path(env.SETUP_TG_AUTH_BOT_DATA_PATH, setup_tg_auth_bot_data)
     
     # redirect setup
     return fk.redirect('/setup')
@@ -97,13 +98,20 @@ def s01_bot_set_domain_clean():
 
 
 def s02_th_owner_login():
+  conf_data = env.get_conf_data()
   setup_tg_auth_bot_data = futsu.json.path_to_data(env.SETUP_TG_AUTH_BOT_DATA_PATH)
   return flask.render_template('setup/s02_th_owner_login.tmpl',
     PUBLIC_STATIC_HTTP_PATH = env.PUBLIC_STATIC_HTTP_PATH,
     TG_AUTH_BOT_USER_USERNAME = setup_tg_auth_bot_data['USER_USERNAME'],
     HOST = flask.request.host,
+    TELEGRAM_AUTH_BYPASS_USER_ID = conf_data['TELEGRAM_AUTH_BYPASS_USER_ID'],
   )
 
+def s02_th_owner_login_telegram_auth_bypass():
+  conf_data = env.get_conf_data()
+  if not conf_data['TELEGRAM_AUTH_BYPASS_USER_ID']: fk.e400('CAYIGVGS bad TELEGRAM_AUTH_BYPASS_USER_ID')
+  db.set_user_role(conf_data['TELEGRAM_AUTH_BYPASS_USER_ID'], 'OWNER')
+  return fk.redirect('/setup')
 
 def setup_done():
   return futsu.storage.is_blob_exist(env.SETUP_DONE_PATH)
