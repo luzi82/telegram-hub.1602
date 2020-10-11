@@ -1,0 +1,31 @@
+<html>
+<head>
+<title>Login | Telegram Hub</title>
+<script type="text/javascript" src="{{PUBLIC_STATIC_HTTP_PATH}}/jquery-3.5.1.min.js"></script> 
+<script type="text/javascript" src="{{PUBLIC_STATIC_HTTP_PATH}}/common.js"></script> 
+</head>
+<body>
+<h1>Login</h1>
+{% if ERR_MSG %}
+ <p style="color:red">Error: {{ERR_MSG}}</p>
+{% endif %}
+{% if TELEGRAM_AUTH_BYPASS_USER_ID %}
+<p><button id="telegram_auth_bypass">TELEGRAM_AUTH_BYPASS</button></p>
+{% endif %}
+<script async
+src="https://telegram.org/js/telegram-widget.js?11"
+data-telegram-login="{{TG_AUTH_BOT_USER_USERNAME}}"
+data-size="large"
+data-auth-url="https://{{HOST}}/login/telegram-auth-callback"
+data-request-access="write"></script>
+<div style="display:none">
+{% if TELEGRAM_AUTH_BYPASS_USER_ID %}
+ <script>$(function(){
+  $('#telegram_auth_bypass').click(function(){
+    post("/login/telegram-auth-bypass",{});
+  });
+ });</script>
+{% endif %}
+</div>
+</body>
+</html>

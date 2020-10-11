@@ -114,7 +114,7 @@ def s02_th_owner_login(err_msg=None):
 def s02_th_owner_login_telegram_auth_bypass():
   conf_data = env.get_conf_data()
   if not conf_data['TELEGRAM_AUTH_BYPASS_USER_ID']: fk.e400('CAYIGVGS bad TELEGRAM_AUTH_BYPASS_USER_ID')
-  db.set_user_role(conf_data['TELEGRAM_AUTH_BYPASS_USER_ID'], 'OWNER')
+  db.set_user_role(str(conf_data['TELEGRAM_AUTH_BYPASS_USER_ID']), 'OWNER')
   return fk.redirect('/setup')
 
 def s02_th_owner_login_telegram_auth_callback():

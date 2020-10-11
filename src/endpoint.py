@@ -1,7 +1,10 @@
 import boto3
 import datetime
+import endpoint_auth
 import endpoint_setup
+import env
 import flask
+import flask_login
 import fk
 import futsu.json
 import futsu.storage
@@ -28,10 +31,18 @@ logger.setLevel(logging.INFO)
 configure_telegram = th.configure_telegram
 
 app = flask.Flask(__name__)
+app.secret_key = env.get_conf_data()['FLASK_SECRET'].encode('utf-8')
+
+login_manager = flask_login.LoginManager()
+login_manager.init_app(app)
+
+endpoint_auth.init_login_manager(login_manager)
+endpoint_auth.add_url_rule(app)
 
 endpoint_setup.add_url_rule(app)
 
 @app.route('/')
+@flask_login.login_required
 def index():
     now_ts = int(datetime.datetime.now().timestamp())
 

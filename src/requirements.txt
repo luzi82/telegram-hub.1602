@@ -1,4 +1,5 @@
 Flask
 boto3
+flask-login
 futsu
 python-telegram-bot
