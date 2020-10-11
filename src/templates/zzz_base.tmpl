@@ -8,7 +8,12 @@
 <h1>{{ self.title() }}</h1>
 {% block body %}{% endblock %}
 <hr/>
-<p><a href="/logout">Logout</a></p>
-<p><code>USER_ID={{current_user.id}}</code></p>
+{% if current_user.is_authenticated %}
+ <p><a href="/logout">Logout</a> <code>USER_ID={{current_user.id}}</code></p>
+{% endif %}
+{% block footer %}{% endblock %}
+<div style="display:none"><script>
+{% block script %}{% endblock %}
+</script></div>
 </body>
 </html>

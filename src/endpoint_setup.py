@@ -80,6 +80,7 @@ def s00_new_bot_submit():
 
 def s00_new_bot_clean():
   futsu.storage.rm(env.SETUP_TG_AUTH_BOT_DATA_PATH)
+  futsu.storage.rm(env.SETUP_SET_DOMAIN_DONE_PATH)
   return fk.redirect('/setup')
 
 

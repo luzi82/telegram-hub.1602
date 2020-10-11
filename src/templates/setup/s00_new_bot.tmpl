@@ -1,50 +1,44 @@
-<html>
-<head>
-<title>Step 1/3: Create new bot | Telegram Hub</title>
-<script type="text/javascript" src="{{PUBLIC_STATIC_HTTP_PATH}}/jquery-3.5.1.min.js"></script> 
-<script type="text/javascript" src="{{PUBLIC_STATIC_HTTP_PATH}}/common.js"></script> 
-</head>
-<body>
-<h1>Step 1/3: Create new bot</h1>
-{% if ERR_MSG %}
- <p style="color:red">Error: {{ERR_MSG}}</p>
-{% endif %}
-<ol>
- <li><p>Telegram, talk to <a href="https://t.me/botfather">@BotFather</a>.</p></li>
- <li>
-  <p>You:<br/><code style="color:green">/newbot</code></p>
-  <p>BotFather:<br/><span style="color:gray">Alright, a new bot. How are we going to call it? Please choose a name for your bot.</span></p>
-  <p>You:<br/><code style="color:green">[New Bot Name]</code></p>
-  <p>BotFather:<br/><span style="color:gray">Good. Now let's choose a username for your bot. It must end in `bot`. Like this, for example: TetrisBot or tetris_bot.</span></p>
-  <p>You:<br/><code style="color:green">[new_bot_user_name_end_with_bot]</code></p>
-  <p>BotFather:<br/><span style="color:gray">Done! Congratulations on your new bot. You will find it at ...<br/><br/>
-  Use this token to access the HTTP API:<br/>
-  <code style="color:red">[XXXXXXXXXX:XXX-PUT-ME-IN-NEXT-STEP-XXXXXXXXXXX]</code><br/>
-  Keep your token secure and store it safely, it can be used by anyone to control your bot.<br/><br/>
-  ...</span>
-  </p>
- </li>
- <li><p style="color:red">Token: <input id="token_input"/></p></li>
- <li><button id="submit_btn">Submit</button></li>
-</ol>
-<p>The new Telegame bot will be used for Telegram user login auth check only.  It will NOT be used for message forwarding.</p>
-<hr/>
-<div style="display:none">
- <script>
+{% extends "zzz_base.tmpl" %}
+
+{% block title %}Step 1/3: Create new bot{% endblock %}
+
+{% block body %}
+  {% if ERR_MSG %}
+    <p style="color:red">Error: {{ERR_MSG}}</p>
+  {% endif %}
+  <ol>
+    <li><p>Telegram, talk to <a href="https://t.me/botfather">@BotFather</a>.</p></li>
+    <li>
+      <p>You:<br/><code style="color:green">/newbot</code></p>
+      <p>BotFather:<br/><span style="color:gray">Alright, a new bot. How are we going to call it? Please choose a name for your bot.</span></p>
+      <p>You:<br/><code style="color:green">[New Bot Name]</code></p>
+      <p>BotFather:<br/><span style="color:gray">Good. Now let's choose a username for your bot. It must end in `bot`. Like this, for example: TetrisBot or tetris_bot.</span></p>
+      <p>You:<br/><code style="color:green">[new_bot_user_name_end_with_bot]</code></p>
+      <p>
+        BotFather:<br/>
+        <span style="color:gray">
+          Done! Congratulations on your new bot. You will find it at ...<br/><br/>
+          Use this token to access the HTTP API:<br/>
+          <code style="color:red">[XXXXXXXXXX:XXX-PUT-ME-IN-NEXT-STEP-XXXXXXXXXXX]</code><br/>
+          Keep your token secure and store it safely, it can be used by anyone to control your bot.<br/><br/>
+          ...
+        </span>
+      </p>
+    </li>
+    <li><p style="color:red">Token: <input id="token_input"/></p></li>
+    <li><button id="submit_btn">Submit</button></li>
+  </ol>
+  <p>The new Telegame bot will be used for Telegram user login auth check only.  It will NOT be used for message forwarding.</p>
+{% endblock %}
+
+{% block script %}
   $(function(){
     $('#submit_btn').click(function(){
       const input_token = $('#token_input').val();
-      // console.log(input_token);
       post(
         window.location.href,
-        {
-          'step':'new_bot',
-          'token':input_token,
-        }
+        {'step':'new_bot','token':input_token,}
       );
     });
   });
- </script>
-</div>
-</body>
-</html>
+{% endblock %}
