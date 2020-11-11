@@ -119,6 +119,11 @@ resources:
               DaysAfterInitiation: 1
             NoncurrentVersionExpirationInDays: 1
             Status: Enabled
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: true
+          BlockPublicPolicy: true
+          IgnorePublicAcls: true
+          RestrictPublicBuckets: true
       DeletionPolicy: Retain
     PublicCloudfrontOAI:
       Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
