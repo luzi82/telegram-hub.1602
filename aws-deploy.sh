@@ -4,6 +4,8 @@ set -e
 
 MY_PATH=${PWD}
 
+if [ -z ${STAGE+x} ]; then export STAGE=dev; fi
+
 # fuck gitpod
 unset PIPENV_VENV_IN_PROJECT
 unset PIP_USER
@@ -28,8 +30,8 @@ if [[ ! -e ${MY_PATH}/venv-aws-deploy/bin/python3.7 ]]; then
 fi
 
 cd ${MY_PATH}/src
-${SERVERLESS} create_domain
-${SERVERLESS} deploy
+${SERVERLESS} --stage ${STAGE} create_domain
+${SERVERLESS} --stage ${STAGE} deploy
 
 cd ${MY_PATH}
 deactivate
