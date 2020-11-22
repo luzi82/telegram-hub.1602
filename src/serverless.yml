@@ -1,6 +1,6 @@
 service: codelog-webtemplate-1601
 
-frameworkVersion: ">=2.4.0 <3.0.0"
+frameworkVersion: ">=2.12.0 <3.0.0"
 
 provider:
   name: aws
@@ -82,6 +82,9 @@ provider:
           - Db
           - Arn
         - '/index/*'
+  apiGateway:
+    # https://www.serverless.com/framework/docs/deprecations/#AWS_API_GATEWAY_NAME_STARTING_WITH_SERVICE
+    shouldStartNameWithService: true
 
 functions:
   endpoint:
@@ -90,7 +93,6 @@ functions:
     timeout: 10 # timeout need to be longer in first run
     events:
     - http: ANY /
-    - http: 'ANY {proxy+}'
   job0:
     handler: jobs.job0
     memorySize: 128

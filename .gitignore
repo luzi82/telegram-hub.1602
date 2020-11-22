@@ -5,3 +5,6 @@ tmp
 .serverless
 node_modules
 /cache
+.theia
+.vscode
+secret

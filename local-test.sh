@@ -11,6 +11,11 @@ kill_pid() {
   fi
 }
 
+# fuck gitpod
+unset PIPENV_VENV_IN_PROJECT
+unset PIP_USER
+unset PYTHONUSERBASE
+
 # clean up
 cd ${PROJECT_ROOT_PATH}
 kill_pid ${PROJECT_ROOT_PATH}/local-test-tmp/dynamodb.pid
