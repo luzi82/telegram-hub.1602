@@ -27,4 +27,4 @@ jobs:
       - name: Run CI script
         run: ci/deploy-sample.sh
         env:
-          CI_SECRET: ${{ secrets.CI_SECRET }}
+          SAMPLE_CI_SECRET: ${{ secrets.SAMPLE_CI_SECRET }}
