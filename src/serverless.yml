@@ -5,13 +5,15 @@ frameworkVersion: ">=2.12.0 <3.0.0"
 provider:
   name: aws
   runtime: python3.7
+  apiGateway:
+    # https://www.serverless.com/framework/docs/deprecations/#AWS_API_GATEWAY_NAME_STARTING_WITH_SERVICE
+    shouldStartNameWithService: true
 
 functions:
   endpoint:
     handler: wsgi_handler.handler
     events:
       - http: ANY /
-      - http: 'ANY {proxy+}'
 
 custom:
   wsgi:
