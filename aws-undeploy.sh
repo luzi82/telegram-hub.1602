@@ -27,6 +27,9 @@ if [[ ! -e ${MY_PATH}/venv-aws-undeploy/bin/python3.7 ]]; then
   ln -s ${MY_PATH}/venv-aws-undeploy/bin/python3 ${MY_PATH}/venv-aws-undeploy/bin/python3.7
 fi
 
+# verify if aws credentials are good
+aws sts get-caller-identity
+
 cd ${MY_PATH}/src
 ${SERVERLESS} remove
 ${SERVERLESS} delete_domain
