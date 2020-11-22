@@ -35,12 +35,12 @@ pip install -r src/requirements.txt
 # download dynamodb local
 mkdir -p local-test-tmp
 mkdir -p cache
-wget https://s3.us-west-2.amazonaws.com/dynamodb-local/dynamodb_local_latest.tar.gz.sha256 -O local-test-tmp/dynamodb_local_latest.tar.gz.sha256
+curl https://s3.us-west-2.amazonaws.com/dynamodb-local/dynamodb_local_latest.tar.gz.sha256 -o local-test-tmp/dynamodb_local_latest.tar.gz.sha256
 TMP0=`cat local-test-tmp/dynamodb_local_latest.tar.gz.sha256 | awk '{print $1}'`
 TMP1=0 ; echo "${TMP0} cache/dynamodb_local_latest.tar.gz" | sha256sum -c - || TMP1=$?
 if [ "${TMP1}" != "0" ]; then
   rm -f cache/dynamodb_local_latest.tar.gz
-  wget https://s3.us-west-2.amazonaws.com/dynamodb-local/dynamodb_local_latest.tar.gz -O cache/dynamodb_local_latest.tar.gz
+  curl https://s3.us-west-2.amazonaws.com/dynamodb-local/dynamodb_local_latest.tar.gz -o cache/dynamodb_local_latest.tar.gz
 fi
 echo "${TMP0} cache/dynamodb_local_latest.tar.gz" | sha256sum -c -
 cp cache/dynamodb_local_latest.tar.gz local-test-tmp/

@@ -8,18 +8,15 @@ FROM debian:10.6
 
 USER root
 
-# install python
+# apt-get blah
 RUN true \
  && apt-get update \
  && apt-get install -y \
+    curl \
+    jq \
+    openjdk-11-jre \
     python3.7 \
     python3-venv
-
-# install curl
-RUN true \
- && apt-get update \
- && apt-get install -y \
-    curl
 
 # install nodejs
 RUN true \
