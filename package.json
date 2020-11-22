@@ -1,11 +1,10 @@
 {
     "homepage": "https://github.com/luzi82/codelog.flask",
-    "dependencies": {
-        "serverless": "^2.0.0",
+    "dependencies": {},
+    "devDependencies": {
+        "serverless": "^2.12.0",
+        "serverless-domain-manager": "^4.2.3",
         "serverless-python-requirements": "^5.1.0",
         "serverless-wsgi": "^1.7.5"
-    },
-    "devDependencies": {
-        "serverless-domain-manager": "^4.2.0"
     }
 }
