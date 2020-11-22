@@ -7,5 +7,6 @@ node_modules
 /cache
 .theia
 .vscode
-secret
-luzi82
+/secret
+/luzi82
+/stages/luzi82
