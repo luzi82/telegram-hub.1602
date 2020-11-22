@@ -29,7 +29,7 @@ mkdir -p local-test-tmp
 python3 -m venv local-test-tmp/venv-local-test
 . local-test-tmp/venv-local-test/bin/activate
 pip install --upgrade pip wheel
-pip install yq
+pip install yq awscli
 pip install -r src/requirements.txt
 
 # download dynamodb local
