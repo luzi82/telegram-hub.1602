@@ -1,8 +1,6 @@
 #!/bin/bash
 set -e
 
-export STAGE="sample"
-
 TMP_FILE=`mktemp`
 trap "{ rm -f ${TMP_FILE}; }" EXIT
 
@@ -14,4 +12,4 @@ tar xzf -
 
 . secret/env.sh
 
-./aws-deploy.sh
+./aws-deploy.sh sample
