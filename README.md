@@ -2,7 +2,9 @@
 
 ## Example
 
-https://codelog-flask-sample.aws-public.luzi82.com
+https://compute-codelog-webtemplate1601-sample.aws-public.luzi82.com
+
+https://static-codelog-webtemplate1601-sample.aws-public.luzi82.com
 
 ## Run local
 
