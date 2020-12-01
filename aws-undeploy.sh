@@ -4,6 +4,8 @@ set -e
 
 MY_PATH=${PWD}
 
+if [ -z ${STAGE+x} ]; then export STAGE=dev; fi
+
 # fuck gitpod
 unset PIPENV_VENV_IN_PROJECT
 unset PIP_USER
@@ -31,8 +33,8 @@ fi
 aws sts get-caller-identity
 
 cd ${MY_PATH}/src
-${SERVERLESS} remove
-${SERVERLESS} delete_domain
+${SERVERLESS} --stage ${STAGE} remove -v
+${SERVERLESS} --stage ${STAGE} delete_domain
 
 cd ${MY_PATH}
 deactivate

@@ -34,7 +34,7 @@ aws sts get-caller-identity
 
 cd ${MY_PATH}/src
 ${SERVERLESS} --stage ${STAGE} create_domain
-${SERVERLESS} --stage ${STAGE} deploy
+${SERVERLESS} --stage ${STAGE} deploy -v
 
 cd ${MY_PATH}
 deactivate
