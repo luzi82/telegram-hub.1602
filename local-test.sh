@@ -20,7 +20,9 @@ unset PYTHONUSERBASE
 cd ${PROJECT_ROOT_PATH}
 kill_pid ${PROJECT_ROOT_PATH}/local-test-tmp/dynamodb.pid
 kill_pid ${PROJECT_ROOT_PATH}/local-test-tmp/public-static.pid
-kill_pid ${PROJECT_ROOT_PATH}/local-test-tmp/private-static.pid
+kill_pid ${PROJECT_ROOT_PATH}/local-test-tmp/public-mutable.pid
+kill_pid ${PROJECT_ROOT_PATH}/local-test-tmp/public-deploygen.pid
+kill_pid ${PROJECT_ROOT_PATH}/local-test-tmp/public-tmp.pid
 rm -rf local-test-tmp
 
 # init local run env
@@ -83,19 +85,31 @@ aws dynamodb wait table-exists \
 # emulate bucket
 cd ${PROJECT_ROOT_PATH}
 mkdir local-test-tmp/public-mutable
+mkdir local-test-tmp/public-deploygen
+mkdir local-test-tmp/public-tmp
 mkdir local-test-tmp/private-mutable
+mkdir local-test-tmp/private-deploygen
+mkdir local-test-tmp/private-tmp
 python -m http.server 8100 --directory ${PROJECT_ROOT_PATH}/public-static &
 echo $! > local-test-tmp/public-static.pid
 python -m http.server 8101 --directory ${PROJECT_ROOT_PATH}/local-test-tmp/public-mutable &
-echo $! > local-test-tmp/private-static.pid
+echo $! > local-test-tmp/public-mutable.pid
+python -m http.server 8102 --directory ${PROJECT_ROOT_PATH}/local-test-tmp/public-deploygen &
+echo $! > local-test-tmp/public-deploygen.pid
+python -m http.server 8103 --directory ${PROJECT_ROOT_PATH}/local-test-tmp/public-tmp &
+echo $! > local-test-tmp/public-tmp.pid
 
 # environ
 export STAGE=local
 export CONF_PATH=${PROJECT_ROOT_PATH}/stages/local/conf.json
 export PUBLIC_STATIC_PATH=${PROJECT_ROOT_PATH}/public-static
+export PUBLIC_DEPLOYGEN_PATH=${PROJECT_ROOT_PATH}/local-test-tmp/public-deploygen
 export PUBLIC_MUTABLE_PATH=${PROJECT_ROOT_PATH}/local-test-tmp/public-mutable
+export PUBLIC_TMP_PATH=${PROJECT_ROOT_PATH}/local-test-tmp/public-tmp
 export PRIVATE_STATIC_PATH=${PROJECT_ROOT_PATH}/private-static
+export PRIVATE_DEPLOYGEN_PATH=${PROJECT_ROOT_PATH}/local-test-tmp/private-deploygen
 export PRIVATE_MUTABLE_PATH=${PROJECT_ROOT_PATH}/local-test-tmp/private-mutable
+export PRIVATE_TMP_PATH=${PROJECT_ROOT_PATH}/local-test-tmp/private-tmp
 export DB_TABLE_NAME=tmp_table
 export DYNAMODB_ENDPOINT_URL=http://localhost:8000
 export DYNAMODB_REGION=`cat ${PROJECT_ROOT_PATH}/local-test-tmp/region`
@@ -109,5 +123,7 @@ cd ${PROJECT_ROOT_PATH}
 deactivate
 kill_pid ${PROJECT_ROOT_PATH}/local-test-tmp/dynamodb.pid
 kill_pid ${PROJECT_ROOT_PATH}/local-test-tmp/public-static.pid
-kill_pid ${PROJECT_ROOT_PATH}/local-test-tmp/private-static.pid
+kill_pid ${PROJECT_ROOT_PATH}/local-test-tmp/public-mutable.pid
+kill_pid ${PROJECT_ROOT_PATH}/local-test-tmp/public-deploygen.pid
+kill_pid ${PROJECT_ROOT_PATH}/local-test-tmp/public-tmp.pid
 rm -rf local-test-tmp

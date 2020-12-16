@@ -9,10 +9,14 @@ provider:
   environment:
     STAGE: ${opt:stage}
     CONF_PATH: s3://${self:resources.Resources.StorageBucket.Properties.BucketName}/private-conf
-    PUBLIC_STATIC_PATH:   s3://${self:resources.Resources.StorageBucket.Properties.BucketName}/public-static
-    PUBLIC_MUTABLE_PATH:  s3://${self:resources.Resources.StorageBucket.Properties.BucketName}/public-mutable
-    PRIVATE_STATIC_PATH:  s3://${self:resources.Resources.StorageBucket.Properties.BucketName}/private-static
-    PRIVATE_MUTABLE_PATH: s3://${self:resources.Resources.StorageBucket.Properties.BucketName}/private-mutable
+    PUBLIC_STATIC_PATH:     s3://${self:resources.Resources.StorageBucket.Properties.BucketName}/public-static
+    PUBLIC_DEPLOYGEN_PATH:  s3://${self:resources.Resources.StorageBucket.Properties.BucketName}/public-deploygen
+    PUBLIC_MUTABLE_PATH:    s3://${self:resources.Resources.StorageBucket.Properties.BucketName}/public-mutable
+    PUBLIC_TMP_PATH:        s3://${self:resources.Resources.StorageBucket.Properties.BucketName}/public-tmp
+    PRIVATE_STATIC_PATH:    s3://${self:resources.Resources.StorageBucket.Properties.BucketName}/private-static
+    PRIVATE_DEPLOYGEN_PATH: s3://${self:resources.Resources.StorageBucket.Properties.BucketName}/private-deploygen
+    PRIVATE_MUTABLE_PATH:   s3://${self:resources.Resources.StorageBucket.Properties.BucketName}/private-mutable
+    PRIVATE_TMP_PATH:       s3://${self:resources.Resources.StorageBucket.Properties.BucketName}/private-tmp
     DB_TABLE_NAME: ${self:resources.Resources.Db.Properties.TableName}
   deploymentBucket:
     name: ${self:service}-${opt:stage}-deploy
@@ -31,7 +35,17 @@ provider:
       - ''
       - - 'arn:aws:s3:::'
         - Ref: StorageBucket
+        - /public-deploygen/*
+    - Fn::Join:
+      - ''
+      - - 'arn:aws:s3:::'
+        - Ref: StorageBucket
         - /private-static/*
+    - Fn::Join:
+      - ''
+      - - 'arn:aws:s3:::'
+        - Ref: StorageBucket
+        - /private-deploygen/*
     - Fn::Join:
       - ''
       - - 'arn:aws:s3:::'
@@ -52,7 +66,17 @@ provider:
       - ''
       - - 'arn:aws:s3:::'
         - Ref: StorageBucket
+        - /public-tmp/*
+    - Fn::Join:
+      - ''
+      - - 'arn:aws:s3:::'
+        - Ref: StorageBucket
         - /private-mutable/*
+    - Fn::Join:
+      - ''
+      - - 'arn:aws:s3:::'
+        - Ref: StorageBucket
+        - /private-tmp/*
   - Effect: 'Allow'
     Action:
     - s3:ListBucket
@@ -109,13 +133,13 @@ resources:
         BucketName: ${self:service}-${opt:stage}-storage
         LifecycleConfiguration:
           Rules:
-          - Prefix: public-mutable/tmp/
+          - Prefix: public-tmp/
             ExpirationInDays: 1
             AbortIncompleteMultipartUpload:
               DaysAfterInitiation: 1
             NoncurrentVersionExpirationInDays: 1
             Status: Enabled
-          - Prefix: private-mutable/tmp/
+          - Prefix: private-tmp/
             ExpirationInDays: 1
             AbortIncompleteMultipartUpload:
               DaysAfterInitiation: 1
@@ -159,7 +183,17 @@ resources:
               - ''
               - - 'arn:aws:s3:::'
                 - Ref: StorageBucket
+                - /public-deploygen/*
+            - 'Fn::Join':
+              - ''
+              - - 'arn:aws:s3:::'
+                - Ref: StorageBucket
                 - /public-mutable/*
+            - 'Fn::Join':
+              - ''
+              - - 'arn:aws:s3:::'
+                - Ref: StorageBucket
+                - /public-tmp/*
     PublicStaticCloudfront:
       Type: AWS::CloudFront::Distribution
       Properties:

@@ -9,6 +9,7 @@ https://static-codelog-webtemplate1601-sample.aws-public.luzi82.com
 ## Run local
 
 ```
+aws configure # configure credentials
 ./local-test.sh
 ```
 
