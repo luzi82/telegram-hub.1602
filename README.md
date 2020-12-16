@@ -6,11 +6,18 @@ https://compute-codelog-webtemplate1601-sample.aws-public.luzi82.com
 
 https://static-codelog-webtemplate1601-sample.aws-public.luzi82.com
 
+## Run gitpod
+
+```
+./s02_local_run.sh
+```
+
 ## Run local
 
 ```
 aws configure # configure credentials
-./local-test.sh
+./s01_init_workspace.sh
+./s02_local_run.sh
 ```
 
 ## Run in AWS

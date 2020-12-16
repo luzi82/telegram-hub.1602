@@ -15,6 +15,8 @@ fi
 
 MY_PATH=${PWD}
 
+if [ -z ${STAGE+x} ]; then export STAGE=dev; fi
+
 # fuck gitpod
 unset PIPENV_VENV_IN_PROJECT
 unset PIP_USER
@@ -38,9 +40,12 @@ if [[ ! -e ${MY_PATH}/venv-aws-undeploy/bin/python3.7 ]]; then
   ln -s ${MY_PATH}/venv-aws-undeploy/bin/python3 ${MY_PATH}/venv-aws-undeploy/bin/python3.7
 fi
 
+# verify if aws credentials are good
+aws sts get-caller-identity
+
 cd ${MY_PATH}/src
-${SERVERLESS} remove --stage ${ARG_STAGE} -v
-${SERVERLESS} delete_domain --stage ${ARG_STAGE}
+${SERVERLESS} --stage ${STAGE} remove -v
+${SERVERLESS} --stage ${STAGE} delete_domain
 
 cd ${MY_PATH}
 deactivate
