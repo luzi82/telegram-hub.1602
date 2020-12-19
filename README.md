@@ -13,8 +13,8 @@ https://codelog-flask-sample.aws-public.luzi82.com
 ## Run local
 
 ```
-./s01_init_workspace.sh
-./s02_local_run.sh
+./s00_init_workspace.sh
+./s01_local_run.sh
 ```
 
 ## Run in AWS

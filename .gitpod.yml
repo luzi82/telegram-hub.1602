@@ -2,8 +2,8 @@ image:
   file: .gitpod.Dockerfile
 
 tasks:
-  - init: ./s01_init_workspace.sh
-  - command: ./s02_local_run.sh
+  - init: ./s00_init_workspace.sh
+  - command: ./s01_local_run.sh
 ports: 
   - port: 5000
     onOpen: open-preview
