@@ -4,11 +4,11 @@
 
 # clean up
 cd ${PROJECT_ROOT_PATH}
-rm -rf dev_env
+rm -rf ${PROJECT_ROOT_PATH}/dev_env
 
 # init local run env
 cd ${PROJECT_ROOT_PATH}
-python3 -m venv dev_env/venv
-. dev_env/venv/bin/activate
+python3 -m venv ${PROJECT_ROOT_PATH}/dev_env/venv
+. ${PROJECT_ROOT_PATH}/dev_env/venv/bin/activate
 pip install --upgrade pip wheel
-pip install -r src/requirements.txt
+pip install -r ${PROJECT_ROOT_PATH}/src/requirements.txt
