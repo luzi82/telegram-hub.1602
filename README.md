@@ -14,15 +14,15 @@ https://static-codelog-webtemplate1601-sample.aws-public.luzi82.com
 ## Run gitpod
 
 ```
-./s01_local_run.sh
+./s01_dev_run_local.sh
 ```
 
 ## Run local
 
 ```
 aws configure # configure credentials
-./s00_init_workspace.sh
-./s01_local_run.sh
+./s00_dev_init_env.sh
+./s01_dev_run_local.sh
 ```
 
 ## Deploy to AWS

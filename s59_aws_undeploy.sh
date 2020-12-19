@@ -30,4 +30,4 @@ ${SERVERLESS} --stage ${STAGE} remove -v
 ${SERVERLESS} --stage ${STAGE} delete_domain
 
 cd ${PROJECT_ROOT_PATH}
-#rm -rf ${MY_TMP_DIR_PATH}
+rm -rf ${MY_TMP_DIR_PATH}

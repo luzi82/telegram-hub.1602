@@ -25,6 +25,6 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Run CI script
-        run: ci/deploy-sample.sh
+        run: sample-ci/deploy.sh
         env:
           SAMPLE_CI_SECRET: ${{ secrets.SAMPLE_CI_SECRET }}
