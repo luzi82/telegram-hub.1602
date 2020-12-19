@@ -7,6 +7,7 @@ cd ${PROJECT_ROOT_PATH}
 rm -rf ${PROJECT_ROOT_PATH}/dev_env
 
 # init folder
+cd ${PROJECT_ROOT_PATH}
 mkdir -p ${PROJECT_ROOT_PATH}/dev_env
 
 # init local run env
