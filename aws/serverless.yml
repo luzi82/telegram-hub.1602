@@ -341,13 +341,14 @@ resources:
         BillingMode: PAY_PER_REQUEST
 
 custom:
+  functionsBasePath: ${self:custom.projectRootPath}/src
   wsgi:
     app: endpoint.app
     pythonBin: python
   pythonRequirements:
     dockerizePip: false
   customDomain:
-    domainName: ${file(../stages/${opt:stage}/conf.json):COMPUTE_DOMAIN}
+    domainName: ${file(${self:custom.projectRootPath}/stages/${opt:stage}/conf.json):COMPUTE_DOMAIN}
     basePath: ''
     stage: ${opt:stage}
     createRoute53Record: true
@@ -365,6 +366,8 @@ custom:
     enable: ${file(../stages/${opt:stage}/conf.json):UNDEPLOY_DELETE_S3, 'false'}
     bucketList:
     - bucketName: ${self:resources.Resources.StorageBucket.Properties.BucketName}
+  projectRootPath:
+    ${opt:project_root_path, env:PROJECT_ROOT_PATH, '..'}
 
 plugins:
 - serverless-deployment-bucket
