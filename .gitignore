@@ -1,11 +1,11 @@
-/.project
-__pycache__/
-tmp
 .serverless
-node_modules
 .theia
 .vscode
-secret
-/dev
 /*.tmp/
+/.project
 /aws_env/
+/dev_env/
+__pycache__/
+node_modules
+secret
+tmp
