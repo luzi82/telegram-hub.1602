@@ -17,16 +17,19 @@ functions:
       - http: ANY /
 
 custom:
+  functionsBasePath: ${self:custom.projectRootPath}/src
   wsgi:
     app: endpoint.app
     pythonBin: python
   pythonRequirements:
     dockerizePip: false
   customDomain:
-    domainName: ${file(../conf/conf.json):DOMAIN}
+    domainName: ${file(${self:custom.projectRootPath}/conf/conf.json):DOMAIN}
     basePath: ''
     stage: ${self:provider.stage}
     createRoute53Record: true
+  projectRootPath:
+    ${opt:project_root_path, env:PROJECT_ROOT_PATH, '..'}
 
 plugins:
   - serverless-wsgi

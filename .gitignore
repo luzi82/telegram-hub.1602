@@ -7,3 +7,5 @@ node_modules
 .vscode
 secret
 /dev
+/*.tmp/
+/aws_env/

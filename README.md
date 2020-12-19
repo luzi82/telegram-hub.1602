@@ -17,9 +17,13 @@ https://codelog-flask-sample.aws-public.luzi82.com
 ./s01_local_run.sh
 ```
 
-## Run in AWS
+## Deploy to AWS
 
 1. Create domain in AWS Route 53.
 1. Create cert for domain.
 1. Create and edit `conf/conf.json` from `conf/conf.json.sample`.
-1. `./aws-deploy.sh`
+1. `./s50_aws_init_env.sh && ./s51_aws_deploy.sh`
+
+## Undeploy from AWS
+
+1. `./s50_aws_init_env.sh && ./s59_aws_undeploy.sh`
