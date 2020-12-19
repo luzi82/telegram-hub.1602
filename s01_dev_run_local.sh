@@ -4,6 +4,9 @@
 
 MY_TMP_DIR_PATH=${PROJECT_ROOT_PATH}/dev.local.tmp
 
+export AWS_ACCESS_KEY_ID=XXXXXXXXXXXXXXXXXXXX
+export AWS_SECRET_ACCESS_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
 # clean up
 cd ${PROJECT_ROOT_PATH}
 kill_pid ${MY_TMP_DIR_PATH}/dynamodb.pid
