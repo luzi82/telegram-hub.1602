@@ -7,13 +7,14 @@ tasks:
 ports: 
   - port: 5000
     onOpen: open-preview
+  - port: 8100
+    onOpen: ignore
+  - port: 8101
+    onOpen: ignore
+  - port: 8102
+    onOpen: ignore
+  - port: 8103
+    onOpen: ignore
+  # dynamodb
   - port: 8000
     onOpen: ignore
-  - port: 8100
-    onOpen: open-preview
-  - port: 8101
-    onOpen: open-preview
-  - port: 8102
-    onOpen: open-preview
-  - port: 8103
-    onOpen: open-preview
