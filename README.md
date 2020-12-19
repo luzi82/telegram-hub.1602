@@ -1,9 +1,8 @@
 [![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/luzi82/codelog.flask)
 
-# codelog.flask
+# codelog.web-template.1601
 
-This project show how flask works.
-If you want to create new project, use https://github.com/luzi82/codelog.web-template.1601 .
+Code template of AWS + serverless + Flask so I dont need to do things from zero.
 
 ## Example
 
