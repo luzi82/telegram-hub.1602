@@ -7,7 +7,7 @@ https://codelog-flask-sample.aws-public.luzi82.com
 ## Run gitpod
 
 ```
-./s02_local_run.sh
+./s01_local_run.sh
 ```
 
 ## Run local
