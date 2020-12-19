@@ -41,11 +41,11 @@ echo $! > dynamodb.pid
 
 # load dynamodb setting
 cd ${PROJECT_ROOT_PATH}
-jq -r  .AWS_REGION stages/local/conf.json | tr -d '\n' > ${MY_TMP_DIR_PATH}/region
-yq -cM .resources.Resources.Db.Properties.AttributeDefinitions   src/serverless.yml | tr -d '\n' > ${MY_TMP_DIR_PATH}/db.AttributeDefinitions
-yq -cM .resources.Resources.Db.Properties.KeySchema              src/serverless.yml | tr -d '\n' > ${MY_TMP_DIR_PATH}/db.KeySchema
-yq -cM .resources.Resources.Db.Properties.GlobalSecondaryIndexes src/serverless.yml | tr -d '\n' > ${MY_TMP_DIR_PATH}/db.GlobalSecondaryIndexes
-yq -r  .resources.Resources.Db.Properties.BillingMode            src/serverless.yml | tr -d '\n' > ${MY_TMP_DIR_PATH}/db.BillingMode
+jq -r  .AWS_REGION ${PROJECT_ROOT_PATH}/stages/local/conf.json | tr -d '\n' > ${MY_TMP_DIR_PATH}/region
+yq -cM .resources.Resources.Db.Properties.AttributeDefinitions   ${PROJECT_ROOT_PATH}/aws/serverless.yml | tr -d '\n' > ${MY_TMP_DIR_PATH}/db.AttributeDefinitions
+yq -cM .resources.Resources.Db.Properties.KeySchema              ${PROJECT_ROOT_PATH}/aws/serverless.yml | tr -d '\n' > ${MY_TMP_DIR_PATH}/db.KeySchema
+yq -cM .resources.Resources.Db.Properties.GlobalSecondaryIndexes ${PROJECT_ROOT_PATH}/aws/serverless.yml | tr -d '\n' > ${MY_TMP_DIR_PATH}/db.GlobalSecondaryIndexes
+yq -r  .resources.Resources.Db.Properties.BillingMode            ${PROJECT_ROOT_PATH}/aws/serverless.yml | tr -d '\n' > ${MY_TMP_DIR_PATH}/db.BillingMode
 
 # create table
 cd ${PROJECT_ROOT_PATH}
