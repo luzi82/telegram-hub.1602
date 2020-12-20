@@ -4,12 +4,12 @@
 
 MY_TMP_DIR_PATH=${PROJECT_ROOT_PATH}/dev.local.tmp
 
-DYNAMODB_PORT=8000
-PUBLIC_COMPUTE_PORT=8104
-PUBLIC_STATIC_PORT=8100
-PUBLIC_DEPLOYGEN_PORT=8101
-PUBLIC_MUTABLE_PORT=8102
-PUBLIC_TMP_PORT=8103
+PUBLIC_COMPUTE_PORT=8000
+PUBLIC_STATIC_PORT=8001
+PUBLIC_DEPLOYGEN_PORT=8002
+PUBLIC_MUTABLE_PORT=8003
+PUBLIC_TMP_PORT=8004
+DYNAMODB_PORT=8100
 
 # clean up
 cd ${PROJECT_ROOT_PATH}
@@ -76,7 +76,7 @@ tar -xzf ${PROJECT_ROOT_PATH}/dev_env/dynamodb_local_latest.tar.gz
 
 # run dynamodb local
 cd ${MY_TMP_DIR_PATH}
-java -Djava.library.path=./dynamodb_local/DynamoDBLocal_lib -jar dynamodb_local/DynamoDBLocal.jar -inMemory &
+java -Djava.library.path=./dynamodb_local/DynamoDBLocal_lib -jar dynamodb_local/DynamoDBLocal.jar -inMemory -port ${DYNAMODB_PORT} &
 echo $! > dynamodb.pid
 
 # load dynamodb setting
