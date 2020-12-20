@@ -41,11 +41,11 @@ else
   export PUBLIC_TMP_URL_PREFIX=`gp url ${PUBLIC_TMP_PORT}`
 fi
 export PUBLIC_STATIC_PATH=${PROJECT_ROOT_PATH}/public-static
-export PUBLIC_DEPLOYGEN_PATH=${MY_TMP_DIR_PATH}/public-deploygen
+export PUBLIC_DEPLOYGEN_PATH=${PROJECT_ROOT_PATH}/deploygen.tmp/public
 export PUBLIC_MUTABLE_PATH=${MY_TMP_DIR_PATH}/public-mutable
 export PUBLIC_TMP_PATH=${MY_TMP_DIR_PATH}/public-tmp
 export PRIVATE_STATIC_PATH=${PROJECT_ROOT_PATH}/private-static
-export PRIVATE_DEPLOYGEN_PATH=${MY_TMP_DIR_PATH}/private-deploygen
+export PRIVATE_DEPLOYGEN_PATH=${PROJECT_ROOT_PATH}/deploygen.tmp/private
 export PRIVATE_MUTABLE_PATH=${MY_TMP_DIR_PATH}/private-mutable
 export PRIVATE_TMP_PATH=${MY_TMP_DIR_PATH}/private-tmp
 export DB_TABLE_NAME=tmp_table
@@ -101,19 +101,21 @@ aws dynamodb wait table-exists \
     --endpoint-url "${DYNAMODB_ENDPOINT_URL}" \
     --region "${DYNAMODB_REGION}"
 
+# deploygen
+cd ${PROJECT_ROOT_PATH}
+${PROJECT_ROOT_PATH}/_gen_deploygen.sh ${STAGE}
+
 # emulate bucket
 cd ${PROJECT_ROOT_PATH}
-mkdir -p ${PUBLIC_DEPLOYGEN_PATH}
 mkdir -p ${PUBLIC_MUTABLE_PATH}
 mkdir -p ${PUBLIC_TMP_PATH}
-mkdir -p ${PRIVATE_DEPLOYGEN_PATH}
 mkdir -p ${PRIVATE_MUTABLE_PATH}
 mkdir -p ${PRIVATE_TMP_PATH}
 python -m http.server ${PUBLIC_STATIC_PORT}    --directory ${PUBLIC_STATIC_PATH} &
 echo $! > ${MY_TMP_DIR_PATH}/public-static.pid
-python -m http.server ${PUBLIC_MUTABLE_PORT}   --directory ${PUBLIC_DEPLOYGEN_PATH} &
+python -m http.server ${PUBLIC_DEPLOYGEN_PORT}   --directory ${PUBLIC_DEPLOYGEN_PATH} &
 echo $! > ${MY_TMP_DIR_PATH}/public-deploygen.pid
-python -m http.server ${PUBLIC_DEPLOYGEN_PORT} --directory ${PUBLIC_MUTABLE_PATH} &
+python -m http.server ${PUBLIC_MUTABLE_PORT} --directory ${PUBLIC_MUTABLE_PATH} &
 echo $! > ${MY_TMP_DIR_PATH}/public-mutable.pid
 python -m http.server ${PUBLIC_TMP_PORT}       --directory ${PUBLIC_TMP_PATH} &
 echo $! > ${MY_TMP_DIR_PATH}/public-tmp.pid
