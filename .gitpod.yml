@@ -5,8 +5,6 @@ tasks:
   - init: ./s00_dev_init_env.sh
     command: ./s01_dev_run_local.sh
 ports: 
-  - port: 5000
-    onOpen: open-preview
   - port: 8100
     onOpen: ignore
   - port: 8101
@@ -15,6 +13,8 @@ ports:
     onOpen: ignore
   - port: 8103
     onOpen: ignore
+  - port: 8104
+    onOpen: open-preview
   # dynamodb
   - port: 8000
     onOpen: ignore

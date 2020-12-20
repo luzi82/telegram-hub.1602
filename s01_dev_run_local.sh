@@ -4,10 +4,8 @@
 
 MY_TMP_DIR_PATH=${PROJECT_ROOT_PATH}/dev.local.tmp
 
-export AWS_ACCESS_KEY_ID=XXXXXXXXXXXXXXXXXXXX
-export AWS_SECRET_ACCESS_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
 DYNAMODB_PORT=8000
+PUBLIC_COMPUTE_PORT=8104
 PUBLIC_STATIC_PORT=8100
 PUBLIC_DEPLOYGEN_PORT=8101
 PUBLIC_MUTABLE_PORT=8102
@@ -30,11 +28,13 @@ mkdir -p ${MY_TMP_DIR_PATH}
 export STAGE=local
 export CONF_PATH=${PROJECT_ROOT_PATH}/stages/local/conf.json
 if [ -z ${GITPOD_REPO_ROOT+x} ]; then
+  export PUBLIC_COMPUTE_URL_PREFIX=`gp url ${PUBLIC_COMPUTE_PORT}`
   export PUBLIC_STATIC_URL_PREFIX=`gp url ${PUBLIC_STATIC_PORT}`
   export PUBLIC_DEPLOYGEN_URL_PREFIX=`gp url ${PUBLIC_DEPLOYGEN_PORT}`
   export PUBLIC_MUTABLE_URL_PREFIX=`gp url ${PUBLIC_MUTABLE_PORT}`
   export PUBLIC_TMP_URL_PREFIX=`gp url ${PUBLIC_TMP_PORT}`
 else
+  export PUBLIC_COMPUTE_URL_PREFIX="http://localhost:${PUBLIC_COMPUTE_PORT}"
   export PUBLIC_STATIC_URL_PREFIX="http://localhost:${PUBLIC_STATIC_PORT}"
   export PUBLIC_DEPLOYGEN_URL_PREFIX="http://localhost:${PUBLIC_DEPLOYGEN_PORT}"
   export PUBLIC_MUTABLE_URL_PREFIX="http://localhost:${PUBLIC_MUTABLE_PORT}"
@@ -51,6 +51,11 @@ export PRIVATE_TMP_PATH=${MY_TMP_DIR_PATH}/private-tmp
 export DB_TABLE_NAME=tmp_table
 export DYNAMODB_ENDPOINT_URL="http://localhost:${DYNAMODB_PORT}"
 export DYNAMODB_REGION=`jq -r  .AWS_REGION ${PROJECT_ROOT_PATH}/stages/local/conf.json`
+
+# for runtime
+export AWS_ACCESS_KEY_ID=XXXXXXXXXXXXXXXXXXXX
+export AWS_SECRET_ACCESS_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+export FLASK_RUN_PORT=${PUBLIC_COMPUTE_PORT}
 
 # update dynamodb local
 mkdir -p ${MY_TMP_DIR_PATH}
