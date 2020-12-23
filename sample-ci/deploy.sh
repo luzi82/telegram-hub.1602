@@ -5,7 +5,9 @@ export STAGE="sample"
 TMP_DIR=`mktemp -d`
 trap 'rm -rf "${TMP_DIR}"' EXIT
 
-curl https://raw.githubusercontent.com/luzi82/codelog.flask.ci.secret/master/secret.tar.gz.gpg.sig \
+SM_URL=https://raw.githubusercontent.com/luzi82/luzi82.secret
+SM_BRANCH=codelog.flask.sample.ci
+curl ${SM_URL}/${SM_BRANCH}/secret.tar.gz.gpg.sig \
   -o ${TMP_DIR}/secret.tar.gz.gpg.sig
 
 gpg --no-default-keyring --keyring sample-ci/public-key.gpg --verify ${TMP_DIR}/secret.tar.gz.gpg.sig
