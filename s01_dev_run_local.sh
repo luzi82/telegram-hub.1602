@@ -26,7 +26,7 @@ mkdir -p ${MY_TMP_DIR_PATH}
 
 # load env var
 export STAGE=local
-export CONF_PATH=${PROJECT_ROOT_PATH}/stages/local/conf.json
+export CONF_PATH=${PROJECT_ROOT_PATH}/stages/${STAGE}
 if [ -z ${GITPOD_REPO_ROOT+x} ]; then
   export PUBLIC_COMPUTE_URL_PREFIX="http://localhost:${PUBLIC_COMPUTE_PORT}"
   export PUBLIC_STATIC_URL_PREFIX="http://localhost:${PUBLIC_STATIC_PORT}"
