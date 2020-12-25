@@ -1,8 +1,11 @@
 import datetime
-from flask import Flask
-app = Flask(__name__)
+import flask
+app = flask.Flask(__name__)
 
 @app.route('/')
 def index():
     now = datetime.datetime.now()
-    return f'Hello, World!  Time is {now}.'
+    return flask.render_template(
+        'index.html.tmpl',
+        now = now,
+    )
