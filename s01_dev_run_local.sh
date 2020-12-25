@@ -56,6 +56,7 @@ export DYNAMODB_REGION=`jq -r  .AWS_REGION ${PROJECT_ROOT_PATH}/stages/local/con
 export AWS_ACCESS_KEY_ID=XXXXXXXXXXXXXXXXXXXX
 export AWS_SECRET_ACCESS_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 export FLASK_RUN_PORT=${PUBLIC_COMPUTE_PORT}
+export FUTSU_GCP_ENABLE=0
 
 # update dynamodb local
 mkdir -p ${MY_TMP_DIR_PATH}
@@ -124,8 +125,9 @@ echo $! > ${MY_TMP_DIR_PATH}/public-tmp.pid
 
 # local run
 cd ${PROJECT_ROOT_PATH}/src
+export FLASK_DEBUG=1
 export FLASK_APP=${PROJECT_ROOT_PATH}/src/endpoint.py
-${PROJECT_ROOT_PATH}/dev_env/venv/bin/flask run
+${PROJECT_ROOT_PATH}/dev_env/venv/bin/flask run --host 0.0.0.0
 
 # clean up
 cd ${PROJECT_ROOT_PATH}

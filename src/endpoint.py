@@ -10,10 +10,16 @@ import fk
 import futsu.json
 import futsu.storage
 import logging
+import middleware
 import os
 import random
 import telegram
 import th
+import werkzeug.middleware.proxy_fix
+
+app = flask.Flask(__name__)
+app.wsgi_app = middleware.WebTemplateMiddleWare(app.wsgi_app, app)
+app.wsgi_app = werkzeug.middleware.proxy_fix.ProxyFix(app.wsgi_app)
 
 STAGE = os.environ['STAGE']
 CONF_PATH = os.environ['CONF_PATH']
