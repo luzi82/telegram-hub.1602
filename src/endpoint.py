@@ -5,8 +5,10 @@ import futsu.json
 import futsu.storage
 import os
 import random
+import werkzeug.middleware.proxy_fix
 
 app = flask.Flask(__name__)
+app.wsgi_app = werkzeug.middleware.proxy_fix.ProxyFix(app.wsgi_app)
 
 STAGE = os.environ['STAGE']
 CONF_PATH = os.environ['CONF_PATH']
