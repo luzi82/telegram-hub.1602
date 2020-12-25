@@ -53,7 +53,7 @@ def index():
       ExpressionAttributeValues={':v':now_rand},
     )
 
-    return flask.render_template('index.tmpl',
+    return flask.render_template('index.html.tmpl',
         STAGE=STAGE,
         PRIVATE_TXT=private_txt,
         LAST_TS=last_ts,
