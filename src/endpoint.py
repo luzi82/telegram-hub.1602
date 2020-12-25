@@ -3,11 +3,13 @@ import datetime
 import flask
 import futsu.json
 import futsu.storage
+import middleware
 import os
 import random
 import werkzeug.middleware.proxy_fix
 
 app = flask.Flask(__name__)
+app.wsgi_app = middleware.WebTemplateMiddleWare(app.wsgi_app, app)
 app.wsgi_app = werkzeug.middleware.proxy_fix.ProxyFix(app.wsgi_app)
 
 STAGE = os.environ['STAGE']
