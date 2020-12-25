@@ -41,7 +41,6 @@ logger.setLevel(logging.INFO)
 
 configure_telegram = th.configure_telegram
 
-app = flask.Flask(__name__)
 app.secret_key = env.get_conf_data()['FLASK_SECRET'].encode('utf-8')
 
 login_manager = flask_login.LoginManager()
