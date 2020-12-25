@@ -15,7 +15,7 @@ def endpoint_hub_list():
   current_user = flask_login.current_user
   hub_list = db.get_hub_list_from_user(current_user.id)
   return flask.render_template('hub/hub_list.tmpl',
-    PUBLIC_STATIC_HTTP_PATH = env.PUBLIC_STATIC_HTTP_PATH,
+    PUBLIC_STATIC_URL_PREFIX = env.PUBLIC_STATIC_URL_PREFIX,
     HUB_LIST = hub_list,
     TELEGRAM_USER_ID = current_user.id,
   )

@@ -95,11 +95,13 @@ aws dynamodb create-table \
     --global-secondary-indexes file://${MY_TMP_DIR_PATH}/db.GlobalSecondaryIndexes \
     --billing-mode file://${MY_TMP_DIR_PATH}/db.BillingMode \
     --endpoint-url "${DYNAMODB_ENDPOINT_URL}" \
-    --region "${DYNAMODB_REGION}"
+    --region "${DYNAMODB_REGION}" \
+    > ${MY_TMP_DIR_PATH}/dynamodb.create-table.log
 aws dynamodb wait table-exists \
     --table-name tmp_table \
     --endpoint-url "${DYNAMODB_ENDPOINT_URL}" \
-    --region "${DYNAMODB_REGION}"
+    --region "${DYNAMODB_REGION}" \
+    > ${MY_TMP_DIR_PATH}/dynamodb.wait.table-exists.log
 
 # deploygen
 cd ${PROJECT_ROOT_PATH}

@@ -22,7 +22,7 @@ def endpoint_login(err_msg=None):
   conf_data = env.get_conf_data()
   setup_tg_auth_bot_data = env.get_setup_tg_auth_bot_data()
   return flask.render_template('auth/login.tmpl',
-    PUBLIC_STATIC_HTTP_PATH = env.PUBLIC_STATIC_HTTP_PATH,
+    PUBLIC_STATIC_URL_PREFIX = env.PUBLIC_STATIC_URL_PREFIX,
     TG_AUTH_BOT_USER_USERNAME = setup_tg_auth_bot_data['USER_USERNAME'],
     HOST = flask.request.host,
     TELEGRAM_AUTH_BYPASS_USER_ID = conf_data['TELEGRAM_AUTH_BYPASS_USER_ID'],

@@ -64,7 +64,7 @@ def index():
     job0_ts = futsu.storage.path_to_bytes(job0_timestamp_path).decode('utf-8') if futsu.storage.is_blob_exist(job0_timestamp_path) else -1
 
     return flask.render_template('home.tmpl',
-        PUBLIC_STATIC_HTTP_PATH = env.PUBLIC_STATIC_URL_PREFIX,
+        PUBLIC_STATIC_URL_PREFIX = env.PUBLIC_STATIC_URL_PREFIX,
     )
 
 @app.route('/compute_domain')

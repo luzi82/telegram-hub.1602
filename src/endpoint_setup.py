@@ -48,7 +48,7 @@ def endpoint_setup_telegram_auth_callback():
 
 def s00_new_bot(err_msg=None):
   return flask.render_template('setup/s00_new_bot.tmpl',
-    PUBLIC_STATIC_HTTP_PATH = env.PUBLIC_STATIC_HTTP_PATH,
+    PUBLIC_STATIC_URL_PREFIX = env.PUBLIC_STATIC_URL_PREFIX,
     ERR_MSG = err_msg,
   )
 
@@ -87,7 +87,7 @@ def s00_new_bot_clean():
 def s01_bot_set_domain():
   setup_tg_auth_bot_data = futsu.json.path_to_data(env.SETUP_TG_AUTH_BOT_DATA_PATH)
   return flask.render_template('setup/s01_bot_set_domain.tmpl',
-    PUBLIC_STATIC_HTTP_PATH = env.PUBLIC_STATIC_HTTP_PATH,
+    PUBLIC_STATIC_URL_PREFIX = env.PUBLIC_STATIC_URL_PREFIX,
     TG_AUTH_BOT_USER_USERNAME = setup_tg_auth_bot_data['USER_USERNAME'],
     HOST = flask.request.host,
   )
@@ -105,7 +105,7 @@ def s02_th_owner_login(err_msg=None):
   conf_data = env.get_conf_data()
   setup_tg_auth_bot_data = futsu.json.path_to_data(env.SETUP_TG_AUTH_BOT_DATA_PATH)
   return flask.render_template('setup/s02_th_owner_login.tmpl',
-    PUBLIC_STATIC_HTTP_PATH = env.PUBLIC_STATIC_HTTP_PATH,
+    PUBLIC_STATIC_URL_PREFIX = env.PUBLIC_STATIC_URL_PREFIX,
     TG_AUTH_BOT_USER_USERNAME = setup_tg_auth_bot_data['USER_USERNAME'],
     HOST = flask.request.host,
     TELEGRAM_AUTH_BYPASS_USER_ID = conf_data['TELEGRAM_AUTH_BYPASS_USER_ID'],
