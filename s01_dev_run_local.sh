@@ -56,6 +56,7 @@ export DYNAMODB_REGION=`jq -r  .AWS_REGION ${PROJECT_ROOT_PATH}/stages/local/con
 export AWS_ACCESS_KEY_ID=XXXXXXXXXXXXXXXXXXXX
 export AWS_SECRET_ACCESS_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 export FLASK_RUN_PORT=${PUBLIC_COMPUTE_PORT}
+export FUTSU_GCP_ENABLE=0
 
 # update dynamodb local
 mkdir -p ${MY_TMP_DIR_PATH}
