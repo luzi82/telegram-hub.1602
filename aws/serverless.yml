@@ -1,20 +1,28 @@
 service: telegramhub-1602
 
-frameworkVersion: ">=2.4.0 <3.0.0"
+frameworkVersion: ">=2.12.0 <3.0.0"
 
 provider:
   name: aws
+  stage: ${opt:stage, 'dev'}
   runtime: python3.7
   region: ${file(../stages/${opt:stage}/conf.json):AWS_REGION}
   environment:
     STAGE: ${opt:stage}
     CONF_PATH: s3://${self:resources.Resources.StorageBucket.Properties.BucketName}/private-conf
-    PUBLIC_STATIC_PATH:   s3://${self:resources.Resources.StorageBucket.Properties.BucketName}/public-static
-    PUBLIC_MUTABLE_PATH:  s3://${self:resources.Resources.StorageBucket.Properties.BucketName}/public-mutable
-    PUBLIC_STATIC_HTTP_PATH:  https://${file(../stages/${opt:stage}/conf.json):STATIC_DOMAIN}
-    PUBLIC_MUTABLE_HTTP_PATH: https://${file(../stages/${opt:stage}/conf.json):MUTABLE_DOMAIN}
-    PRIVATE_STATIC_PATH:  s3://${self:resources.Resources.StorageBucket.Properties.BucketName}/private-static
-    PRIVATE_MUTABLE_PATH: s3://${self:resources.Resources.StorageBucket.Properties.BucketName}/private-mutable
+    PUBLIC_COMPUTE_URL_PREFIX:   https://${file(${self:custom.stageConfPath}):COMPUTE_DOMAIN}
+    PUBLIC_STATIC_URL_PREFIX:    https://${file(${self:custom.stageConfPath}):STATIC_DOMAIN}
+    PUBLIC_DEPLOYGEN_URL_PREFIX: https://${file(${self:custom.stageConfPath}):DEPLOYGEN_DOMAIN}
+    PUBLIC_MUTABLE_URL_PREFIX:   https://${file(${self:custom.stageConfPath}):MUTABLE_DOMAIN}
+    PUBLIC_TMP_URL_PREFIX:       https://${file(${self:custom.stageConfPath}):TMP_DOMAIN}
+    PUBLIC_STATIC_PATH:     s3://${self:resources.Resources.StorageBucket.Properties.BucketName}/public-static
+    PUBLIC_DEPLOYGEN_PATH:  s3://${self:resources.Resources.StorageBucket.Properties.BucketName}/public-deploygen
+    PUBLIC_MUTABLE_PATH:    s3://${self:resources.Resources.StorageBucket.Properties.BucketName}/public-mutable
+    PUBLIC_TMP_PATH:        s3://${self:resources.Resources.StorageBucket.Properties.BucketName}/public-tmp
+    PRIVATE_STATIC_PATH:    s3://${self:resources.Resources.StorageBucket.Properties.BucketName}/private-static
+    PRIVATE_DEPLOYGEN_PATH: s3://${self:resources.Resources.StorageBucket.Properties.BucketName}/private-deploygen
+    PRIVATE_MUTABLE_PATH:   s3://${self:resources.Resources.StorageBucket.Properties.BucketName}/private-mutable
+    PRIVATE_TMP_PATH:       s3://${self:resources.Resources.StorageBucket.Properties.BucketName}/private-tmp
     DB_TABLE_NAME: ${self:resources.Resources.Db.Properties.TableName}
   deploymentBucket:
     name: ${self:service}-${opt:stage}-deploy
@@ -33,7 +41,17 @@ provider:
       - ''
       - - 'arn:aws:s3:::'
         - Ref: StorageBucket
+        - /public-deploygen/*
+    - Fn::Join:
+      - ''
+      - - 'arn:aws:s3:::'
+        - Ref: StorageBucket
         - /private-static/*
+    - Fn::Join:
+      - ''
+      - - 'arn:aws:s3:::'
+        - Ref: StorageBucket
+        - /private-deploygen/*
     - Fn::Join:
       - ''
       - - 'arn:aws:s3:::'
@@ -54,7 +72,17 @@ provider:
       - ''
       - - 'arn:aws:s3:::'
         - Ref: StorageBucket
+        - /public-tmp/*
+    - Fn::Join:
+      - ''
+      - - 'arn:aws:s3:::'
+        - Ref: StorageBucket
         - /private-mutable/*
+    - Fn::Join:
+      - ''
+      - - 'arn:aws:s3:::'
+        - Ref: StorageBucket
+        - /private-tmp/*
   - Effect: 'Allow'
     Action:
     - s3:ListBucket
@@ -84,6 +112,9 @@ provider:
           - Db
           - Arn
         - '/index/*'
+  apiGateway:
+    # https://www.serverless.com/framework/docs/deprecations/#AWS_API_GATEWAY_NAME_STARTING_WITH_SERVICE
+    shouldStartNameWithService: true
 
 functions:
   endpoint:
@@ -92,7 +123,6 @@ functions:
     timeout: 10 # timeout need to be longer in first run
     events:
     - http: ANY /
-    - http: 'ANY {proxy+}'
 #  job0:
 #    handler: jobs.job0
 #    memorySize: 128
@@ -109,18 +139,23 @@ resources:
         BucketName: ${self:service}-${opt:stage}-storage
         LifecycleConfiguration:
           Rules:
-          - Prefix: public-mutable/tmp/
+          - Prefix: public-tmp/
             ExpirationInDays: 1
             AbortIncompleteMultipartUpload:
               DaysAfterInitiation: 1
             NoncurrentVersionExpirationInDays: 1
             Status: Enabled
-          - Prefix: private-mutable/tmp/
+          - Prefix: private-tmp/
             ExpirationInDays: 1
             AbortIncompleteMultipartUpload:
               DaysAfterInitiation: 1
             NoncurrentVersionExpirationInDays: 1
             Status: Enabled
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: true
+          BlockPublicPolicy: true
+          IgnorePublicAcls: true
+          RestrictPublicBuckets: true
       DeletionPolicy: Retain
     PublicCloudfrontOAI:
       Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
@@ -154,7 +189,17 @@ resources:
               - ''
               - - 'arn:aws:s3:::'
                 - Ref: StorageBucket
+                - /public-deploygen/*
+            - 'Fn::Join':
+              - ''
+              - - 'arn:aws:s3:::'
+                - Ref: StorageBucket
                 - /public-mutable/*
+            - 'Fn::Join':
+              - ''
+              - - 'arn:aws:s3:::'
+                - Ref: StorageBucket
+                - /public-tmp/*
     PublicStaticCloudfront:
       Type: AWS::CloudFront::Distribution
       Properties:
@@ -212,6 +257,65 @@ resources:
             DNSName:
               Fn::GetAtt:
                 - PublicStaticCloudfront
+                - DomainName
+            HostedZoneId: Z2FDTNDATAQYW2 # AWS hardcode
+    PublicDeploygenCloudfront:
+      Type: AWS::CloudFront::Distribution
+      Properties:
+        DistributionConfig:
+          Origins:
+          - DomainName:
+              Fn::GetAtt:
+              - StorageBucket
+              - DomainName
+            OriginPath: /public-deploygen
+            Id: S3-${file(../stages/${opt:stage}/conf.json):DEPLOYGEN_DOMAIN}
+            S3OriginConfig:
+              OriginAccessIdentity:
+                Fn::Join:
+                - ''
+                - - 'origin-access-identity/cloudfront/'
+                  - Ref: PublicCloudfrontOAI
+          Enabled: 'true'
+          DefaultRootObject: index.html
+          Aliases:
+          - ${file(../stages/${opt:stage}/conf.json):DEPLOYGEN_DOMAIN}
+          DefaultCacheBehavior:
+            AllowedMethods:
+            - GET
+            - HEAD
+            TargetOriginId: S3-${file(../stages/${opt:stage}/conf.json):DEPLOYGEN_DOMAIN}
+            ForwardedValues:
+              QueryString: 'false'
+              Cookies:
+                Forward: none
+            ViewerProtocolPolicy: allow-all
+          HttpVersion: http2
+          IPV6Enabled: true
+          PriceClass: PriceClass_200 # PriceClass_100 / PriceClass_200 / PriceClass_All
+          ViewerCertificate:
+            AcmCertificateArn: ${file(../stages/${opt:stage}/conf.json):DEPLOYGEN_DOMAIN_ACM_CERTIFICATE_ARN}
+            MinimumProtocolVersion: TLSv1.2_2019
+            SslSupportMethod: sni-only
+    PublicDeploygenDns:
+      Type: "AWS::Route53::RecordSetGroup"
+      Properties:
+        HostedZoneId: ${file(../stages/${opt:stage}/conf.json):DEPLOYGEN_DOMAIN_HOSTED_ZONE_ID}
+        RecordSets:
+        - Name: ${file(../stages/${opt:stage}/conf.json):DEPLOYGEN_DOMAIN}.
+          Type: 'A'
+          AliasTarget:
+            DNSName:
+              Fn::GetAtt:
+                - PublicDeploygenCloudfront
+                - DomainName
+            HostedZoneId: Z2FDTNDATAQYW2 # AWS hardcode
+        - Name: ${file(../stages/${opt:stage}/conf.json):DEPLOYGEN_DOMAIN}.
+          Type: 'AAAA'
+          AliasTarget:
+            DNSName:
+              Fn::GetAtt:
+                - PublicDeploygenCloudfront
                 - DomainName
             HostedZoneId: Z2FDTNDATAQYW2 # AWS hardcode
     PublicMutableCloudfront:
@@ -273,6 +377,65 @@ resources:
                 - PublicMutableCloudfront
                 - DomainName
               HostedZoneId: Z2FDTNDATAQYW2 # AWS hardcode
+    PublicTmpCloudfront:
+      Type: AWS::CloudFront::Distribution
+      Properties:
+        DistributionConfig:
+          Origins:
+          - DomainName:
+              Fn::GetAtt:
+              - StorageBucket
+              - DomainName
+            OriginPath: /public-tmp
+            Id: S3-${file(../stages/${opt:stage}/conf.json):TMP_DOMAIN}
+            S3OriginConfig:
+              OriginAccessIdentity:
+                Fn::Join:
+                - ''
+                - - 'origin-access-identity/cloudfront/'
+                  - Ref: PublicCloudfrontOAI
+          Enabled: 'true'
+          DefaultRootObject: index.html
+          Aliases:
+          - ${file(../stages/${opt:stage}/conf.json):TMP_DOMAIN}
+          DefaultCacheBehavior:
+            AllowedMethods:
+            - GET
+            - HEAD
+            TargetOriginId: S3-${file(../stages/${opt:stage}/conf.json):TMP_DOMAIN}
+            ForwardedValues:
+              QueryString: 'false'
+              Cookies:
+                Forward: none
+            ViewerProtocolPolicy: allow-all
+          HttpVersion: http2
+          IPV6Enabled: true
+          PriceClass: PriceClass_200 # PriceClass_100 / PriceClass_200 / PriceClass_All
+          ViewerCertificate:
+            AcmCertificateArn: ${file(../stages/${opt:stage}/conf.json):TMP_DOMAIN_ACM_CERTIFICATE_ARN}
+            MinimumProtocolVersion: TLSv1.2_2019
+            SslSupportMethod: sni-only
+    PublicTmpDns:
+      Type: "AWS::Route53::RecordSetGroup"
+      Properties:
+        HostedZoneId: ${file(../stages/${opt:stage}/conf.json):TMP_DOMAIN_HOSTED_ZONE_ID}
+        RecordSets:
+        - Name: ${file(../stages/${opt:stage}/conf.json):TMP_DOMAIN}.
+          Type: 'A'
+          AliasTarget:
+            DNSName:
+              Fn::GetAtt:
+                - PublicTmpCloudfront
+                - DomainName
+            HostedZoneId: Z2FDTNDATAQYW2 # AWS hardcode
+        - Name: ${file(../stages/${opt:stage}/conf.json):TMP_DOMAIN}.
+          Type: 'AAAA'
+          AliasTarget:
+            DNSName:
+              Fn::GetAtt:
+                - PublicTmpCloudfront
+                - DomainName
+            HostedZoneId: Z2FDTNDATAQYW2 # AWS hardcode
     Db:
       Type: AWS::DynamoDB::Table
       Properties:
@@ -355,13 +518,14 @@ resources:
         BillingMode: PAY_PER_REQUEST
 
 custom:
+  functionsBasePath: ${self:custom.projectRootPath}/src
   wsgi:
     app: endpoint.app
     pythonBin: python
   pythonRequirements:
     dockerizePip: false
   customDomain:
-    domainName: ${file(../stages/${opt:stage}/conf.json):COMPUTE_DOMAIN}
+    domainName: ${file(${self:custom.projectRootPath}/stages/${opt:stage}/conf.json):COMPUTE_DOMAIN}
     basePath: ''
     stage: ${opt:stage}
     createRoute53Record: true
@@ -370,15 +534,25 @@ custom:
     localDir: ../public-static
     bucketPrefix: public-static/
   - bucketName: ${self:resources.Resources.StorageBucket.Properties.BucketName}
+    localDir: ../deploygen.tmp/public
+    bucketPrefix: public-deploygen/
+  - bucketName: ${self:resources.Resources.StorageBucket.Properties.BucketName}
     localDir: ../stages/${opt:stage}
     bucketPrefix: private-conf/
   - bucketName: ${self:resources.Resources.StorageBucket.Properties.BucketName}
     localDir: ../private-static
     bucketPrefix: private-static/
+  - bucketName: ${self:resources.Resources.StorageBucket.Properties.BucketName}
+    localDir: ../deploygen.tmp/private
+    bucketPrefix: private-deploygen/
   cleanupS3DeleteBucket:
     enable: ${file(../stages/${opt:stage}/conf.json):UNDEPLOY_DELETE_S3, 'false'}
     bucketList:
     - bucketName: ${self:resources.Resources.StorageBucket.Properties.BucketName}
+  projectRootPath:
+    ${opt:project_root_path, env:PROJECT_ROOT_PATH, '..'}
+  stageConfPath:
+    ${self:custom.projectRootPath}/stages/${opt:stage}/conf.json
 
 plugins:
 - serverless-deployment-bucket

@@ -1,0 +1,17 @@
+{
+  "AWS_REGION": "us-east-1",
+  "COMPUTE_DOMAIN": "compute-codelog-webtemplate1601-sample.aws-public.luzi82.com",
+  "STATIC_DOMAIN":  "static-codelog-webtemplate1601-sample.aws-public.luzi82.com",
+  "STATIC_DOMAIN_HOSTED_ZONE_ID":  "Z03321022HHV324WCFVG9",
+  "STATIC_DOMAIN_ACM_CERTIFICATE_ARN":"arn:aws:acm:us-east-1:694855297262:certificate/72117ff1-8204-4df7-8397-32354c9227e4",
+  "DEPLOYGEN_DOMAIN":  "deploygen-codelog-webtemplate1601-sample.aws-public.luzi82.com",
+  "DEPLOYGEN_DOMAIN_HOSTED_ZONE_ID":  "Z03321022HHV324WCFVG9",
+  "DEPLOYGEN_DOMAIN_ACM_CERTIFICATE_ARN":"arn:aws:acm:us-east-1:694855297262:certificate/72117ff1-8204-4df7-8397-32354c9227e4",
+  "MUTABLE_DOMAIN":  "mutable-codelog-webtemplate1601-sample.aws-public.luzi82.com",
+  "MUTABLE_DOMAIN_HOSTED_ZONE_ID":  "Z03321022HHV324WCFVG9",
+  "MUTABLE_DOMAIN_ACM_CERTIFICATE_ARN":"arn:aws:acm:us-east-1:694855297262:certificate/72117ff1-8204-4df7-8397-32354c9227e4",
+  "TMP_DOMAIN":  "tmp-codelog-webtemplate1601-sample.aws-public.luzi82.com",
+  "TMP_DOMAIN_HOSTED_ZONE_ID":  "Z03321022HHV324WCFVG9",
+  "TMP_DOMAIN_ACM_CERTIFICATE_ARN":"arn:aws:acm:us-east-1:694855297262:certificate/72117ff1-8204-4df7-8397-32354c9227e4",
+  "UNDEPLOY_DELETE_S3":"true"
+}
