@@ -49,10 +49,6 @@ export DB_TABLE_NAME=${LOCAL_DYNAMODB_TABLE_NAME}
 export DYNAMODB_ENDPOINT_URL=${LOCAL_DYNAMODB_ENDPOINT_URL}
 export DYNAMODB_REGION=${LOCAL_DYNAMODB_REGION}
 
-# reset tmp
-rm -rf ${LOCAL_TMP_DIR_PATH}
-mkdir -p ${LOCAL_TMP_DIR_PATH}
-
 # # update dynamodb local
 # curl https://s3.us-west-2.amazonaws.com/dynamodb-local/dynamodb_local_latest.tar.gz.sha256 -o ${LOCAL_TMP_DIR_PATH}/dynamodb_local_latest.tar.gz.sha256
 # TMP0=`cat ${LOCAL_TMP_DIR_PATH}/dynamodb_local_latest.tar.gz.sha256 | awk '{print $1}'`

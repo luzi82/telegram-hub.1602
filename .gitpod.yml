@@ -18,3 +18,6 @@ ports:
   # dynamodb
   - port: 8100
     onOpen: ignore
+  # unittest
+  - port: 8200
+    onOpen: ignore
