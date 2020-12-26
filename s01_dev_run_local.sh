@@ -2,7 +2,8 @@
 
 . _env.sh
 
-MY_TMP_DIR_PATH=${PROJECT_ROOT_PATH}/dev.local.tmp
+MY_TMP_DIR_PATH=${PROJECT_ROOT_PATH}/dev_env/tmp
+VAR_DIR_PATH=${PROJECT_ROOT_PATH}/dev_env/var
 
 PUBLIC_COMPUTE_PORT=8000
 PUBLIC_STATIC_PORT=8001
@@ -42,11 +43,11 @@ else
 fi
 export PUBLIC_STATIC_PATH=${PROJECT_ROOT_PATH}/public-static
 export PUBLIC_DEPLOYGEN_PATH=${PROJECT_ROOT_PATH}/deploygen.tmp/public
-export PUBLIC_MUTABLE_PATH=${MY_TMP_DIR_PATH}/public-mutable
+export PUBLIC_MUTABLE_PATH=${VAR_DIR_PATH}/public-mutable
 export PUBLIC_TMP_PATH=${MY_TMP_DIR_PATH}/public-tmp
 export PRIVATE_STATIC_PATH=${PROJECT_ROOT_PATH}/private-static
 export PRIVATE_DEPLOYGEN_PATH=${PROJECT_ROOT_PATH}/deploygen.tmp/private
-export PRIVATE_MUTABLE_PATH=${MY_TMP_DIR_PATH}/private-mutable
+export PRIVATE_MUTABLE_PATH=${VAR_DIR_PATH}/private-mutable
 export PRIVATE_TMP_PATH=${MY_TMP_DIR_PATH}/private-tmp
 export DB_TABLE_NAME=tmp_table
 export DYNAMODB_ENDPOINT_URL="http://localhost:${DYNAMODB_PORT}"
@@ -58,8 +59,14 @@ export AWS_SECRET_ACCESS_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 export FLASK_RUN_PORT=${PUBLIC_COMPUTE_PORT}
 export FUTSU_GCP_ENABLE=0
 
-# update dynamodb local
+# reset tmp
+rm -rf ${MY_TMP_DIR_PATH}
 mkdir -p ${MY_TMP_DIR_PATH}
+
+# create var
+mkdir -p ${VAR_DIR_PATH}
+
+# update dynamodb local
 curl https://s3.us-west-2.amazonaws.com/dynamodb-local/dynamodb_local_latest.tar.gz.sha256 -o ${MY_TMP_DIR_PATH}/dynamodb_local_latest.tar.gz.sha256
 TMP0=`cat ${MY_TMP_DIR_PATH}/dynamodb_local_latest.tar.gz.sha256 | awk '{print $1}'`
 TMP1=1 ; echo "${TMP0} ${PROJECT_ROOT_PATH}/dev_env/dynamodb_local_latest.tar.gz" | sha256sum -c - || TMP1=$?
@@ -77,7 +84,13 @@ tar -xzf ${PROJECT_ROOT_PATH}/dev_env/dynamodb_local_latest.tar.gz
 
 # run dynamodb local
 cd ${MY_TMP_DIR_PATH}
-java -Djava.library.path=./dynamodb_local/DynamoDBLocal_lib -jar dynamodb_local/DynamoDBLocal.jar -inMemory -port ${DYNAMODB_PORT} &
+mkdir -p ${VAR_DIR_PATH}/dynamodb.data
+java \
+  -Djava.library.path=./dynamodb_local/DynamoDBLocal_lib \
+  -jar dynamodb_local/DynamoDBLocal.jar \
+  -port ${DYNAMODB_PORT} \
+  -dbPath ${VAR_DIR_PATH}/dynamodb.data \
+  &
 echo $! > dynamodb.pid
 
 # load dynamodb setting
@@ -116,9 +129,9 @@ mkdir -p ${PRIVATE_MUTABLE_PATH}
 mkdir -p ${PRIVATE_TMP_PATH}
 python -m http.server ${PUBLIC_STATIC_PORT}    --directory ${PUBLIC_STATIC_PATH} &
 echo $! > ${MY_TMP_DIR_PATH}/public-static.pid
-python -m http.server ${PUBLIC_DEPLOYGEN_PORT}   --directory ${PUBLIC_DEPLOYGEN_PATH} &
+python -m http.server ${PUBLIC_DEPLOYGEN_PORT} --directory ${PUBLIC_DEPLOYGEN_PATH} &
 echo $! > ${MY_TMP_DIR_PATH}/public-deploygen.pid
-python -m http.server ${PUBLIC_MUTABLE_PORT} --directory ${PUBLIC_MUTABLE_PATH} &
+python -m http.server ${PUBLIC_MUTABLE_PORT}   --directory ${PUBLIC_MUTABLE_PATH} &
 echo $! > ${MY_TMP_DIR_PATH}/public-mutable.pid
 python -m http.server ${PUBLIC_TMP_PORT}       --directory ${PUBLIC_TMP_PATH} &
 echo $! > ${MY_TMP_DIR_PATH}/public-tmp.pid
