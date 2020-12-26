@@ -10,6 +10,7 @@ logger.setLevel(logging.INFO)
 
 def init_login_manager(login_manager):
   login_manager.user_loader(user_loader)
+  login_manager.request_loader(request_loader)
   login_manager.unauthorized_handler(unauthorized_handler)
 
 def add_url_rule(app):
@@ -17,6 +18,7 @@ def add_url_rule(app):
   app.add_url_rule('/login/telegram-auth-callback', 'endpoint_login_telegram_auth_callback', endpoint_login_telegram_auth_callback,  methods=['GET','POST'])
   app.add_url_rule('/login/telegram-auth-bypass', 'endpoint_login_telegram_auth_bypass', endpoint_login_telegram_auth_bypass,  methods=['GET','POST'])
   app.add_url_rule('/logout', 'endpoint_logout', endpoint_logout)
+  app.add_url_rule('/api/user', 'api_get_user', api_get_user)
 
 def endpoint_login(err_msg=None):
   conf_data = env.get_conf_data()
@@ -47,13 +49,28 @@ def endpoint_logout():
   flask_login.logout_user()
   return fk.redirect('/')
 
+@flask_login.login_required
+def api_get_user():
+  user_id = flask_login.current_user.id
+  user_item = db.get_user(user_id)
+  return fk.r200({
+    'user_item':user_item
+  })
+
 def user_loader(user_id):
   return User(user_id)
+
+def request_loader(request):
+  api_token = request.args.get('api_token')
+  if api_token == None: return None
+  user_item = db.get_user_from_api_token(api_token)
+  if user_item == None: return None
+  user_id = user_item['UserId']
+  return User(user_id)
+
+def unauthorized_handler():
+  return fk.redirect('/login')
 
 class User(flask_login.mixins.UserMixin):
   def __init__(self,id):
     self.id = id
-
-    
-def unauthorized_handler():
-  return fk.redirect('/login')

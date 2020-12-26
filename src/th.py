@@ -1,4 +1,6 @@
 import datetime
+import db
+import fk
 import futsu.aws.s3
 import futsu.hash
 import futsu.storage
@@ -6,6 +8,7 @@ import hashlib
 import json
 import logging
 import os
+import random
 import telegram
 
 logger = logging.getLogger(__name__)
@@ -135,6 +138,10 @@ CONF_PATH = os.environ['CONF_PATH']
 #         'result':'OK',
 #     }
 
+def generate_user_token():
+  char_set = string.ascii_letters+string.digits
+  return "".join(random.choice(char_set)for x in xrange(64))
+
 def configure_telegram():
     """
     Configures the bot with a Telegram Token.
@@ -150,3 +157,13 @@ def configure_telegram():
         raise NotImplementedError
 
     return telegram.Bot(TELEGRAM_TOKEN)
+
+# def user_api(f):
+#   def ret_f():
+#     api_token = flask.request.args.get('api_token')
+#     if api_token == None: return fk.e403()
+#     user_item = db.get_user_from_api_token(api_token)
+#     if user_item == None: return fk.e403()
+#     flask.request.th_user_item = user_item
+#     return f()
+#   return ret_f

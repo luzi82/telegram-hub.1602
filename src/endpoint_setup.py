@@ -35,7 +35,7 @@ def endpoint_setup():
   if not futsu.storage.is_blob_exist(env.SETUP_SET_DOMAIN_DONE_PATH):
     return s01_bot_set_domain()
 
-  if not db.owner_exist():
+  if not db.is_role_exist('OWNER'):
     return s02_th_owner_login()
 
   futsu.storage.bytes_to_path(env.SETUP_DONE_PATH,b'')
@@ -123,6 +123,7 @@ def s02_th_owner_login_telegram_auth_callback():
   if check_ret != 'OK': return s02_th_owner_login(check_ret)
   tguser_id = flask.request.args.get('id')
   db.set_user_role(tguser_id, 'OWNER')
+  db_set_user_api_token(tguser_id, th.generate_user_token())
   return fk.redirect('/setup')
 
 

@@ -21,10 +21,19 @@ def e400(err_msg):
     mimetype='application/json',
   )
 
+def e403():
+  return flask.Response(
+    response = json.dumps({
+      'STATUS':'AUTH ERR',
+    }),
+    status = 403,
+    mimetype='application/json',
+  )
+
 def e500(err_msg):
   return flask.Response(
     response = json.dumps({
-      'STATUS':'BAD REQUEST',
+      'STATUS':'SERVER ERR',
       'ERR_MSG':err_msg,
     }),
     status = 400,

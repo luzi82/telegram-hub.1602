@@ -1,0 +1,11 @@
+{% extends "zzz_base.tmpl" %}
+
+{% block title %}Publisher list | Hub {{HUB.id}}{% endblock %}
+
+{% block body %}
+  <ul>
+    {% for PUBLISHER in PUBLISHER_LIST %}
+      <li><a href="/hubs/{{HUB.id}}/publishers/{{PUBLISHER.PublisherId}}">{{PUBLISHER.PublisherId}}</a></li>
+    {% endfor %}
+  </ul>
+{% endblock %}

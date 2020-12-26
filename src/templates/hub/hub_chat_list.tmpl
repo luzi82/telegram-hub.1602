@@ -1,0 +1,11 @@
+{% extends "zzz_base.tmpl" %}
+
+{% block title %}Chat list | Hub {{HUB.id}}{% endblock %}
+
+{% block body %}
+  <ul>
+    {% for CHAT in CHAT_LIST %}
+      <li>{{CHAT.BotId}}-{{CHAT.ChatId}}</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

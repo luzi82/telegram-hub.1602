@@ -4,9 +4,9 @@
 
 {% block body %}
   <ul>
-    <li><a href="/hubs.new">Create new hub</a></li>
+    <li><a href="new">Create new hub</a></li>
     {% for HUB in HUB_LIST %}
-      <li><a href="/hubs/{{HUB.id}}">{{HUB.id}}</a></li>
+      <li><a href="{{HUB.id}}/">{{HUB.id}}</a></li>
     {% endfor %}
   </ul>
 {% endblock %}

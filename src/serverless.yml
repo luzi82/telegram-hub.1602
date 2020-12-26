@@ -278,78 +278,98 @@ resources:
       Properties:
         TableName: ${self:service}-${opt:stage}-table
         AttributeDefinitions:
-        - AttributeName: Search0
+        - AttributeName: ItemId
           AttributeType: S
-        - AttributeName: Search1
+        - AttributeName: UserId
           AttributeType: S
-        - AttributeName: Search2
+        - AttributeName: BotId
           AttributeType: S
-        - AttributeName: Search3
+        - AttributeName: ChatId
           AttributeType: S
-        - AttributeName: Search4
+        - AttributeName: HubId
           AttributeType: S
-        - AttributeName: Search5
+        - AttributeName: PublisherId
           AttributeType: S
-        - AttributeName: Search6
+        - AttributeName: ForwardId
           AttributeType: S
-        - AttributeName: Search7
+        - AttributeName: PermissionId
           AttributeType: S
-        - AttributeName: HashKey
+        - AttributeName: Search0Hash
           AttributeType: S
-        - AttributeName: SortKey
+        - AttributeName: Search0Range
+          AttributeType: S
+        - AttributeName: Search1Hash
+          AttributeType: S
+        - AttributeName: Search1Range
           AttributeType: S
         KeySchema:
-        - AttributeName: HashKey
+        - AttributeName: UserId
           KeyType: 'HASH'
-        - AttributeName: SortKey
+        - AttributeName: ItemId
           KeyType: 'RANGE'
         GlobalSecondaryIndexes:
-        - IndexName: IndexSearch0
+        - IndexName: BotIdx
           KeySchema:
-          - AttributeName: Search0
+          - AttributeName: BotId
             KeyType: 'HASH'
+          - AttributeName: ItemId
+            KeyType: 'RANGE'
           Projection:
             ProjectionType: "KEYS_ONLY"
-        - IndexName: IndexSearch1
+        - IndexName: ChatIdx
           KeySchema:
-          - AttributeName: Search1
+          - AttributeName: ChatId
             KeyType: 'HASH'
+          - AttributeName: ItemId
+            KeyType: 'RANGE'
           Projection:
             ProjectionType: "KEYS_ONLY"
-        - IndexName: IndexSearch2
+        - IndexName: HubIdx
           KeySchema:
-          - AttributeName: Search2
+          - AttributeName: HubId
             KeyType: 'HASH'
+          - AttributeName: ItemId
+            KeyType: 'RANGE'
           Projection:
             ProjectionType: "KEYS_ONLY"
-        - IndexName: IndexSearch3
+        - IndexName: PublisherIdx
           KeySchema:
-          - AttributeName: Search3
+          - AttributeName: PublisherId
             KeyType: 'HASH'
+          - AttributeName: ItemId
+            KeyType: 'RANGE'
           Projection:
             ProjectionType: "KEYS_ONLY"
-        - IndexName: IndexSearch4
+        - IndexName: ForwardIdx
           KeySchema:
-          - AttributeName: Search4
+          - AttributeName: ForwardId
             KeyType: 'HASH'
+          - AttributeName: ItemId
+            KeyType: 'RANGE'
           Projection:
             ProjectionType: "KEYS_ONLY"
-        - IndexName: IndexSearch5
+        - IndexName: PermissionIdx
           KeySchema:
-          - AttributeName: Search5
+          - AttributeName: PermissionId
             KeyType: 'HASH'
+          - AttributeName: ItemId
+            KeyType: 'RANGE'
           Projection:
             ProjectionType: "KEYS_ONLY"
-        - IndexName: IndexSearch6
+        - IndexName: Search0Idx
           KeySchema:
-          - AttributeName: Search6
+          - AttributeName: Search0Hash
             KeyType: 'HASH'
+          - AttributeName: Search0Range
+            KeyType: 'RANGE'
           Projection:
             ProjectionType: "KEYS_ONLY"
-        - IndexName: IndexSearch7
+        - IndexName: Search1Idx
           KeySchema:
-          - AttributeName: Search7
+          - AttributeName: Search1Hash
             KeyType: 'HASH'
+          - AttributeName: Search1Range
+            KeyType: 'RANGE'
           Projection:
             ProjectionType: "KEYS_ONLY"
         BillingMode: PAY_PER_REQUEST

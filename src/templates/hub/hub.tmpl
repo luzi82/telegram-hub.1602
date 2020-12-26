@@ -1,0 +1,8 @@
+{% extends "zzz_base.tmpl" %}
+
+{% block title %}Hub {{HUB.id}}{% endblock %}
+
+{% block body %}
+  <p><a href="/hubs/{{HUB.id}}/publishers">Publisher list</a></p>
+  <p><a href="/hubs/{{HUB.id}}/chats">Chat list</a></p>
+{% endblock %}
