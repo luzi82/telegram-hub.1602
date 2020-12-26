@@ -23,11 +23,14 @@ SETUP_TG_AUTH_BOT_DATA_PATH = futsu.storage.join(PRIVATE_MUTABLE_VERSION_PATH,'S
 SETUP_SET_DOMAIN_DONE_PATH = futsu.storage.join(PRIVATE_MUTABLE_VERSION_PATH,'SETUP','SET_DOMAIN_DONE')
 SETUP_DONE_PATH = futsu.storage.join(PRIVATE_MUTABLE_VERSION_PATH,'SETUP','DONE')
 
+SECRET_CONF_PATH = futsu.storage.join(CONF_PATH,'secret.json')
+
 @functools.lru_cache(maxsize=1)
 def get_conf_data():
   conf_data = futsu.json.path_to_data(futsu.storage.join(CONF_PATH,'conf.json'))
-  secret_data = futsu.json.path_to_data(futsu.storage.join(CONF_PATH,'secret.json'))
-  conf_data.update(secret_data)
+  if futsu.storage.is_blob_exist(SECRET_CONF_PATH):
+    secret_data = futsu.json.path_to_data(SECRET_CONF_PATH)
+    conf_data.update(secret_data)
 
   if 'TELEGRAM_AUTH_BYPASS_USER_ID' not in conf_data:
     conf_data['TELEGRAM_AUTH_BYPASS_USER_ID'] = None
