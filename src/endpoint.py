@@ -10,18 +10,28 @@ import fk
 import futsu.json
 import futsu.storage
 import logging
+import middleware
 import os
 import random
 import telegram
 import th
+import werkzeug.middleware.proxy_fix
+
+app = flask.Flask(__name__)
+app.wsgi_app = middleware.WebTemplateMiddleWare(app.wsgi_app, app)
+app.wsgi_app = werkzeug.middleware.proxy_fix.ProxyFix(app.wsgi_app)
 
 STAGE = os.environ['STAGE']
 CONF_PATH = os.environ['CONF_PATH']
-
-PUBLIC_STATIC_PATH   = os.environ['PUBLIC_STATIC_PATH']
-PUBLIC_MUTABLE_PATH  = os.environ['PUBLIC_MUTABLE_PATH']
-PRIVATE_STATIC_PATH  = os.environ['PRIVATE_STATIC_PATH']
-PRIVATE_MUTABLE_PATH = os.environ['PRIVATE_MUTABLE_PATH']
+PUBLIC_COMPUTE_URL_PREFIX   = os.environ['PUBLIC_COMPUTE_URL_PREFIX']
+PUBLIC_STATIC_URL_PREFIX    = os.environ['PUBLIC_STATIC_URL_PREFIX']
+PUBLIC_DEPLOYGEN_URL_PREFIX = os.environ['PUBLIC_DEPLOYGEN_URL_PREFIX']
+PUBLIC_MUTABLE_URL_PREFIX   = os.environ['PUBLIC_MUTABLE_URL_PREFIX']
+PUBLIC_TMP_URL_PREFIX       = os.environ['PUBLIC_TMP_URL_PREFIX']
+PUBLIC_STATIC_PATH          = os.environ['PUBLIC_STATIC_PATH']
+PUBLIC_MUTABLE_PATH         = os.environ['PUBLIC_MUTABLE_PATH']
+PRIVATE_STATIC_PATH         = os.environ['PRIVATE_STATIC_PATH']
+PRIVATE_MUTABLE_PATH        = os.environ['PRIVATE_MUTABLE_PATH']
 DB_TABLE_NAME = os.environ['DB_TABLE_NAME']
 DYNAMODB_ENDPOINT_URL = os.environ.get('DYNAMODB_ENDPOINT_URL',None)
 DYNAMODB_REGION       = os.environ.get('DYNAMODB_REGION',None)
@@ -31,7 +41,6 @@ logger.setLevel(logging.INFO)
 
 configure_telegram = th.configure_telegram
 
-app = flask.Flask(__name__)
 app.secret_key = env.get_conf_data()['FLASK_SECRET'].encode('utf-8')
 
 login_manager = flask_login.LoginManager()
@@ -60,7 +69,7 @@ def index():
     job0_ts = futsu.storage.path_to_bytes(job0_timestamp_path).decode('utf-8') if futsu.storage.is_blob_exist(job0_timestamp_path) else -1
 
     return flask.render_template('home.tmpl',
-        PUBLIC_STATIC_HTTP_PATH = env.PUBLIC_STATIC_HTTP_PATH,
+        PUBLIC_STATIC_URL_PREFIX = env.PUBLIC_STATIC_URL_PREFIX,
     )
 
 @app.route('/compute_domain')

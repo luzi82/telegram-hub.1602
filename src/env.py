@@ -7,8 +7,8 @@ STAGE = os.environ['STAGE']
 CONF_PATH = os.environ['CONF_PATH']
 PUBLIC_STATIC_PATH       = os.environ['PUBLIC_STATIC_PATH']
 PUBLIC_MUTABLE_PATH      = os.environ['PUBLIC_MUTABLE_PATH']
-PUBLIC_STATIC_HTTP_PATH  = os.environ['PUBLIC_STATIC_HTTP_PATH']
-PUBLIC_MUTABLE_HTTP_PATH = os.environ['PUBLIC_MUTABLE_HTTP_PATH']
+PUBLIC_STATIC_URL_PREFIX  = os.environ['PUBLIC_STATIC_URL_PREFIX']
+PUBLIC_MUTABLE_URL_PREFIX = os.environ['PUBLIC_MUTABLE_URL_PREFIX']
 PRIVATE_STATIC_PATH      = os.environ['PRIVATE_STATIC_PATH']
 PRIVATE_MUTABLE_PATH     = os.environ['PRIVATE_MUTABLE_PATH']
 DB_TABLE_NAME            = os.environ['DB_TABLE_NAME']
@@ -23,11 +23,14 @@ SETUP_TG_AUTH_BOT_DATA_PATH = futsu.storage.join(PRIVATE_MUTABLE_VERSION_PATH,'S
 SETUP_SET_DOMAIN_DONE_PATH = futsu.storage.join(PRIVATE_MUTABLE_VERSION_PATH,'SETUP','SET_DOMAIN_DONE')
 SETUP_DONE_PATH = futsu.storage.join(PRIVATE_MUTABLE_VERSION_PATH,'SETUP','DONE')
 
+SECRET_CONF_PATH = futsu.storage.join(CONF_PATH,'secret.json')
+
 @functools.lru_cache(maxsize=1)
 def get_conf_data():
   conf_data = futsu.json.path_to_data(futsu.storage.join(CONF_PATH,'conf.json'))
-  secret_data = futsu.json.path_to_data(futsu.storage.join(CONF_PATH,'secret.json'))
-  conf_data.update(secret_data)
+  if futsu.storage.is_blob_exist(SECRET_CONF_PATH):
+    secret_data = futsu.json.path_to_data(SECRET_CONF_PATH)
+    conf_data.update(secret_data)
 
   if 'TELEGRAM_AUTH_BYPASS_USER_ID' not in conf_data:
     conf_data['TELEGRAM_AUTH_BYPASS_USER_ID'] = None
