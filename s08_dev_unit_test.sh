@@ -66,3 +66,9 @@ aws dynamodb wait table-exists \
 # run test
 cd ${PROJECT_ROOT_PATH}
 python3 unit_test/db_test.py
+
+# clean up
+cd ${PROJECT_ROOT_PATH}
+kill_pid ${LOCAL_VAR_DIR_PATH}/pid/dynamodb.tmp.pid
+rm -rf ${LOCAL_TMP_DIR_PATH}
+mkdir -p ${LOCAL_TMP_DIR_PATH}
