@@ -20,6 +20,7 @@ flake8 \
   --show-source \
   --statistics
 mypy \
+  --strict \
   ${PROJECT_ROOT_PATH}/src
 
 export STAGE=${UNITTEST_STAGE}
