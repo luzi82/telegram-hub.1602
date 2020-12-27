@@ -1,6 +1,7 @@
 import datetime
 import futsu.storage # type: ignore
 import os
+import typing
 
 STAGE = os.environ['STAGE']
 CONF_PATH = os.environ['CONF_PATH']
@@ -11,7 +12,7 @@ PRIVATE_MUTABLE_PATH = os.environ['PRIVATE_MUTABLE_PATH']
 DB_TABLE_NAME = os.environ['DB_TABLE_NAME']
 DYNAMODB_ENDPOINT_URL = None # TODO for local
 
-def job0(event, context):
+def job0(event: typing.Any, context: typing.Any) -> None:
   now_ts = int(datetime.datetime.now().timestamp())
   job0_timestamp_path = futsu.storage.join(PRIVATE_MUTABLE_PATH,'job0_timestamp')
   futsu.storage.bytes_to_path(job0_timestamp_path,f'{now_ts}'.encode('utf-8'))

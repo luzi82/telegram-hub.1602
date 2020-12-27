@@ -2,6 +2,8 @@ import functools
 import futsu.json # type: ignore
 import futsu.storage # type: ignore
 import os
+import telegram
+import typing
 
 STAGE = os.environ['STAGE']
 CONF_PATH = os.environ['CONF_PATH']
@@ -26,8 +28,8 @@ SETUP_DONE_PATH = futsu.storage.join(PRIVATE_MUTABLE_VERSION_PATH,'SETUP','DONE'
 SECRET_CONF_PATH = futsu.storage.join(CONF_PATH,'secret.json')
 
 @functools.lru_cache(maxsize=1)
-def get_conf_data():
-  conf_data = futsu.json.path_to_data(futsu.storage.join(CONF_PATH,'conf.json'))
+def get_conf_data() -> typing.Dict[str,typing.Any]:
+  conf_data:typing.Dict[str,typing.Any] = futsu.json.path_to_data(futsu.storage.join(CONF_PATH,'conf.json'))
   if futsu.storage.is_blob_exist(SECRET_CONF_PATH):
     secret_data = futsu.json.path_to_data(SECRET_CONF_PATH)
     conf_data.update(secret_data)
@@ -38,11 +40,12 @@ def get_conf_data():
   return conf_data
 
 @functools.lru_cache(maxsize=1)
-def get_setup_tg_auth_bot_data():
-  return futsu.json.path_to_data(SETUP_TG_AUTH_BOT_DATA_PATH)
+def get_setup_tg_auth_bot_data() -> typing.Dict[str,typing.Any]:
+  ret:typing.Dict[str,typing.Any] = futsu.json.path_to_data(SETUP_TG_AUTH_BOT_DATA_PATH)
+  return ret
 
-def get_telegram_bot():
-  import telegram
+def get_telegram_bot() -> telegram.Bot:
   setup_tg_auth_bot_data = get_setup_tg_auth_bot_data()
   token = setup_tg_auth_bot_data['USER_TOKEN']
   bot = telegram.Bot(token)
+  return bot
