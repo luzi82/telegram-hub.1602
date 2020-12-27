@@ -1,4 +1,4 @@
-import db
+import db_user
 import env
 import fk
 import flask
@@ -7,6 +7,7 @@ import futsu.storage
 import logging
 import telegram
 import tg
+import th
 import traceback
 
 logger = logging.getLogger(__name__)
@@ -35,7 +36,7 @@ def endpoint_setup():
   if not futsu.storage.is_blob_exist(env.SETUP_SET_DOMAIN_DONE_PATH):
     return s01_bot_set_domain()
 
-  if not db.is_role_exist('OWNER'):
+  if not db_user.is_role_exist('OWNER'):
     return s02_th_owner_login()
 
   futsu.storage.bytes_to_path(env.SETUP_DONE_PATH,b'')
@@ -115,15 +116,15 @@ def s02_th_owner_login(err_msg=None):
 def s02_th_owner_login_telegram_auth_bypass():
   conf_data = env.get_conf_data()
   if not conf_data['TELEGRAM_AUTH_BYPASS_USER_ID']: fk.e400('CAYIGVGS bad TELEGRAM_AUTH_BYPASS_USER_ID')
-  db.set_user_role(str(conf_data['TELEGRAM_AUTH_BYPASS_USER_ID']), 'OWNER')
+  db_user.set_user_role(str(conf_data['TELEGRAM_AUTH_BYPASS_USER_ID']), 'OWNER')
   return fk.redirect('/setup')
 
 def s02_th_owner_login_telegram_auth_callback():
   check_ret = tg.check_telegram_auth_callback()
   if check_ret != 'OK': return s02_th_owner_login(check_ret)
   tguser_id = flask.request.args.get('id')
-  db.set_user_role(tguser_id, 'OWNER')
-  db_set_user_api_token(tguser_id, th.generate_user_token())
+  db_user.set_user_role(tguser_id, 'OWNER')
+  db_user.set_user_api_token(tguser_id, th.generate_user_token())
   return fk.redirect('/setup')
 
 

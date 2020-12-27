@@ -1,3 +1,4 @@
+import db_user
 import env
 import fk
 import flask
@@ -52,7 +53,7 @@ def endpoint_logout():
 @flask_login.login_required
 def api_get_user():
   user_id = flask_login.current_user.id
-  user_item = db.get_user(user_id)
+  user_item = db_user.get_user(user_id)
   return fk.r200({
     'user_item':user_item
   })
@@ -63,7 +64,7 @@ def user_loader(user_id):
 def request_loader(request):
   api_token = request.args.get('api_token')
   if api_token == None: return None
-  user_item = db.get_user_from_api_token(api_token)
+  user_item = db_user.get_user_from_api_token(api_token)
   if user_item == None: return None
   user_id = user_item['UserId']
   return User(user_id)

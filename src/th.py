@@ -9,6 +9,7 @@ import json
 import logging
 import os
 import random
+import string
 import telegram
 
 logger = logging.getLogger(__name__)
@@ -140,7 +141,7 @@ CONF_PATH = os.environ['CONF_PATH']
 
 def generate_user_token():
   char_set = string.ascii_letters+string.digits
-  return "".join(random.choice(char_set)for x in xrange(64))
+  return "".join(random.choice(char_set)for x in range(64))
 
 def configure_telegram():
     """

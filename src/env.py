@@ -44,4 +44,5 @@ def get_setup_tg_auth_bot_data():
 def get_telegram_bot():
   import telegram
   setup_tg_auth_bot_data = get_setup_tg_auth_bot_data()
+  token = setup_tg_auth_bot_data['USER_TOKEN']
   bot = telegram.Bot(token)

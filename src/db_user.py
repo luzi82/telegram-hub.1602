@@ -9,7 +9,7 @@ get_table = _db_common.get_table
 #  search_1_hash  = f'USER-API:{api_token}' # Search1Hash
 #  search_1_range = item_id                 # Search1Range
 
-def get_user(user_id):
+def get_user(user_id: str) -> dict:
   item_id        = f'USER:{user_id}'       # ItemId
 
   table = get_table()
@@ -18,7 +18,7 @@ def get_user(user_id):
   )
   return query_ret.get('Item',None)
 
-def is_user_exist(user_id):
+def is_user_exist(user_id: str) -> bool:
   item_id        = f'USER:{user_id}'       # ItemId
 
   table = get_table()
@@ -30,7 +30,7 @@ def is_user_exist(user_id):
   if query_ret['Item'] == None: return False
   return True
 
-def is_role_exist(role_id):
+def is_role_exist(role_id: str) -> bool:
   search_0_hash  = f'USER-ROLE:{role_id}' # Search0Hash 
 
   table = get_table()
@@ -45,7 +45,7 @@ def is_role_exist(role_id):
   count = query_ret['Count']
   return count > 0
 
-def new_user(user_id, role_id, api_token):
+def new_user(user_id: str, role_id: str, api_token: str) -> None:
   assert(not is_user_exist(user_id))
 
   item_id        = f'USER:{user_id}'       # ItemId
@@ -71,7 +71,7 @@ def new_user(user_id, role_id, api_token):
     },
   )
 
-def set_user_role(user_id, role_id):
+def set_user_role(user_id: str, role_id: str) -> None:
   item_id        = f'USER:{user_id}'      # ItemId
   search_0_hash  = f'USER-ROLE:{role_id}' # Search0Hash
   search_0_range = item_id                # Search0Range
@@ -87,7 +87,7 @@ def set_user_role(user_id, role_id):
     },
   )
 
-def set_user_api_token(user_id, api_token):
+def set_user_api_token(user_id: str, api_token: str) -> None:
   item_id        = f'USER:{user_id}'       # ItemId
   search_1_hash  = f'USER-API:{api_token}' # Search1Hash
   search_1_range = item_id                 # Search1Range
@@ -103,7 +103,7 @@ def set_user_api_token(user_id, api_token):
     },
   )
 
-def get_user_from_api_token(api_token):
+def get_user_from_api_token(api_token: str) -> str:
   search_1_hash  = f'USER-API:{api_token}' # Search1Hash
 
   table = get_table()
