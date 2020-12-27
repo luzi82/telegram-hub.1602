@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 
 . _env.sh
 
@@ -10,6 +10,15 @@ mkdir -p ${LOCAL_TMP_DIR_PATH}
 
 # activate venv
 . ${PROJECT_ROOT_PATH}/dev_env/venv/bin/activate
+
+# flake8
+cd ${PROJECT_ROOT_PATH}
+flake8 \
+  ${PROJECT_ROOT_PATH}/src \
+  --count \
+  --select=E9,F63,F7,F82 \
+  --show-source \
+  --statistics
 
 export STAGE=${UNITTEST_STAGE}
 
