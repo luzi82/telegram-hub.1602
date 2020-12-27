@@ -1,6 +1,6 @@
 import functools
-import futsu.json
-import futsu.storage
+import futsu.json # type: ignore
+import futsu.storage # type: ignore
 import os
 
 STAGE = os.environ['STAGE']

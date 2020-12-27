@@ -2,7 +2,7 @@ import db_user
 import env
 import fk
 import flask
-import flask_login
+import flask_login # type: ignore
 import logging
 import tg
 

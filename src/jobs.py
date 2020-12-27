@@ -1,5 +1,5 @@
 import datetime
-import futsu.storage
+import futsu.storage # type: ignore
 import os
 
 STAGE = os.environ['STAGE']

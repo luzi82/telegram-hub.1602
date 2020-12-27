@@ -2,8 +2,8 @@ import db_user
 import env
 import fk
 import flask
-import futsu.json
-import futsu.storage
+import futsu.json # type: ignore
+import futsu.storage # type: ignore
 import logging
 import telegram
 import tg

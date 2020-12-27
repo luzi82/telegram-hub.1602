@@ -1,4 +1,4 @@
-import boto3
+import boto3 # type: ignore
 import env
 
 _get_table_ret = None

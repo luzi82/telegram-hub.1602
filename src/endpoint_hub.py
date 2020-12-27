@@ -1,7 +1,6 @@
-import db
 import env
 import flask
-import flask_login
+import flask_login # type: ignore
 import logging
 
 logger = logging.getLogger(__name__)

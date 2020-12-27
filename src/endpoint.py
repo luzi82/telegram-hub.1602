@@ -1,14 +1,14 @@
-import boto3
+import boto3 # type: ignore
 import datetime
 import endpoint_auth
 import endpoint_hub
 import endpoint_setup
 import env
 import flask
-import flask_login
+import flask_login # type: ignore
 import fk
-import futsu.json
-import futsu.storage
+import futsu.json # type: ignore
+import futsu.storage # type: ignore
 import logging
 import middleware
 import os
@@ -18,8 +18,8 @@ import th
 import werkzeug.middleware.proxy_fix
 
 app = flask.Flask(__name__)
-app.wsgi_app = middleware.WebTemplateMiddleWare(app.wsgi_app, app)
-app.wsgi_app = werkzeug.middleware.proxy_fix.ProxyFix(app.wsgi_app)
+app.wsgi_app = middleware.WebTemplateMiddleWare(app.wsgi_app, app) # type: ignore
+app.wsgi_app = werkzeug.middleware.proxy_fix.ProxyFix(app.wsgi_app) # type: ignore
 
 STAGE = os.environ['STAGE']
 CONF_PATH = os.environ['CONF_PATH']
