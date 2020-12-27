@@ -17,7 +17,7 @@ cd ${PROJECT_ROOT_PATH}
 python3 -m venv ${PROJECT_ROOT_PATH}/dev_env/venv
 . ${PROJECT_ROOT_PATH}/dev_env/venv/bin/activate
 pip install --upgrade pip wheel
-pip install yq awscli flake8
+pip install awscli flake8 mypy yq
 pip install -r ${PROJECT_ROOT_PATH}/src/requirements.txt
 
 # download dynamodb local

@@ -19,6 +19,8 @@ flake8 \
   --select=E9,F63,F7,F82 \
   --show-source \
   --statistics
+mypy \
+  ${PROJECT_ROOT_PATH}/src
 
 export STAGE=${UNITTEST_STAGE}
 
