@@ -10,6 +10,7 @@ import os
 import random
 import string
 import telegram
+import telegram.bot
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -138,11 +139,11 @@ CONF_PATH = os.environ['CONF_PATH']
 #         'result':'OK',
 #     }
 
-def generate_user_token():
+def generate_user_token() -> str:
   char_set = string.ascii_letters+string.digits
   return "".join(random.choice(char_set)for x in range(64))
 
-def configure_telegram():
+def configure_telegram() -> telegram.bot.Bot:
     """
     Configures the bot with a Telegram Token.
 

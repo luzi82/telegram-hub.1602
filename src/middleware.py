@@ -12,7 +12,7 @@ class WebTemplateMiddleWare:
         self.wsgi_app = wsgi_app
         self.app = app
 
-    def __call__(self, environ, start_response: Callable[..., Any]) -> Any:
+    def __call__(self, environ: Any, start_response: Callable[..., Any]) -> Any:
         if self.app.debug:
             headers = list(EnvironHeaders(environ).items()) # type: ignore
             for k,v in headers:

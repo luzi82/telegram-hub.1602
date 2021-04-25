@@ -18,13 +18,15 @@ db_user.new_user('1234','VECPFUBZ','QCLOUEDB')
 db_user.set_user_role('1234','VECPFUBZ')
 db_user.set_user_api_token('1234','QCLOUEDB')
 
+user_item = db_user.get_user('1234')
+#print(user_item)
+assert(user_item!=None)
+
 assert(db_user.is_role_exist('VECPFUBZ'))
 
-user_item = db_user.get_user('1234')
-print(user_item)
-
 user_item = db_user.get_user_from_api_token('QCLOUEDB')
-assert(user_item['UserId']=='1234')
+# print(user_item)
+assert(user_item['user_id']=='1234')
 
 ########
 # BOT

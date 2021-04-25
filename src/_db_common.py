@@ -1,8 +1,10 @@
 import boto3 # type: ignore
 import env
 
-_get_table_ret = None
-def get_table():
+from typing import Any
+
+_get_table_ret:Any = None
+def get_table() -> Any:
   global _get_table_ret
   if _get_table_ret: return _get_table_ret
   dynamodb = boto3.resource(

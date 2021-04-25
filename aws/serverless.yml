@@ -441,97 +441,109 @@ resources:
       Properties:
         TableName: ${self:service}-${opt:stage}-table
         AttributeDefinitions:
-        - AttributeName: ItemId
+        - AttributeName: PKeyHash
           AttributeType: S
-        - AttributeName: UserId
+        - AttributeName: PKeyRange
           AttributeType: S
-        - AttributeName: BotId
+        - AttributeName: SKey0Hash
           AttributeType: S
-        - AttributeName: ChatId
+        - AttributeName: SKey0Range
           AttributeType: S
-        - AttributeName: HubId
+        - AttributeName: SKey1Hash
           AttributeType: S
-        - AttributeName: PublisherId
+        - AttributeName: SKey1Range
           AttributeType: S
-        - AttributeName: ForwardId
+        - AttributeName: SKey2Hash
           AttributeType: S
-        - AttributeName: PermissionId
+        - AttributeName: SKey2Range
           AttributeType: S
-        - AttributeName: Search0Hash
+        - AttributeName: SKey3Hash
           AttributeType: S
-        - AttributeName: Search0Range
+        - AttributeName: SKey3Range
           AttributeType: S
-        - AttributeName: Search1Hash
+        - AttributeName: SKey4Hash
           AttributeType: S
-        - AttributeName: Search1Range
+        - AttributeName: SKey4Range
+          AttributeType: S
+        - AttributeName: SKey5Hash
+          AttributeType: S
+        - AttributeName: SKey5Range
+          AttributeType: S
+        - AttributeName: SKey6Hash
+          AttributeType: S
+        - AttributeName: SKey6Range
+          AttributeType: S
+        - AttributeName: SKey7Hash
+          AttributeType: S
+        - AttributeName: SKey7Range
           AttributeType: S
         KeySchema:
-        - AttributeName: UserId
+        - AttributeName: PKeyHash
           KeyType: 'HASH'
-        - AttributeName: ItemId
+        - AttributeName: PKeyRange
           KeyType: 'RANGE'
         GlobalSecondaryIndexes:
-        - IndexName: BotIdx
+        - IndexName: SKey0Idx
           KeySchema:
-          - AttributeName: BotId
+          - AttributeName: SKey0Hash
             KeyType: 'HASH'
-          - AttributeName: ItemId
+          - AttributeName: SKey0Range
             KeyType: 'RANGE'
           Projection:
             ProjectionType: "KEYS_ONLY"
-        - IndexName: ChatIdx
+        - IndexName: SKey1Idx
           KeySchema:
-          - AttributeName: ChatId
+          - AttributeName: SKey1Hash
             KeyType: 'HASH'
-          - AttributeName: ItemId
+          - AttributeName: SKey1Range
             KeyType: 'RANGE'
           Projection:
             ProjectionType: "KEYS_ONLY"
-        - IndexName: HubIdx
+        - IndexName: SKey2Idx
           KeySchema:
-          - AttributeName: HubId
+          - AttributeName: SKey2Hash
             KeyType: 'HASH'
-          - AttributeName: ItemId
+          - AttributeName: SKey2Range
             KeyType: 'RANGE'
           Projection:
             ProjectionType: "KEYS_ONLY"
-        - IndexName: PublisherIdx
+        - IndexName: SKey3Idx
           KeySchema:
-          - AttributeName: PublisherId
+          - AttributeName: SKey3Hash
             KeyType: 'HASH'
-          - AttributeName: ItemId
+          - AttributeName: SKey3Range
             KeyType: 'RANGE'
           Projection:
             ProjectionType: "KEYS_ONLY"
-        - IndexName: ForwardIdx
+        - IndexName: SKey4Idx
           KeySchema:
-          - AttributeName: ForwardId
+          - AttributeName: SKey4Hash
             KeyType: 'HASH'
-          - AttributeName: ItemId
+          - AttributeName: SKey4Range
             KeyType: 'RANGE'
           Projection:
             ProjectionType: "KEYS_ONLY"
-        - IndexName: PermissionIdx
+        - IndexName: SKey5Idx
           KeySchema:
-          - AttributeName: PermissionId
+          - AttributeName: SKey5Hash
             KeyType: 'HASH'
-          - AttributeName: ItemId
+          - AttributeName: SKey5Range
             KeyType: 'RANGE'
           Projection:
             ProjectionType: "KEYS_ONLY"
-        - IndexName: Search0Idx
+        - IndexName: SKey6Idx
           KeySchema:
-          - AttributeName: Search0Hash
+          - AttributeName: SKey6Hash
             KeyType: 'HASH'
-          - AttributeName: Search0Range
+          - AttributeName: SKey6Range
             KeyType: 'RANGE'
           Projection:
             ProjectionType: "KEYS_ONLY"
-        - IndexName: Search1Idx
+        - IndexName: SKey7Idx
           KeySchema:
-          - AttributeName: Search1Hash
+          - AttributeName: SKey7Hash
             KeyType: 'HASH'
-          - AttributeName: Search1Range
+          - AttributeName: SKey7Range
             KeyType: 'RANGE'
           Projection:
             ProjectionType: "KEYS_ONLY"

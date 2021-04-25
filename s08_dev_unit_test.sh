@@ -12,16 +12,16 @@ mkdir -p ${LOCAL_TMP_DIR_PATH}
 . ${PROJECT_ROOT_PATH}/dev_env/venv/bin/activate
 
 # flake8
-cd ${PROJECT_ROOT_PATH}
-flake8 \
-  ${PROJECT_ROOT_PATH}/src \
-  --count \
-  --select=E9,F63,F7,F82 \
-  --show-source \
-  --statistics
-mypy \
-  --strict \
-  ${PROJECT_ROOT_PATH}/src
+# cd ${PROJECT_ROOT_PATH}
+# flake8 \
+#   ${PROJECT_ROOT_PATH}/src \
+#   --count \
+#   --select=E9,F63,F7,F82 \
+#   --show-source \
+#   --statistics
+# mypy \
+#   --strict \
+#   ${PROJECT_ROOT_PATH}/src
 
 export STAGE=${UNITTEST_STAGE}
 
@@ -57,6 +57,10 @@ java \
   -dbPath ${LOCAL_TMP_DIR_PATH}/dynamodb.data \
   &
 echo $! > ${LOCAL_VAR_DIR_PATH}/pid/dynamodb.tmp.pid
+
+echo ${LOCAL_VAR_DIR_PATH}
+#cat ${LOCAL_VAR_DIR_PATH}/init/db.KeySchema
+#cat ${LOCAL_VAR_DIR_PATH}/init/db.GlobalSecondaryIndexes
 
 # create table
 cd ${PROJECT_ROOT_PATH}
