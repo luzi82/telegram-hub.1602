@@ -53,6 +53,7 @@ endpoint_hub.add_url_rule(app)
 
 endpoint_setup.add_url_rule(app)
 
+#TODO: if setup not done, redirect to /setup
 @app.route('/')
 @flask_login.login_required
 def index():
