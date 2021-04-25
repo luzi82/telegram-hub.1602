@@ -1,36 +1,13 @@
-[![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/luzi82/codelog.flask)
+[![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/luzi82/telegram-hub.1602)
 
-# codelog.web-template.1601
+# telegram-hub.1602
 
-Code template of AWS + serverless + Flask so I dont need to do things from zero.
+Broadcast messages to Telegram
 
-## Example
-
-https://compute-codelog-webtemplate1601-sample.aws-public.luzi82.com
-
-https://static-codelog-webtemplate1601-sample.aws-public.luzi82.com
-
-## Run gitpod
+## Run in gitpod
 
 ```
 ./s09_dev_run_local.sh
 ```
 
-## Run local
-
-```
-aws configure # configure credentials
-./s00_dev_init_env.sh
-./s09_dev_run_local.sh
-```
-
-## Deploy to AWS
-
-1. Create domain in AWS Route 53.
-1. Create cert for domain.
-1. Create and edit `conf/conf.json` from `conf/conf.json.sample`.
-1. `./s50_aws_init_env.sh && ./s51_aws_deploy.sh`
-
-## Undeploy from AWS
-
-1. `./s50_aws_init_env.sh && ./s59_aws_undeploy.sh`
+Setup: https://.../setup
