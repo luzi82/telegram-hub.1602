@@ -1,10 +1,10 @@
 import flask
 import typing
-import werkzeug.types # type: ignore
+# import werkzeug.types # type: ignore
 from typing import Any
 from typing import Callable
 from werkzeug.datastructures import EnvironHeaders
-from werkzeug.types import WSGIEnvironment
+#from werkzeug.types import WSGIEnvironment
 
 class WebTemplateMiddleWare:
 
@@ -12,7 +12,7 @@ class WebTemplateMiddleWare:
         self.wsgi_app = wsgi_app
         self.app = app
 
-    def __call__(self, environ: WSGIEnvironment, start_response: Callable[..., Any]) -> Any:
+    def __call__(self, environ, start_response: Callable[..., Any]) -> Any:
         if self.app.debug:
             headers = list(EnvironHeaders(environ).items()) # type: ignore
             for k,v in headers:
