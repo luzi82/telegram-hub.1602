@@ -441,112 +441,116 @@ resources:
       Properties:
         TableName: ${self:service}-${opt:stage}-table
         AttributeDefinitions:
-        - AttributeName: PKeyHash
+        - AttributeName: UUIDD
           AttributeType: S
-        - AttributeName: PKeyRange
+        - AttributeName: TYPEE
           AttributeType: S
-        - AttributeName: SKey0Hash
+        - AttributeName: GSI0H
           AttributeType: S
-        - AttributeName: SKey0Range
+        - AttributeName: GSI0R
           AttributeType: S
-        - AttributeName: SKey1Hash
+        - AttributeName: GSI1H
           AttributeType: S
-        - AttributeName: SKey1Range
+        - AttributeName: GSI1R
           AttributeType: S
-        - AttributeName: SKey2Hash
+        - AttributeName: GSI2H
           AttributeType: S
-        - AttributeName: SKey2Range
+        - AttributeName: GSI2R
           AttributeType: S
-        - AttributeName: SKey3Hash
+        - AttributeName: GSI3H
           AttributeType: S
-        - AttributeName: SKey3Range
+        - AttributeName: GSI3R
           AttributeType: S
-        - AttributeName: SKey4Hash
+        - AttributeName: GSI4H
           AttributeType: S
-        - AttributeName: SKey4Range
+        - AttributeName: GSI4R
           AttributeType: S
-        - AttributeName: SKey5Hash
+        - AttributeName: GSI5H
           AttributeType: S
-        - AttributeName: SKey5Range
+        - AttributeName: GSI5R
           AttributeType: S
-        - AttributeName: SKey6Hash
+        - AttributeName: GSI6H
           AttributeType: S
-        - AttributeName: SKey6Range
+        - AttributeName: GSI6R
           AttributeType: S
-        - AttributeName: SKey7Hash
+        - AttributeName: GSI7H
           AttributeType: S
-        - AttributeName: SKey7Range
+        - AttributeName: GSI7R
           AttributeType: S
         KeySchema:
-        - AttributeName: PKeyHash
+        - AttributeName: UUIDD
           KeyType: 'HASH'
-        - AttributeName: PKeyRange
-          KeyType: 'RANGE'
         GlobalSecondaryIndexes:
-        - IndexName: SKey0Idx
+        - IndexName: TYPE
           KeySchema:
-          - AttributeName: SKey0Hash
+          - AttributeName: TYPEE
             KeyType: 'HASH'
-          - AttributeName: SKey0Range
+          Projection:
+            ProjectionType: "ALL"
+        - IndexName: GSI0
+          KeySchema:
+          - AttributeName: GSI0H
+            KeyType: 'HASH'
+          - AttributeName: GSI0R
             KeyType: 'RANGE'
           Projection:
-            ProjectionType: "KEYS_ONLY"
-        - IndexName: SKey1Idx
+            ProjectionType: "ALL"
+        - IndexName: GSI1
           KeySchema:
-          - AttributeName: SKey1Hash
+          - AttributeName: GSI1H
             KeyType: 'HASH'
-          - AttributeName: SKey1Range
+          - AttributeName: GSI1R
             KeyType: 'RANGE'
           Projection:
-            ProjectionType: "KEYS_ONLY"
-        - IndexName: SKey2Idx
+            ProjectionType: "ALL"
+        - IndexName: GSI2
           KeySchema:
-          - AttributeName: SKey2Hash
+          - AttributeName: GSI2H
             KeyType: 'HASH'
-          - AttributeName: SKey2Range
+          - AttributeName: GSI2R
             KeyType: 'RANGE'
           Projection:
-            ProjectionType: "KEYS_ONLY"
-        - IndexName: SKey3Idx
+            ProjectionType: "ALL"
+        - IndexName: GSI3
           KeySchema:
-          - AttributeName: SKey3Hash
+          - AttributeName: GSI3H
             KeyType: 'HASH'
-          - AttributeName: SKey3Range
+          - AttributeName: GSI3R
             KeyType: 'RANGE'
           Projection:
-            ProjectionType: "KEYS_ONLY"
-        - IndexName: SKey4Idx
+            ProjectionType: "ALL"
+        - IndexName: GSI4
           KeySchema:
-          - AttributeName: SKey4Hash
+          - AttributeName: GSI4H
             KeyType: 'HASH'
-          - AttributeName: SKey4Range
+          - AttributeName: GSI4R
             KeyType: 'RANGE'
           Projection:
-            ProjectionType: "KEYS_ONLY"
-        - IndexName: SKey5Idx
+            ProjectionType: "ALL"
+        - IndexName: GSI5
           KeySchema:
-          - AttributeName: SKey5Hash
+          - AttributeName: GSI5H
             KeyType: 'HASH'
-          - AttributeName: SKey5Range
+          - AttributeName: GSI5R
             KeyType: 'RANGE'
           Projection:
-            ProjectionType: "KEYS_ONLY"
-        - IndexName: SKey6Idx
+            ProjectionType: "ALL"
+        - IndexName: GSI6
           KeySchema:
-          - AttributeName: SKey6Hash
+          - AttributeName: GSI6H
             KeyType: 'HASH'
-          - AttributeName: SKey6Range
+          - AttributeName: GSI6R
             KeyType: 'RANGE'
           Projection:
-            ProjectionType: "KEYS_ONLY"
-        - IndexName: SKey7Idx
+            ProjectionType: "ALL"
+        - IndexName: GSI7
           KeySchema:
-          - AttributeName: SKey7Hash
+          - AttributeName: GSI7H
             KeyType: 'HASH'
-          - AttributeName: SKey7Range
+          - AttributeName: GSI7R
             KeyType: 'RANGE'
           Projection:
-            ProjectionType: "KEYS_ONLY"
+            ProjectionType: "ALL"
         BillingMode: PAY_PER_REQUEST
 
 custom:

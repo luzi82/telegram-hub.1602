@@ -2,8 +2,10 @@ import _db_common
 
 get_table = _db_common.get_table
 
-#  bot_id  = f'{user_id}:{bot_tg_id}' # BotId
-#  item_id = f'BOT:{bot_id}'          # ItemId
+#  user_id
+#  bot_tg_id
+#  bot_id  = f'{user_id}:{bot_tg_id}'
+#  item_id = f'BOT:{bot_id}'          # PKeyHash
 
 def get_bot(bot_id):
   item_id = f'BOT:{bot_id}'

@@ -1,90 +1,62 @@
 import sys
 sys.path.append('src')
 
-import db
-import _db_common
-
-#########
-# TEST
-
-assert(db.get_item('_test',k0='VTWONHZP')==None)
-test_item0 = db.new_item('_test',k0='VTWONHZP')
-assert(db.get_item('_test',k0='VTWONHZP')!=None)
-
-assert(db.rm_item('_test',k0='VTWONHZP'))
-assert(db.get_item('_test',k0='VTWONHZP')==None)
-
-assert(db.get_item('_test',k0='SDAWPRLI')==None)
-test_item0 = db.new_item('_test',k0='SDAWPRLI')
-assert(db.get_item('_test',k0='SDAWPRLI')!=None)
-
-assert(db.rm_item('_test',test_item0['UUIDD']))
-assert(db.get_item('_test',k0='SDAWPRLI')==None)
-
-assert(db.get_item('_test',k0='EFAEHDNF')==None)
-test_item0 = db.new_item('_test',k0='EFAEHDNF')
-assert(db.get_item('_test',k0='EFAEHDNF')!=None)
-
-assert(not db.rm_item('_test',test_item0['UUIDD'],k0='LAYQGIGY'))
-assert(db.get_item('_test',k0='EFAEHDNF')!=None)
-
-assert(db.rm_item('_test',test_item0['UUIDD'],k0='EFAEHDNF'))
-assert(db.get_item('_test',k0='EFAEHDNF')==None)
-
+import db_bot
+#import db_chat
+#import db_chat_hub
+#import db_hub
+#import db_hub_publisher
+#import db_publisher
+import db_user
 
 #########
 # USER
 
-assert(not db.is_item_exist('user',rolee='VECPFUBZ') )
+assert(not db_user.is_role_exist('VECPFUBZ'))
 
-user_item = db.new_item('user',user_tgid='1234',rolee='VECPFUBZ',api_token='QCLOUEDB')
+db_user.new_user('1234','VECPFUBZ','QCLOUEDB')
+db_user.set_user_role('1234','VECPFUBZ')
+db_user.set_user_api_token('1234','QCLOUEDB')
 
-user_item = db.get_item('user',user_item['UUIDD'])
+user_item = db_user.get_user('1234')
+#print(user_item)
 assert(user_item!=None)
 
-user_item = db.get_item('user',user_tgid='1234')
-assert(user_item!=None)
+assert(db_user.is_role_exist('VECPFUBZ'))
 
-assert(db.is_item_exist('user',rolee='VECPFUBZ') )
-
-user_item = db.get_item('user',api_token='QCLOUEDB')
+user_item = db_user.get_user_from_api_token('QCLOUEDB')
 # print(user_item)
-assert(user_item['user_tgid']=='1234')
-
-user_uuid = user_item['UUIDD']
+assert(user_item['user_id']=='1234')
 
 ########
 # BOT
 
-db.new_item('bot',user_uid=user_uuid,bot_tgid='DROPYXLW')
+db_bot.new_bot('1234', 'DROPYXLW')
 
-bot_item = db.get_item('bot',user_uid=user_uuid,bot_tgid='DROPYXLW')
+bot_item = db_bot.get_bot('1234:DROPYXLW')
 print(bot_item)
 
-bot_item_0 = db.new_item('bot',user_uid=user_uuid,bot_tgid='XXMETXWP')
-db.new_item('bot',user_uid=user_uuid,bot_tgid='WLNSRWBL')
+db_bot.new_bot('1234', 'XXMETXWP')
+db_bot.new_bot('1234', 'WLNSRWBL')
 
-bot_item_list = db.get_item_list('bot',user_uid=user_uuid)
+bot_item_list = db_bot.get_bot_list_from_user('1234')
 assert(len(bot_item_list)==3)
 
-db.rm_item('bot',bot_item_0['UUIDD'])
+db_bot.rm_bot('1234:XXMETXWP')
 
-bot_item_list = db.get_item_list('bot',user_uid=user_uuid)
+bot_item_list = db_bot.get_bot_list_from_user('1234')
 assert(len(bot_item_list)==2)
 
 ########
 # CHAT
 
-db.new('chat',user_tgid='1234',bot_tgid='DROPYXLW',chat_tgid='MEQWHMSC')
+db_chat.new_chat('1234:DROPYXLW','MEQWHMSC')
 
-chat_item = db.get('chat',user_tgid='1234',bot_tgid='DROPYXLW',chat_tgid='MEQWHMSC')
-assert(chat_item!=None)
-#print(f'chat_item = {chat_item}')
+chat_item = db_chat.get_chat('1234:DROPYXLW:MEQWHMSC')
+print(f'chat_item = {chat_item}')
 
-#db_chat.new_chat('1234:DROPYXLW','FSSMUDAA')
-#db_chat.new_chat('1234:DROPYXLW','JDGARDNH')
-db.new('chat',user_tgid='1234',bot_tgid='DROPYXLW',chat_tgid='FSSMUDAA')
-db.new('chat',user_tgid='1234',bot_tgid='DROPYXLW',chat_tgid='JDGARDNH')
+db_chat.new_chat('1234:DROPYXLW','FSSMUDAA')
+db_chat.new_chat('1234:DROPYXLW','JDGARDNH')
 
 chat_item_list = db_chat.get_chat_list_from_bot('1234:DROPYXLW')
 assert(len(chat_item_list)==3)

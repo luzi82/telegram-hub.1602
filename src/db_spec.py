@@ -1,0 +1,22 @@
+DB_SPEC_DATA = {
+  'TYPE_DATA_DICT':{
+    'user':{
+      'INDEX_DATA_LIST':[
+        {'HASH_ATTR_LIST':['user_tgid'],'IDX':'GSI0'},
+        {'HASH_ATTR_LIST':['rolee'],'IDX':'GSI1'},
+        {'HASH_ATTR_LIST':['api_token'],'IDX':'GSI2'},
+      ],
+    },
+    'bot':{
+      'INDEX_DATA_LIST':[
+        {'HASH_ATTR_LIST':['bot_tgid'],'IDX':'GSI0'},
+        {'HASH_ATTR_LIST':['user_uid'],'IDX':'GSI1'},
+      ],
+    },
+    '_test':{
+      'INDEX_DATA_LIST':[
+        {'HASH_ATTR_LIST':['k0'],'IDX':'GSI0'},
+      ],
+    }
+  },
+}
